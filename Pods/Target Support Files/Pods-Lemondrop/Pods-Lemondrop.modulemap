@@ -1,0 +1,6 @@
+framework module Pods_Lemondrop {
+  umbrella header "Pods-Lemondrop-umbrella.h"
+
+  export *
+  module * { export * }
+}
