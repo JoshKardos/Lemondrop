@@ -13,12 +13,14 @@ import GooglePlaces
 import CoreLocation
 import Floaty
 import FirebaseDatabase
+import FirebaseAuth
 import ProgressHUD
 
 class MapViewController: UIViewController, UITextFieldDelegate{
     let floaty = Floaty()
+    var workingAStand = false
     static var lemonadeStands = [LemonadeStand]()
-    static let googleMapsApiKey = "AIzaSyD3mzoGU8MVGyhzv6Or8CJfgrLW_P17OS0"
+    static let googleMapsApiKey = ApiKeys.googleMapsApiKey
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation?{
         didSet{
@@ -26,7 +28,7 @@ class MapViewController: UIViewController, UITextFieldDelegate{
             //            currentLocationMarker.map = mapView
         }
     }
-//    var currentLocationMarker = GMSMarker()
+    //    var currentLocationMarker = GMSMarker()
     var mapView: GMSMapView!
     var placesClient: GMSPlacesClient!
     var zoomLevel: Float = 15.0
@@ -37,17 +39,21 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         super.viewDidLoad()
         
         configureMapbackground()
-        configureFloatingButton()
+        
         configureTextField()
         
-        MapViewController.loadLemonadeStands(mapView: mapView) {
-            self.setMarkers()
+        if !Connectivity.isConnectedToInternet{
+            ProgressHUD.showError("Not connected to internet")
+        } else {
+            checkIfWorkingAStand() {
+                self.configureFloatingButton()
+            }
+            
+            
+            MapViewController.loadLemonadeStands(mapView: mapView) {
+                self.setMarkers()
+            }
         }
-        
-//        currentLocationMarker.title = "Current Location"
-//        currentLocationMarker.icon = UIImage(named: "currentlocation")
-        
-        
         
     }
     
@@ -85,6 +91,34 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         
     }
     
+    func checkIfWorkingAStand(onSuccess: @escaping() -> Void){
+        
+        Database.database().reference().child("activeLemonadeStands").observe(.value) { (snapshot) in
+            
+            if let snap = snapshot.value as? NSDictionary{
+                
+                for (_, stand) in snap {
+                    
+                    if let dict = stand as? NSDictionary {
+                        
+                        let lemonadeStand = LemonadeStand(dictionary: dict)
+                        
+                        if lemonadeStand.userId == (Auth.auth().currentUser?.uid)! {
+                            self.workingAStand = true
+                            break
+                        }
+                        
+                    }
+                    
+                }
+                
+                onSuccess()
+            }
+        }
+        
+    }
+    
+    
     //floating right button
     //floaty library used
     func configureFloatingButton(){
@@ -94,13 +128,14 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         
         floaty.plusColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         
-        if !workingAStand(){
+        if !workingAStand{
+            
             floaty.addItem("Establish Lemonade Stand", icon: UIImage(named: "Lemon")!) { (item) in
                 self.presentEstablishStandView()
             }
         } else {
             floaty.addItem("Locate your Lemonade Stand", icon: UIImage(named: "Lemon")!) { (item) in
-//                self.presentEstablishStandView()
+                //                self.presentEstablishStandView()
                 
                 
                 
@@ -158,9 +193,6 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         return true
     }
     
-    func workingAStand() -> Bool{
-        return false
-    }
     
 }
 
@@ -216,39 +248,37 @@ extension MapViewController: CLLocationManagerDelegate {
         lemonadeStands = []
         //remove all markers from mapview
         mapView.clear()
-
-        if !Connectivity.isConnectedToInternet{
-            ProgressHUD.showError("Not connected to internet")
-        } else {
-           ProgressHUD.show("Loading Stands...")
-            Database.database().reference().child("activeLemonadeStands").observe(.value) { (snapshot) in
-                print(lemonadeStands.count)
-                if let snap = snapshot.value as? NSDictionary{
-                    
-                    for (_, stand) in snap {
-                        if let dict = stand as? NSDictionary {
-                            let lemonadeStand = LemonadeStand(dictionary: dict)
-                            if lemonadeStand.endTime < Date().timeIntervalSince1970{
-                                
-                                Database.database().reference().child("activeLemonadeStands").child(dict["standId"] as! String).removeValue()
-                                print("deleted")
-                            }
-                            else {
-                                MapViewController.lemonadeStands.append(lemonadeStand)
-                            }
-                            
-                        }
-                    }
-                    
-                    onSuccess()
-                    ProgressHUD.showSuccess("Loaded \(MapViewController.lemonadeStands.count) stand(s)")
-                } else {
-                ProgressHUD.showSuccess("No stands to load..")
-            
+        
+        
+        ProgressHUD.show("Loading Stands...")
+        Database.database().reference().child("activeLemonadeStands").observe(.value) { (snapshot) in
+            print(lemonadeStands.count)
+            if let snap = snapshot.value as? NSDictionary{
                 
+                for (_, stand) in snap {
+                    if let dict = stand as? NSDictionary {
+                        let lemonadeStand = LemonadeStand(dictionary: dict)
+                        if lemonadeStand.endTime < Date().timeIntervalSince1970{
+                            
+                            Database.database().reference().child("activeLemonadeStands").child(dict["standId"] as! String).removeValue()
+                            print("deleted")
+                        }
+                        else {
+                            MapViewController.lemonadeStands.append(lemonadeStand)
+                        }
+                        
+                    }
                 }
+                
+                onSuccess()
+                ProgressHUD.showSuccess("Loaded \(MapViewController.lemonadeStands.count) stand(s)")
+            } else {
+                ProgressHUD.showSuccess("No stands to load..")
+                
+                
             }
         }
+        
         
     }
     

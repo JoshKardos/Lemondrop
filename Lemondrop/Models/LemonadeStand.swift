@@ -47,12 +47,7 @@ class LemonadeStand{
             print("bad user id")
             return
         }
-//        let dateFormatter = DateFormatter()
-//
-//        let startDate = dateFormatter.date(from: String(startTime))
-//        print(startDate)
-//        let endDate = dateFormatter.date(from: String(endTime))
-//        print(endDate)
+        
         let price = Double(pricePerGlass)
         
         self.userId = userId

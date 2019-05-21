@@ -15,9 +15,11 @@
 		B34074EB228E35F000FF6ED6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B34074E9228E35F000FF6ED6 /* LaunchScreen.storyboard */; };
 		B34074F7228E64C100FF6ED6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074F6228E64C100FF6ED6 /* MapViewController.swift */; };
 		B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */; };
-		B34074FB228F48C300FF6ED6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B34074FA228F48C300FF6ED6 /* GoogleService-Info.plist */; };
 		B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FC228F541200FF6ED6 /* AuthService.swift */; };
 		B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FE228F826300FF6ED6 /* LemonadeStand.swift */; };
+		B3A287712293B685000CB1F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3A287702293B684000CB1F4 /* GoogleService-Info.plist */; };
+		B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287722293B826000CB1F4 /* SignInViewController.swift */; };
+		B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287762293C750000CB1F4 /* ApiKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,9 +34,11 @@
 		B34074EC228E35F000FF6ED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B34074F6228E64C100FF6ED6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
-		B34074FA228F48C300FF6ED6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B34074FC228F541200FF6ED6 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		B34074FE228F826300FF6ED6 /* LemonadeStand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeStand.swift; sourceTree = "<group>"; };
+		B3A287702293B684000CB1F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		B3A287722293B826000CB1F4 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		B3A287762293C750000CB1F4 /* ApiKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
 		FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,18 +85,36 @@
 			isa = PBXGroup;
 			children = (
 				B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */,
-				B34074FC228F541200FF6ED6 /* AuthService.swift */,
-				B34074E2228E35EE00FF6ED6 /* SignUpViewController.swift */,
+				B3A287762293C750000CB1F4 /* ApiKeys.swift */,
+				B3A287742293C213000CB1F4 /* Authentication */,
+				B3A287752293C22E000CB1F4 /* Models */,
 				B34074F6228E64C100FF6ED6 /* MapViewController.swift */,
 				B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */,
-				B34074FE228F826300FF6ED6 /* LemonadeStand.swift */,
 				B34074E4228E35EE00FF6ED6 /* Main.storyboard */,
-				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B34074E9228E35F000FF6ED6 /* LaunchScreen.storyboard */,
+				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
+				B3A287702293B684000CB1F4 /* GoogleService-Info.plist */,
 				B34074EC228E35F000FF6ED6 /* Info.plist */,
-				B34074FA228F48C300FF6ED6 /* GoogleService-Info.plist */,
 			);
 			path = Lemondrop;
+			sourceTree = "<group>";
+		};
+		B3A287742293C213000CB1F4 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				B34074FC228F541200FF6ED6 /* AuthService.swift */,
+				B34074E2228E35EE00FF6ED6 /* SignUpViewController.swift */,
+				B3A287722293B826000CB1F4 /* SignInViewController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B3A287752293C22E000CB1F4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B34074FE228F826300FF6ED6 /* LemonadeStand.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		CC9950477193C2C4736B1854 /* Frameworks */ = {
@@ -165,7 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B34074EB228E35F000FF6ED6 /* LaunchScreen.storyboard in Resources */,
-				B34074FB228F48C300FF6ED6 /* GoogleService-Info.plist in Resources */,
+				B3A287712293B685000CB1F4 /* GoogleService-Info.plist in Resources */,
 				B34074E8228E35F000FF6ED6 /* Assets.xcassets in Resources */,
 				B34074E6228E35EE00FF6ED6 /* Main.storyboard in Resources */,
 			);
@@ -261,11 +283,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */,
 				B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */,
 				B34074F7228E64C100FF6ED6 /* MapViewController.swift in Sources */,
 				B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */,
 				B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */,
 				B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */,
+				B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */,
 				B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

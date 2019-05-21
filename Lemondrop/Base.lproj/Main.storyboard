@@ -198,10 +198,10 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="93.75"/>
         </scene>
-        <!--View Controller-->
+        <!--Sign In View Controller-->
         <scene sceneID="wbu-Iw-gRV">
             <objects>
-                <viewController id="WfK-H7-7pA" sceneMemberID="viewController">
+                <viewController id="WfK-H7-7pA" customClass="SignInViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GrQ-hc-ET8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -225,6 +225,9 @@
                                 <state key="normal" title="Login">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="signInButton:" destination="WfK-H7-7pA" eventType="touchUpInside" id="mDV-aJ-2tX"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="4eZ-SO-eDA">
                                 <rect key="frame" x="20" y="410" width="374" height="76"/>
@@ -295,6 +298,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QwX-eR-80l"/>
                     </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="Njj-pI-kuo" id="Gth-xt-HNV"/>
+                        <outlet property="passwordTextField" destination="c8X-W4-oOF" id="gpr-gq-WNz"/>
+                        <outlet property="signInButton" destination="iO6-lp-fMS" id="Qyz-Lv-nsk"/>
+                        <segue destination="JaF-KT-MPa" kind="showDetail" identifier="showDetailMapView" id="IdI-PT-wMn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fzS-wr-0lH" sceneMemberID="firstResponder"/>
             </objects>
@@ -472,4 +481,7 @@
             <point key="canvasLocation" x="1686.9565217391305" y="960.9375"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="IdI-PT-wMn"/>
+    </inferredMetricsTieBreakers>
 </document>

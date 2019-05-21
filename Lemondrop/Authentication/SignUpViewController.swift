@@ -22,9 +22,12 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        if Auth.auth().currentUser?.uid != nil {
-            print("Already logged in")
-            performSegue(withIdentifier: "showDetailMapView", sender: nil)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if Auth.auth().currentUser != nil {
+            self.performSegue(withIdentifier: "showDetailMapView", sender: nil)
         } else {
             
             print("Not logged in")
