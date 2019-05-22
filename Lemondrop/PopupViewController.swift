@@ -92,26 +92,33 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         if Connectivity.isConnectedToInternet {
             ProgressHUD.show("Saving...")
             UIApplication.shared.beginIgnoringInteractionEvents()
-            newStandRef.setValue(["standId": newStandRefId!, "latitude": delegate!.currentLocation!.coordinate.latitude, "longitude": delegate!.currentLocation?.coordinate.longitude, "standName": standNameTextField.text!,"startTime": startTimePicker.date.timeIntervalSince1970 ,"endTime": endTimePicker.date.timeIntervalSince1970,"pricePerGlass": priceTextField.text!, "userID": (Auth.auth().currentUser?.uid)!]){ (error, ref) in
-                
-                if error != nil{
-                    
-                    ProgressHUD.showError("Failure saving to our records...")
-                    UIApplication.shared.endIgnoringInteractionEvents()
-                    
-                } else {
-                    ProgressHUD.showSuccess("Success!")
-                    self.view.removeFromSuperview()
-                    UIApplication.shared.endIgnoringInteractionEvents()
+            Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).observe(.value) { (snapshot) in
+                if let user = snapshot.value as? NSDictionary{
+                    newStandRef.setValue(["standId": newStandRefId!, "latitude": self.delegate!.currentLocation!.coordinate.latitude, "longitude": self.delegate!.currentLocation?.coordinate.longitude, "standName": self.standNameTextField.text!,"startTime": self.startTimePicker.date.timeIntervalSince1970 ,"endTime": self.endTimePicker.date.timeIntervalSince1970,"pricePerGlass": self.priceTextField.text!, "userID": (Auth.auth().currentUser?.uid)!, "creatorFullname": user["fullname"]]){ (error, ref) in
+                                //it's okay to store the  user's fullname in the stand node becuase the stands don't
+                                //have a long lifetime, its not like a soicla media post
+                                if error != nil{
+                                    
+                                    ProgressHUD.showError("Failure saving to our records...")
+                                    UIApplication.shared.endIgnoringInteractionEvents()
+                                    
+                                } else {
+                                    ProgressHUD.showSuccess("Success!")
+                                    self.view.removeFromSuperview()
+                                    self.delegate?.reload()
+                                    UIApplication.shared.endIgnoringInteractionEvents()
+                                }
+                                UIApplication.shared.endIgnoringInteractionEvents()
+                                return
+                            }
+                        
                 }
-                UIApplication.shared.endIgnoringInteractionEvents()
-                return
             }
+            UIApplication.shared.endIgnoringInteractionEvents()
+            
+            
+            
         }
-        UIApplication.shared.endIgnoringInteractionEvents()
-        
-        
-        
     }
     
     

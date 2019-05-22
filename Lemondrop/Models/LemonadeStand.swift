@@ -16,6 +16,7 @@ class LemonadeStand{
     var endTime: Double!
     var pricePerGlass: Double!
     var userId: String!
+    var creatorName: String!
     init(dictionary: NSDictionary){
         
         guard let latitude = dictionary["latitude"] as? Double else {
@@ -43,13 +44,16 @@ class LemonadeStand{
             print("bad priceperglass")
             return
         }
-        guard let userId = dictionary["userId"] as? String else {
+        guard let userId = dictionary["userID"] as? String else {
             print("bad user id")
             return
         }
-        
+        guard let username = dictionary["creatorFullname"] as? String else {
+            print("bad username")
+            return
+        }
         let price = Double(pricePerGlass)
-        
+        self.creatorName = username
         self.userId = userId
         self.latitude = latitude
         self.longitude = longitude

@@ -16,24 +16,26 @@ import FirebaseDatabase
 import FirebaseAuth
 import ProgressHUD
 
-class MapViewController: UIViewController, UITextFieldDelegate{
-    let floaty = Floaty()
+class MapViewController: UIViewController, UISearchBarDelegate{
+    
+    
     var workingAStand = false
+    var currentStand: LemonadeStand?
+    
     static var lemonadeStands = [LemonadeStand]()
     static let googleMapsApiKey = ApiKeys.googleMapsApiKey
+    
     var locationManager = CLLocationManager()
-    var currentLocation: CLLocation?{
-        didSet{
-            //            currentLocationMarker.position = currentLocation!.coordinate
-            //            currentLocationMarker.map = mapView
-        }
-    }
-    //    var currentLocationMarker = GMSMarker()
+    var currentLocation: CLLocation?
     var mapView: GMSMapView!
     var placesClient: GMSPlacesClient!
     var zoomLevel: Float = 15.0
     
+    var tableView: UITableView!
+
+    var filteredStands = [LemonadeStand]()
     
+    var searchBar: UISearchBar!
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -42,21 +44,24 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         
         configureTextField()
         
-        if !Connectivity.isConnectedToInternet{
-            ProgressHUD.showError("Not connected to internet")
-        } else {
-            checkIfWorkingAStand() {
-                self.configureFloatingButton()
-            }
-            
-            
-            MapViewController.loadLemonadeStands(mapView: mapView) {
-                self.setMarkers()
-            }
-        }
+        reload()
         
     }
-    
+    func reload(){
+        
+        if !Connectivity.isConnectedToInternet{
+            ProgressHUD.showError("Not connected to internet")
+            self.configureFloatingButton()
+        } else {
+            
+            MapViewController.loadLemonadeStands(view: self) {
+                self.setMarkers()
+                self.configureFloatingButton()
+
+            }
+            
+        }
+    }
     //adds map to view
     //does not add buttons
     func configureMapbackground(){
@@ -85,44 +90,24 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         mapView.isHidden = true
         
         mapView.isMyLocationEnabled = true
-        
+        mapView.delegate = self
         //enable geocoding https://www.raywenderlich.com/197-google-maps-ios-sdk-tutorial-getting-started
         
         
     }
     
-    func checkIfWorkingAStand(onSuccess: @escaping() -> Void){
-        
-        Database.database().reference().child("activeLemonadeStands").observe(.value) { (snapshot) in
-            
-            if let snap = snapshot.value as? NSDictionary{
-                
-                for (_, stand) in snap {
-                    
-                    if let dict = stand as? NSDictionary {
-                        
-                        let lemonadeStand = LemonadeStand(dictionary: dict)
-                        
-                        if lemonadeStand.userId == (Auth.auth().currentUser?.uid)! {
-                            self.workingAStand = true
-                            break
-                        }
-                        
-                    }
-                    
-                }
-                
-                onSuccess()
-            }
+    func transitionMapToStand(stand: LemonadeStand?){
+        if let lemonadeStand = stand{
+            self.mapView.camera = GMSCameraPosition(latitude: lemonadeStand.latitude, longitude: lemonadeStand.longitude, zoom: self.zoomLevel)
         }
-        
     }
     
     
     //floating right button
     //floaty library used
     func configureFloatingButton(){
-        
+        print("CREATING FLOATING BUTTON")
+        let floaty = Floaty()
         floaty.items = []
         floaty.buttonColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
         
@@ -135,9 +120,8 @@ class MapViewController: UIViewController, UITextFieldDelegate{
             }
         } else {
             floaty.addItem("Locate your Lemonade Stand", icon: UIImage(named: "Lemon")!) { (item) in
-                //                self.presentEstablishStandView()
                 
-                
+                self.transitionMapToStand(stand: self.currentStand)
                 
             }
         }
@@ -145,9 +129,7 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         floaty.addItem("Refresh", icon: UIImage(named: "refresh")!) { (item) in
             
             
-            MapViewController.loadLemonadeStands(mapView: self.mapView, onSuccess: {
-                self.setMarkers()
-            })
+            self.reload()
         }
         
         self.view.addSubview(floaty)
@@ -157,25 +139,24 @@ class MapViewController: UIViewController, UITextFieldDelegate{
     
     //floating textfield at the top of the screen
     func configureTextField(){
-        let textField = UITextField(frame: CGRect(x: 16, y: 42, width: view.bounds.width - 32, height: 42))
         
+        searchBar = UISearchBar(frame: CGRect(x: 16, y: 42, width: view.bounds.width - 32, height: 42))
         
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
-        textField.leftView = paddingView
-        textField.leftViewMode = UITextField.ViewMode.always
-        
-        textField.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        textField.layer.borderWidth = 3
-        textField.layer.borderColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
-        textField.layer.cornerRadius = 8
-        textField.returnKeyType = .done
-        textField.delegate = self
-        textField.placeholder = "Search by the stand owner's full name"
-        self.view.addSubview(textField)
+        searchBar.barTintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        searchBar.searchBarStyle = .minimal
+        searchBar.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        searchBar.layer.borderWidth = 8
+        searchBar.layer.borderColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+        searchBar.layer.cornerRadius = 8
+        searchBar.returnKeyType = .done
+        searchBar.delegate = self
+        searchBar.placeholder = "Search for a Lemonade Stand"
+        self.view.addSubview(searchBar)
         
     }
     
     func presentEstablishStandView(){
+        
         let popoverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "establishStand") as! PopupViewController
         popoverVC.delegate = self
         self.addChild(popoverVC)
@@ -184,18 +165,176 @@ class MapViewController: UIViewController, UITextFieldDelegate{
         popoverVC.didMove(toParent: self)
         
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+        tableView.removeFromSuperview()
+
     }
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("return")
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
         view.endEditing(true)
-        return true
+        tableView.removeFromSuperview()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        tableView = UITableView(frame: CGRect(x: searchBar.frame.minX, y: searchBar.frame.maxY, width: searchBar.frame.width, height: 3*searchBar.frame.height), style: .plain)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
+        tableView.dataSource = self
+        tableView.delegate = self
+//        self.view.addSubview(tableView)
+    }
+    
+    func updateSearchResults(for searchBar: UISearchBar) {
+        filterContent(searchText: searchBar.text!)
+        
+    }
+    
+    //search ends
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+        searchBar.showsCancelButton = false
+    }
+    
+   
+    func filterContent(searchText: String){
+        
+        
+        self.filteredStands = MapViewController.lemonadeStands.filter{ stand in
+            
+            let string = ("\(stand.standName)")
+            print(string)
+            return(string.lowercased().contains(searchText.lowercased()))
+            
+        }
+        
+        tableView.reloadData()
+        
+        
     }
     
     
+    
+    //search bar text changed
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        updateSearchResults(for: searchBar)
+        
+        if filteredStands.count < 1 {
+            tableView.removeFromSuperview()
+        } else {
+            self.view.addSubview(tableView)
+        }
+        //        if searchBar.text?.count == 0 {
+        //
+        //            //Disaptch Queue object assigns projects to different thread
+        //            DispatchQueue.main.async {
+        //                searchBar.resignFirstResponder()
+        //            }
+        //        }
+    }
 }
 
+
+extension MapViewController: GMSMapViewDelegate{
+    
+    static func loadLemonadeStands(view: MapViewController, onSuccess: @escaping() -> Void){
+        
+        lemonadeStands = []
+        //remove all markers from mapview
+        view.mapView.clear()
+        view.workingAStand = false
+        view.currentStand = nil
+        
+        ProgressHUD.show("Loading Stands...")
+        Database.database().reference().child("activeLemonadeStands").observe(.value) { (snapshot) in
+            print(lemonadeStands.count)
+            if let snap = snapshot.value as? NSDictionary{
+                
+                for (_, stand) in snap {
+                    if let dict = stand as? NSDictionary {
+                        let lemonadeStand = LemonadeStand(dictionary: dict)
+                        if lemonadeStand.endTime < Date().timeIntervalSince1970{
+                            
+                            
+                            //thjis will bring up an issue with different time zones
+                            
+                            //TO DO: must change this method
+                            Database.database().reference().child("activeLemonadeStands").child(dict["standId"] as! String).removeValue()
+                            print("deleted")
+                        }
+                        else {
+                            
+                            if lemonadeStand.userId == (Auth.auth().currentUser?.uid)! {
+                                view.workingAStand = true
+                                view.currentStand = lemonadeStand
+                                print("WORKING A STAND")
+                            }
+                            
+                            MapViewController.lemonadeStands.append(lemonadeStand)
+                        }
+                        
+                        
+                        
+                    }
+                }
+                
+                onSuccess()
+                ProgressHUD.showSuccess("Loaded \(MapViewController.lemonadeStands.count) stand(s)")
+            } else {
+                ProgressHUD.showSuccess("No stands to load..")
+                view.configureFloatingButton()
+                
+            }
+        }
+        
+        
+    }
+    
+    func setMarkers(){
+        
+        for stand in MapViewController.lemonadeStands{
+            
+            setMarker(stand: stand)
+        }
+        
+        
+    }
+    
+    func setMarker(stand: LemonadeStand){
+        
+        let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude), longitude: CLLocationDegrees(floatLiteral: stand.longitude))
+        let marker = GMSMarker(position: location.coordinate)
+        marker.title = "Stand Name: \(stand.standName) \n uid: \(stand.userId)"
+        marker.map = mapView
+        
+        if stand.endTime < Date().timeIntervalSince1970{
+            //closed
+            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1))
+        } else {
+            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1))
+        }
+    }
+    func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
+        
+        
+        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 200, height: 70))
+        view.backgroundColor = UIColor.white
+        view.layer.cornerRadius = 6
+        
+        let lbl1 = UILabel(frame: CGRect.init(x: 8, y: 8, width: view.frame.size.width - 16, height: 15))
+        lbl1.text = "Hi there!"
+        view.addSubview(lbl1)
+        
+        let lbl2 = UILabel(frame: CGRect.init(x: lbl1.frame.origin.x, y: lbl1.frame.origin.y + lbl1.frame.size.height + 3, width: view.frame.size.width - 16, height: 15))
+        lbl2.text = "I am a custom info window."
+        lbl2.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        view.addSubview(lbl2)
+        
+        
+        
+        return view
+    }
+}
 extension MapViewController: CLLocationManagerDelegate {
     
     // Handle incoming location events.
@@ -241,68 +380,36 @@ extension MapViewController: CLLocationManagerDelegate {
         print("Error: \(error)")
     }
     
-    static func loadLemonadeStands(mapView: GMSMapView, onSuccess: @escaping() -> Void){
+   
+}
+
+extension MapViewController: UITableViewDataSource, UITableViewDelegate{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        
-        
-        lemonadeStands = []
-        //remove all markers from mapview
-        mapView.clear()
-        
-        
-        ProgressHUD.show("Loading Stands...")
-        Database.database().reference().child("activeLemonadeStands").observe(.value) { (snapshot) in
-            print(lemonadeStands.count)
-            if let snap = snapshot.value as? NSDictionary{
-                
-                for (_, stand) in snap {
-                    if let dict = stand as? NSDictionary {
-                        let lemonadeStand = LemonadeStand(dictionary: dict)
-                        if lemonadeStand.endTime < Date().timeIntervalSince1970{
-                            
-                            Database.database().reference().child("activeLemonadeStands").child(dict["standId"] as! String).removeValue()
-                            print("deleted")
-                        }
-                        else {
-                            MapViewController.lemonadeStands.append(lemonadeStand)
-                        }
-                        
-                    }
-                }
-                
-                onSuccess()
-                ProgressHUD.showSuccess("Loaded \(MapViewController.lemonadeStands.count) stand(s)")
-            } else {
-                ProgressHUD.showSuccess("No stands to load..")
-                
-                
-            }
+        if searchBar.text! != ""{
+            return filteredStands.count
         }
         
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
+        cell.textLabel?.text = filteredStands[indexPath.row].standName
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 30
         
     }
     
-    func setMarkers(){
-        
-        for stand in MapViewController.lemonadeStands{
-            
-            setMarker(stand: stand)
-        }
-        
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.transitionMapToStand(stand: filteredStands[indexPath.row])
     }
     
-    func setMarker(stand: LemonadeStand){
-        
-        let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude), longitude: CLLocationDegrees(floatLiteral: stand.longitude))
-        let marker = GMSMarker(position: location.coordinate)
-        marker.title = stand.standName
-        marker.map = mapView
-        if stand.endTime < Date().timeIntervalSince1970{
-            //closed
-            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1))
-        } else {
-            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1))
-        }
-    }
+    
+    
 }

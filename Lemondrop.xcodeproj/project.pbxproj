@@ -20,6 +20,7 @@
 		B3A287712293B685000CB1F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3A287702293B684000CB1F4 /* GoogleService-Info.plist */; };
 		B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287722293B826000CB1F4 /* SignInViewController.swift */; };
 		B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287762293C750000CB1F4 /* ApiKeys.swift */; };
+		B3A2877922946477000CB1F4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877822946477000CB1F4 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		B3A287702293B684000CB1F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B3A287722293B826000CB1F4 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		B3A287762293C750000CB1F4 /* ApiKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
+		B3A2877822946477000CB1F4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				B34074FE228F826300FF6ED6 /* LemonadeStand.swift */,
+				B3A2877822946477000CB1F4 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				B34074F7228E64C100FF6ED6 /* MapViewController.swift in Sources */,
 				B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */,
 				B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */,
+				B3A2877922946477000CB1F4 /* User.swift in Sources */,
 				B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */,
 				B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */,
 				B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */,
