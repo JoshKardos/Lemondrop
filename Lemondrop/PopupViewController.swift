@@ -85,9 +85,32 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
+        
+        let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Lemonade Stand", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
+            
+            self.saveLemonadeStand()
+            
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
+           
+            
+            ProgressHUD.showError("DENIED, must have an adult with you")
+            alert.removeFromParent()
+            
+            
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func saveLemonadeStand(){
+        
+        
         let newStandRef = Database.database().reference().child("activeLemonadeStands").childByAutoId()
         let newStandRefId = newStandRef.key
-        
         
         if Connectivity.isConnectedToInternet {
             ProgressHUD.show("Saving...")
@@ -95,23 +118,23 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
             Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).observe(.value) { (snapshot) in
                 if let user = snapshot.value as? NSDictionary{
                     newStandRef.setValue(["standId": newStandRefId!, "latitude": self.delegate!.currentLocation!.coordinate.latitude, "longitude": self.delegate!.currentLocation?.coordinate.longitude, "standName": self.standNameTextField.text!,"startTime": self.startTimePicker.date.timeIntervalSince1970 ,"endTime": self.endTimePicker.date.timeIntervalSince1970,"pricePerGlass": self.priceTextField.text!, "userID": (Auth.auth().currentUser?.uid)!, "creatorFullname": user["fullname"]]){ (error, ref) in
-                                //it's okay to store the  user's fullname in the stand node becuase the stands don't
-                                //have a long lifetime, its not like a soicla media post
-                                if error != nil{
-                                    
-                                    ProgressHUD.showError("Failure saving to our records...")
-                                    UIApplication.shared.endIgnoringInteractionEvents()
-                                    
-                                } else {
-                                    ProgressHUD.showSuccess("Success!")
-                                    self.view.removeFromSuperview()
-                                    self.delegate?.reload()
-                                    UIApplication.shared.endIgnoringInteractionEvents()
-                                }
-                                UIApplication.shared.endIgnoringInteractionEvents()
-                                return
-                            }
-                        
+                        //it's okay to store the  user's fullname in the stand node becuase the stands don't
+                        //have a long lifetime, its not like a soicla media post
+                        if error != nil{
+                            
+                            ProgressHUD.showError("Failure saving to our records...")
+                            UIApplication.shared.endIgnoringInteractionEvents()
+                            
+                        } else {
+                            ProgressHUD.showSuccess("Success!")
+                            self.view.removeFromSuperview()
+                            self.delegate?.reload()
+                            UIApplication.shared.endIgnoringInteractionEvents()
+                        }
+                        UIApplication.shared.endIgnoringInteractionEvents()
+                        return
+                    }
+                    
                 }
             }
             UIApplication.shared.endIgnoringInteractionEvents()
@@ -120,8 +143,6 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
             
         }
     }
-    
-    
     
     func disableSubmitButton(){
         submitButton.isEnabled = false

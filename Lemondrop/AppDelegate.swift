@@ -24,6 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey(MapViewController.googleMapsApiKey)
         
         FirebaseApp.configure()
+        
+        if let rvc = self.window?.rootViewController {
+            
+            self.window!.rootViewController = rvc.storyboard?.instantiateInitialViewController()
+            
+        }
         return true
     }
 

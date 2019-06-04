@@ -17,10 +17,16 @@
 		B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */; };
 		B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FC228F541200FF6ED6 /* AuthService.swift */; };
 		B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FE228F826300FF6ED6 /* LemonadeStand.swift */; };
+		B36C5EDC229ED5CE00E548B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */; };
+		B36C5EDE22A09D2D00E548B5 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */; };
+		B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */; };
+		B36C5EE322A6D8B400E548B5 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EE222A6D8B400E548B5 /* ListCell.swift */; };
 		B3A287712293B685000CB1F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3A287702293B684000CB1F4 /* GoogleService-Info.plist */; };
 		B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287722293B826000CB1F4 /* SignInViewController.swift */; };
 		B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287762293C750000CB1F4 /* ApiKeys.swift */; };
 		B3A2877922946477000CB1F4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877822946477000CB1F4 /* User.swift */; };
+		B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */; };
+		B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,10 +43,16 @@
 		B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		B34074FC228F541200FF6ED6 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		B34074FE228F826300FF6ED6 /* LemonadeStand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeStand.swift; sourceTree = "<group>"; };
+		B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewController.swift; sourceTree = "<group>"; };
+		B36C5EE222A6D8B400E548B5 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		B3A287702293B684000CB1F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B3A287722293B826000CB1F4 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		B3A287762293C750000CB1F4 /* ApiKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
 		B3A2877822946477000CB1F4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
 		FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +62,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5565F9CEE6C29CCA94EE7353 /* Pods_Lemondrop.framework in Frameworks */,
+				B36C5EDC229ED5CE00E548B5 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,15 +103,28 @@
 				B3A287762293C750000CB1F4 /* ApiKeys.swift */,
 				B3A287742293C213000CB1F4 /* Authentication */,
 				B3A287752293C22E000CB1F4 /* Models */,
+				B36C5EE122A6D87F00E548B5 /* Cells */,
 				B34074F6228E64C100FF6ED6 /* MapViewController.swift */,
 				B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */,
+				B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */,
+				B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */,
+				B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */,
 				B34074E4228E35EE00FF6ED6 /* Main.storyboard */,
+				B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */,
 				B34074E9228E35F000FF6ED6 /* LaunchScreen.storyboard */,
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B3A287702293B684000CB1F4 /* GoogleService-Info.plist */,
 				B34074EC228E35F000FF6ED6 /* Info.plist */,
 			);
 			path = Lemondrop;
+			sourceTree = "<group>";
+		};
+		B36C5EE122A6D87F00E548B5 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B36C5EE222A6D8B400E548B5 /* ListCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		B3A287742293C213000CB1F4 /* Authentication */ = {
@@ -123,6 +149,7 @@
 		CC9950477193C2C4736B1854 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */,
 				343C9D0A3D72B419AC3F06FD /* Pods_Lemondrop.framework */,
 			);
 			name = Frameworks;
@@ -163,6 +190,11 @@
 				TargetAttributes = {
 					B34074DC228E35EE00FF6ED6 = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -191,6 +223,7 @@
 			files = (
 				B34074EB228E35F000FF6ED6 /* LaunchScreen.storyboard in Resources */,
 				B3A287712293B685000CB1F4 /* GoogleService-Info.plist in Resources */,
+				B36C5EDE22A09D2D00E548B5 /* Profile.storyboard in Resources */,
 				B34074E8228E35F000FF6ED6 /* Assets.xcassets in Resources */,
 				B34074E6228E35EE00FF6ED6 /* Main.storyboard in Resources */,
 			);
@@ -209,10 +242,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ProgressHUD/ProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -221,10 +256,12 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -288,10 +325,14 @@
 			files = (
 				B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */,
 				B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */,
+				B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */,
 				B34074F7228E64C100FF6ED6 /* MapViewController.swift in Sources */,
 				B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */,
+				B36C5EE322A6D8B400E548B5 /* ListCell.swift in Sources */,
 				B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */,
+				B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */,
 				B3A2877922946477000CB1F4 /* User.swift in Sources */,
+				B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */,
 				B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */,
 				B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */,
 				B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */,
@@ -448,7 +489,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = JoshKardos.Lemondrop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -467,7 +508,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = JoshKardos.Lemondrop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.8.2)
+  - Cosmos (19.0.3)
   - Firebase/Auth (6.0.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.0.0)
@@ -85,9 +86,11 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - ProgressHUD (2.60)
+  - SideMenu (5.0.3)
 
 DEPENDENCIES:
   - Alamofire
+  - Cosmos (~> 19.0)
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -96,10 +99,12 @@ DEPENDENCIES:
   - GoogleMaps
   - GooglePlaces
   - ProgressHUD
+  - SideMenu
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Cosmos
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -117,9 +122,11 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - ProgressHUD
+    - SideMenu
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Cosmos: a6fb17284281fa12cf4c85c2efecd440a215ec44
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
   FirebaseAuth: efc72b0f6fe075d2a6de8d81a6d9de83ef2b47eb
@@ -137,7 +144,8 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   ProgressHUD: 4e4efbaf4f5de8bd32e0c4c3b6644a90ea1a8c3e
+  SideMenu: 1dcaabce84538c53325c287f7fe62999379a641c
 
-PODFILE CHECKSUM: 9928f434e1d49050861c1cd2fae86569d8621f62
+PODFILE CHECKSUM: b6120214177ac1fa63299ea6a86e75b8600b9cb4
 
 COCOAPODS: 1.6.2

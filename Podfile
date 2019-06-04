@@ -17,4 +17,6 @@ pod 'GoogleMaps'
   pod 'Firebase/Storage'
   pod 'ProgressHUD'
   pod 'Alamofire'
+  pod 'Cosmos', '~> 19.0'
+  pod 'SideMenu'
 end
