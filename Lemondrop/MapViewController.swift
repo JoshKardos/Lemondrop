@@ -16,7 +16,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import ProgressHUD
 
-class MapViewController: UIViewController, UISearchBarDelegate{
+class MapViewController: UIViewController{
     
     
     var workingAStand = false
@@ -25,6 +25,7 @@ class MapViewController: UIViewController, UISearchBarDelegate{
     static var lemonadeStands = [LemonadeStand]()
     static var users = [User]()
     static var usernameUserMap = [String: User]()
+    static var uidUserMap = [String: User]()
     static var markerUserMap = [GMSMarker: User]()
     static let googleMapsApiKey = ApiKeys.googleMapsApiKey
     
@@ -64,7 +65,7 @@ class MapViewController: UIViewController, UISearchBarDelegate{
         users = []
         let ref = Database.database().reference()
         ref.child("users").observeSingleEvent(of: .value) { (snap) in
-            print("User COUNT \(users.count)")
+            
             MapViewController.users = []
             
             if let usersSnap = snap.value as? [String: NSDictionary]{
@@ -74,8 +75,8 @@ class MapViewController: UIViewController, UISearchBarDelegate{
                     
                     let newUser = User(dictionary: user)
                     MapViewController.users.append(newUser)
-                   print("ADDING USER")
                     MapViewController.usernameUserMap[newUser.fullname!] = newUser
+                    MapViewController.uidUserMap[newUser.uid!] = newUser
                     //check that a current user is initiated
                     if newUser.uid == Auth.auth().currentUser?.uid{
                         MapViewController.currentUser = newUser
@@ -204,6 +205,9 @@ class MapViewController: UIViewController, UISearchBarDelegate{
         
         
     }
+    
+}
+extension MapViewController: UISearchBarDelegate{
     
     //floating textfield at the top of the screen
     func configureTextField(){
@@ -385,26 +389,27 @@ extension MapViewController: GMSMapViewDelegate{
         let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude), longitude: CLLocationDegrees(floatLiteral: stand.longitude))
         let marker = GMSMarker(position: location.coordinate)
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm"
+        let timestampDate = NSDate(timeIntervalSince1970: stand.endTime)
+        
+        
         marker.map = mapView
-        marker.title = "Stand Name: \(stand.standName!) | Created By: \(stand.creatorName!)"
-        print("appended")
-        if stand.endTime < Date().timeIntervalSince1970{
-            //closed
-            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1))
-        } else {
-            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1))
-        }
+        
+        
+        
+        marker.title = "Stand Name: \(stand.standName!) | Created By: \(stand.creatorName!) | Closes At: \(dateFormatter.string(from: timestampDate as Date))"
         
         MapViewController.markerUserMap[marker] = MapViewController.usernameUserMap[stand.creatorName]
     }
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         
-        print("CLicked")
         self.presentProfileView(user: MapViewController.markerUserMap[marker]!)
+        
     }
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
         
-        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 200, height: 100))
+        let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 200, height: 120))
         mapView.addSubview(view)
         view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 6
@@ -420,10 +425,16 @@ extension MapViewController: GMSMapViewDelegate{
         lbl2.font = UIFont.systemFont(ofSize: 14, weight: .light)
         view.addSubview(lbl2)
         
+        
+        let lbl3 = UILabel(frame: CGRect.init(x: lbl2.frame.origin.x, y: lbl2.frame.origin.y + lbl2.frame.size.height + 3, width: view.frame.size.width - 16, height: 15))
+        lbl3.text = String((marker.title?.split(separator: "|")[2])!)
+        lbl3.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        view.addSubview(lbl3)
+        
         let profileButton = UIButton(frame: CGRect.init(x: view.frame.width - 64, y: lbl2.frame.origin.y + lbl2.frame.size.height + 24, width: view.frame.size.width - 16, height: 24))
         
         let horizontalCenter: CGFloat = view.bounds.size.width / 2.0
-        profileButton.center = CGPoint(x: horizontalCenter, y: lbl2.frame.origin.y + lbl2.frame.size.height + 24)//horizontalCenter
+        profileButton.center = CGPoint(x: horizontalCenter, y: lbl3.frame.origin.y + lbl3.frame.size.height + 24)//horizontalCenter
         
         profileButton.setTitle("Click to View Profile", for: .normal)
         profileButton.setTitleColor(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), for: .normal)

@@ -10,9 +10,13 @@ import UIKit
 
 class UsersTableViewController: UITableViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    var filteredUsers = [User]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        searchBar.returnKeyType = .done
+        searchBar.delegate = self
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -31,14 +35,28 @@ class UsersTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        print(MapViewController.users.count)
+        if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
+            return filteredUsers.count
+        }
+        
         return MapViewController.users.count
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! ListCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserAndStandCell
+        
+        if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
+            for stand in MapViewController.lemonadeStands{
+                if stand.creatorName == filteredUsers[indexPath.row].fullname{
+                    
+                    cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
+                    return cell
+                }
+            }
+            cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: No stand")
+            return cell
+        }
         
         for stand in MapViewController.lemonadeStands{
             if stand.creatorName == MapViewController.users[indexPath.row].fullname{
@@ -60,9 +78,14 @@ class UsersTableViewController: UITableViewController {
         navigationController?.pushViewController(profileVC, animated: true)
         
     }
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        presentProfileView(user: MapViewController.users[indexPath.row])
+        if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
+            presentProfileView(user: self.filteredUsers[indexPath.row])
+        } else {
+            presentProfileView(user: MapViewController.users[indexPath.row])
+        }
         
     }
     
@@ -102,4 +125,54 @@ class UsersTableViewController: UITableViewController {
      */
     
     
+}
+
+extension UsersTableViewController: UISearchBarDelegate{
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        view.endEditing(true)
+        
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        view.endEditing(true)
+    }
+    
+    func updateSearchResults(for searchBar: UISearchBar) {
+        filterContent(searchText: searchBar.text!)
+        
+    }
+    
+    //search ends
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+        searchBar.showsCancelButton = false
+    }
+    
+    
+    func filterContent(searchText: String){
+        
+        
+        self.filteredUsers = MapViewController.users.filter{ user in
+            
+            let string = ("\(user.fullname)")
+            
+            return(string.lowercased().contains(searchText.lowercased()))
+            
+        }
+        
+        tableView.reloadData()
+        
+        
+    }
+    
+    
+    
+    //search bar text changed
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        updateSearchResults(for: searchBar)
+    }
 }

@@ -13,10 +13,12 @@ class ProfileSettingsViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         
-
     }
+    
+    
+    
+    
     @IBAction func logoutPressed(_ sender: Any) {
         
         let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to logout?", preferredStyle: .alert)

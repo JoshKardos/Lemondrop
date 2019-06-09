@@ -20,14 +20,34 @@
 		B36C5EDC229ED5CE00E548B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */; };
 		B36C5EDE22A09D2D00E548B5 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */; };
 		B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */; };
-		B36C5EE322A6D8B400E548B5 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EE222A6D8B400E548B5 /* ListCell.swift */; };
+		B36C5EE322A6D8B400E548B5 /* UserAndStandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EE222A6D8B400E548B5 /* UserAndStandCell.swift */; };
+		B36C5EE922A7BD9400E548B5 /* ChatLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EE822A7BD9400E548B5 /* ChatLogViewController.swift */; };
+		B36C5EEB22A8300F00E548B5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EEA22A8300F00E548B5 /* Message.swift */; };
+		B36C5EED22A8311400E548B5 /* DirectMessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EEC22A8311400E548B5 /* DirectMessageBubble.swift */; };
+		B36C5EF022A833EA00E548B5 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EEF22A833EA00E548B5 /* MessagesViewController.swift */; };
+		B36C5EF222A97BEB00E548B5 /* AddMessageThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EF122A97BEA00E548B5 /* AddMessageThreadViewController.swift */; };
+		B36C5EF422A9859300E548B5 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EF322A9859300E548B5 /* UserCell.swift */; };
 		B3A287712293B685000CB1F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3A287702293B684000CB1F4 /* GoogleService-Info.plist */; };
 		B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287722293B826000CB1F4 /* SignInViewController.swift */; };
 		B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A287762293C750000CB1F4 /* ApiKeys.swift */; };
 		B3A2877922946477000CB1F4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877822946477000CB1F4 /* User.swift */; };
 		B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */; };
 		B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */; };
+		B3CB357422AC4F4100BB0A95 /* Lemondrop.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B3CB357222AC3C6C00BB0A95 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		343C9D0A3D72B419AC3F06FD /* Pods_Lemondrop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Lemondrop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,13 +66,20 @@
 		B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewController.swift; sourceTree = "<group>"; };
-		B36C5EE222A6D8B400E548B5 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		B36C5EE222A6D8B400E548B5 /* UserAndStandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAndStandCell.swift; sourceTree = "<group>"; };
+		B36C5EE822A7BD9400E548B5 /* ChatLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogViewController.swift; sourceTree = "<group>"; };
+		B36C5EEA22A8300F00E548B5 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B36C5EEC22A8311400E548B5 /* DirectMessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMessageBubble.swift; sourceTree = "<group>"; };
+		B36C5EEF22A833EA00E548B5 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		B36C5EF122A97BEA00E548B5 /* AddMessageThreadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMessageThreadViewController.swift; sourceTree = "<group>"; };
+		B36C5EF322A9859300E548B5 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		B3A287702293B684000CB1F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B3A287722293B826000CB1F4 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		B3A287762293C750000CB1F4 /* ApiKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
 		B3A2877822946477000CB1F4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
+		B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lemondrop.entitlements; sourceTree = "<group>"; };
 		FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,6 +126,8 @@
 		B34074DF228E35EE00FF6ED6 /* Lemondrop */ = {
 			isa = PBXGroup;
 			children = (
+				B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */,
+				B34074E9228E35F000FF6ED6 /* LaunchScreen.storyboard */,
 				B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */,
 				B3A287762293C750000CB1F4 /* ApiKeys.swift */,
 				B3A287742293C213000CB1F4 /* Authentication */,
@@ -109,9 +138,10 @@
 				B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */,
 				B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */,
 				B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */,
-				B34074E4228E35EE00FF6ED6 /* Main.storyboard */,
-				B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */,
-				B34074E9228E35F000FF6ED6 /* LaunchScreen.storyboard */,
+				B36C5EE822A7BD9400E548B5 /* ChatLogViewController.swift */,
+				B36C5EEF22A833EA00E548B5 /* MessagesViewController.swift */,
+				B36C5EF122A97BEA00E548B5 /* AddMessageThreadViewController.swift */,
+				B36C5EEE22A832DA00E548B5 /* Views */,
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B3A287702293B684000CB1F4 /* GoogleService-Info.plist */,
 				B34074EC228E35F000FF6ED6 /* Info.plist */,
@@ -122,9 +152,20 @@
 		B36C5EE122A6D87F00E548B5 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				B36C5EE222A6D8B400E548B5 /* ListCell.swift */,
+				B36C5EE222A6D8B400E548B5 /* UserAndStandCell.swift */,
+				B36C5EEC22A8311400E548B5 /* DirectMessageBubble.swift */,
+				B36C5EF322A9859300E548B5 /* UserCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		B36C5EEE22A832DA00E548B5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B34074E4228E35EE00FF6ED6 /* Main.storyboard */,
+				B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B3A287742293C213000CB1F4 /* Authentication */ = {
@@ -142,6 +183,7 @@
 			children = (
 				B34074FE228F826300FF6ED6 /* LemonadeStand.swift */,
 				B3A2877822946477000CB1F4 /* User.swift */,
+				B36C5EEA22A8300F00E548B5 /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -168,6 +210,7 @@
 				B34074DB228E35EE00FF6ED6 /* Resources */,
 				D1673908C482988F38BAE385 /* [CP] Copy Pods Resources */,
 				7183BABE31D001C48343C46C /* [CP] Embed Pods Frameworks */,
+				B3CB357222AC3C6C00BB0A95 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -191,7 +234,13 @@
 					B34074DC228E35EE00FF6ED6 = {
 						CreatedOnToolsVersion = 10.2.1;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -221,6 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3CB357422AC4F4100BB0A95 /* Lemondrop.entitlements in Resources */,
 				B34074EB228E35F000FF6ED6 /* LaunchScreen.storyboard in Resources */,
 				B3A287712293B685000CB1F4 /* GoogleService-Info.plist in Resources */,
 				B36C5EDE22A09D2D00E548B5 /* Profile.storyboard in Resources */,
@@ -323,17 +373,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B36C5EED22A8311400E548B5 /* DirectMessageBubble.swift in Sources */,
 				B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */,
 				B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */,
+				B36C5EF022A833EA00E548B5 /* MessagesViewController.swift in Sources */,
+				B36C5EF222A97BEB00E548B5 /* AddMessageThreadViewController.swift in Sources */,
 				B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */,
+				B36C5EF422A9859300E548B5 /* UserCell.swift in Sources */,
 				B34074F7228E64C100FF6ED6 /* MapViewController.swift in Sources */,
 				B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */,
-				B36C5EE322A6D8B400E548B5 /* ListCell.swift in Sources */,
+				B36C5EE922A7BD9400E548B5 /* ChatLogViewController.swift in Sources */,
+				B36C5EE322A6D8B400E548B5 /* UserAndStandCell.swift in Sources */,
 				B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */,
 				B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */,
 				B3A2877922946477000CB1F4 /* User.swift in Sources */,
 				B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */,
 				B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */,
+				B36C5EEB22A8300F00E548B5 /* Message.swift in Sources */,
 				B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */,
 				B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */,
 			);
@@ -482,6 +538,7 @@
 			baseConfigurationReference = 8122957C3EB312FD4243B64F /* Pods-Lemondrop.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Lemondrop/Lemondrop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S879Z9A2RC;
 				INFOPLIST_FILE = Lemondrop/Info.plist;
@@ -491,6 +548,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -501,6 +559,7 @@
 			baseConfigurationReference = FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Lemondrop/Lemondrop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S879Z9A2RC;
 				INFOPLIST_FILE = Lemondrop/Info.plist;
@@ -510,6 +569,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

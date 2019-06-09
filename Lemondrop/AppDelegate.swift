@@ -25,11 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        if let rvc = self.window?.rootViewController {
-            
-            self.window!.rootViewController = rvc.storyboard?.instantiateInitialViewController()
-            
-        }
         return true
     }
 

@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseAuth
 import ProgressHUD
+import UserNotifications
+
 class SignInViewController: UIViewController {
 
     
@@ -52,7 +54,6 @@ class SignInViewController: UIViewController {
         ProgressHUD.show("Waiting...", interaction: false)
         
         AuthService.signIn(email: emailTextField.text!, password: passwordTextField.text!, onSuccess:{
-            
             ProgressHUD.showSuccess("Success")
             self.performSegue(withIdentifier: "showDetailMapView", sender: nil)
             

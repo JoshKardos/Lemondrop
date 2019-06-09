@@ -36,7 +36,8 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
                                      for: UIControl.Event.editingChanged)
         priceTextField.addTarget(self, action: #selector(PopupViewController.textFieldDidChange(_:)),
                                  for: UIControl.Event.editingChanged)
-        
+        priceTextField.addTarget(self, action: #selector(priceTextFieldDidChange), for: .editingChanged)
+
         startTimePicker.minimumDate = Date()
         startTimePicker.addTarget(self, action: #selector(PopupViewController.textFieldDidChange(_:)),
                                   for: UIControl.Event.valueChanged)
@@ -44,6 +45,14 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
                                 for: UIControl.Event.valueChanged)
         
     }
+    
+    @objc func priceTextFieldDidChange(_ textField: UITextField) {
+        
+        if let amountString = textField.text?.currencyInputFormatting() {
+            textField.text = amountString
+        }
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         
         if !standNameTextField.text!.isEmpty && !priceTextField.text!.isEmpty && endTimePicker.date > startTimePicker.date {
@@ -70,6 +79,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     @IBAction func submitPressed(_ sender: Any) {
         
         
+        priceTextField.text?.removeFirst()
         
         if let price = Double(priceTextField.text!) {
             if price <  0.01 {
@@ -160,5 +170,35 @@ struct Connectivity {
     static let sharedInstance = NetworkReachabilityManager()!
     static var isConnectedToInternet:Bool {
         return self.sharedInstance.isReachable
+    }
+}
+
+extension String {
+    
+    // formatting text for currency textField
+    func currencyInputFormatting() -> String {
+        
+        var number: NSNumber!
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currencyAccounting
+        formatter.currencySymbol = "$"
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        
+        var amountWithPrefix = self
+        
+        // remove from String: "$", ".", ","
+        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
+        amountWithPrefix = regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "")
+        
+        let double = (amountWithPrefix as NSString).doubleValue
+        number = NSNumber(value: (double / 100))
+        
+        // if first number is 0 or all numbers were deleted
+        guard number != 0 as NSNumber else {
+            return ""
+        }
+        
+        return formatter.string(from: number)!
     }
 }
