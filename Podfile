@@ -19,6 +19,7 @@ pod 'GoogleMaps'
   pod 'Alamofire'
   pod 'Cosmos', '~> 19.0'
   pod 'SideMenu'
+  pod 'AWSSNS'
 end
 
 

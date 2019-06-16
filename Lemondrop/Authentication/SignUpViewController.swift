@@ -26,12 +26,14 @@ class SignUpViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        
+        
         if Auth.auth().currentUser != nil {
+            AuthService.setToken()
             self.performSegue(withIdentifier: "showDetailMapView", sender: nil)
-        } else {
-            
-            print("Not logged in")
         }
+        
     }
     @IBAction func registerPressed(_ sender: Any) {
         

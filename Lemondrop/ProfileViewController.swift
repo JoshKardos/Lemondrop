@@ -84,6 +84,7 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var ratingStars: CosmosView!
     var user: User!
     
+    @IBOutlet weak var ratingLabel: UILabel!
     
     @IBOutlet var outfitArrows: [UIButton]!
     @IBOutlet weak var submitOutfitButton: UIButton!
@@ -91,6 +92,7 @@ class ProfileViewController: UIViewController{
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        title = "Profile"
         ratingStars.settings.fillMode = .precise
         configureView()
         SKPaymentQueue.default().add(self)
@@ -100,6 +102,18 @@ class ProfileViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         print("profile appeared")
         navigationController?.isNavigationBarHidden = false
+        
+        
+        guard let uid = Auth.auth().currentUser?.uid else {
+            performSegue(withIdentifier: "ToMainStoryboard", sender: self)
+            return
+        }
+        
+        print(uid)
+        
+        
+        
+        
         
     }
     override func viewDidDisappear(_ animated: Bool) {
@@ -176,16 +190,23 @@ class ProfileViewController: UIViewController{
     }
     @IBAction func submitRatingPressed(_ sender: Any) {
         
-        let ref = Database.database().reference().child("user-ratings").child(user.uid!).childByAutoId()
-        let values = ["ratingId": ref.key!, "score": ratingStars.rating, "raterId": (Auth.auth().currentUser?.uid)!] as [String : Any]
-        
-        ref.setValue(values) { (error, ref) in
-            if error == nil{
-                self.disableRating()
-                
-                ProgressHUD.showSuccess()
-            } else {
-                ProgressHUD.showError("Couldn't add your rating")
+        Database.database().reference().child("user-rated").child((Auth.auth().currentUser?.uid)!).child(user.uid!).setValue(1) { (error, ref) in
+            
+            
+            
+            
+            
+            let ref = Database.database().reference().child("user-ratings").child(self.user.uid!).childByAutoId()
+            let values = ["ratingId": ref.key!, "score": self.ratingStars.rating, "raterId": (Auth.auth().currentUser?.uid)!] as [String : Any]
+            
+            ref.setValue(values) { (error, ref) in
+                if error == nil{
+                    self.disableRating()
+                    
+                    ProgressHUD.showSuccess()
+                } else {
+                    ProgressHUD.showError("Couldn't add your rating")
+                }
             }
         }
     }
@@ -237,7 +258,7 @@ class ProfileViewController: UIViewController{
     }
     func loadRating(){
         
-       
+        
         if !Connectivity.isConnectedToInternet{
             
             self.ratingStars.rating = 0.0
@@ -259,8 +280,10 @@ class ProfileViewController: UIViewController{
                 }
                 
                 self.ratingStars.rating = ( totalScore / Double(numRatings) )
+                self.ratingLabel.text = "Rating: \( totalScore / Double(numRatings))"
                 
             } else {
+                self.ratingLabel.text = "Rating: NONE"
                 self.ratingStars.rating = 0.0
             }
         }
@@ -313,6 +336,8 @@ extension ProfileViewController{//hadnle avatar view
         }
         
     }
+    
+    //changing avatar image to the right
     func handleRightArrow(index: inout Int, staticArray: [String]){
         if index + 1 > staticArray.count - 1{
             index = 0
@@ -321,6 +346,7 @@ extension ProfileViewController{//hadnle avatar view
         }
         
     }
+    //changing avatar image to the left
     @IBAction func hatLeftPressed(_ sender: Any) {
         
         handleLeftArrow(index: &self.hatIndex, staticArray: ProfileViewController.hatNames)
@@ -385,5 +411,17 @@ extension ProfileViewController: SKPaymentTransactionObserver{
         }
         
         
+    }
+    
+    static func logOutAndPresentSignUpView(){
+        
+        AuthService.logout(sender: nil)
+        
+        
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        print("profile disapperaing")
     }
 }

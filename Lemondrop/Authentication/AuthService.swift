@@ -20,11 +20,12 @@ class AuthService {
                 return
             }
             
+            AuthService.setToken()
             onSuccess()
             
         }
     }
-    static func logout(sender: UIViewController){
+    static func logout(sender: UIViewController?){
         
         do {
             try Auth.auth().signOut()
@@ -32,8 +33,14 @@ class AuthService {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
             let signInVC = storyboard.instantiateViewController(withIdentifier: "SignInViewController")
+            SNSService.deleteSubscriptions()
             
-            sender.present(signInVC, animated: true, completion: nil)
+            if let sender = sender {
+                sender.present(signInVC, animated: true, completion: nil)
+            } 
+            
+            
+            
             
         } catch let logoutError{
             
@@ -84,7 +91,23 @@ class AuthService {
         
         usersRef.child(uid).setValue(["fullname": fullname, "email" : email, "school": school, "age": age, "uid": uid, "avatar": initialAvatarValues, "unlockedHats": initialUnlockedHats, "unlockedShirts": initialUnlockedShirts, "unlockedPants": initialUnlockedPants])
         
-        
+        AuthService.setToken()
         onSuccess()
     }
+    
+    static func setToken(){
+        
+        print("SETTING TOKEN")
+        
+        let token = UserDefaults.standard.string(forKey: "token")
+        
+        guard let _ = token  else {
+            return
+        }
+        User.current.token = token!
+        
+        SNSService.shared.register()
+        
+    }
 }
+

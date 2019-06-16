@@ -12,7 +12,7 @@ class AddMessageThreadViewController: UsersTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = "Find A User"
        
     }
     

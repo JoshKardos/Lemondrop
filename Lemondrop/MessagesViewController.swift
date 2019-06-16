@@ -14,28 +14,32 @@ import ProgressHUD
 class MessagesViewController: UITableViewController{
     
     var usersMessaged = [User]()
+    var timestamps = [String]()
+    var messages = [Message]()
+    var messagesDictionary = [String: Message]()
+    
     var databaseRef = Database.database().reference()
     
     override func viewDidLoad() {
         
-        //ProgressHUD.show("Loading...")
         super.viewDidLoad()
-        usersMessaged.removeAll()
-        loadUserMessages()
-        
+//        usersMessaged.removeAll()
+        loadUserMessages() 
     }
     
     //rows in table
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.usersMessaged.count
+        return self.messagesDictionary.count
         
     }
     //text to put in cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "userMessageCell", for: indexPath) as! UserCell
-        cell.configureCell(fullname: usersMessaged[indexPath.row].fullname)
+        
+        cell.configureCell(message: messages[indexPath.row])
+        
         return cell
         
     }
@@ -43,32 +47,20 @@ class MessagesViewController: UITableViewController{
     //when row is sleected
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let message = messages[indexPath.row]
         
-        guard let chatPartnerId = usersMessaged[indexPath.row].uid else {
+        guard let chatPartnerId = message.chatPartnerId() else {
             return
         }
         
-        let ref = Database.database().reference().child("users").child(chatPartnerId)
-        
-        ref.observeSingleEvent(of: .value) { (snapshot) in
-            
-            
-            guard let dictionary = snapshot.value as? NSDictionary else{ return }
-            
-            let user = User(dictionary: dictionary)
-            
-            user.uid = chatPartnerId
-            
-            MessagesViewController.showChatController(otherUser: user, view: self)
-            
-        }
-        
+        MessagesViewController.showChatController(otherUser: MapViewController.uidUserMap[chatPartnerId]!, view: self)
+
     }
     
     
     static func showChatController(otherUser: User, view: UIViewController){
         
-        let chatLogController = ChatLogViewController()
+        let chatLogController =  UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ChatLog") as! ChatLogViewController
         
         chatLogController.otherUser = otherUser
         
@@ -86,8 +78,8 @@ class MessagesViewController: UITableViewController{
         let ref = Database.database().reference().child("user-messages").child(uid)
         
         //iterate through messages keys
-        ref.observe(.childAdded) { (snapshot) in
-            
+        ref.observe( .childAdded) { (snapshot) in
+            print("SNAP \(snapshot.value)")
             //reference to message by using message key
             let messageId = snapshot.key
             let messageRef = Database.database().reference().child("messages").child(messageId)
@@ -98,16 +90,17 @@ class MessagesViewController: UITableViewController{
                 if let dictionary = snapshot.value as? [String: Any]{
                     
                     let message = Message(dictionary: dictionary as [String : Any] as [String : AnyObject])
-                    
+                    print("ToID")
                     //should always work
                     if let toId = message.chatPartnerId()  {
-                        self.usersMessaged.append(MapViewController.uidUserMap[toId]!)
-//                        self.messagesDictionary[toId] = message
-//                        self.messages = Array(self.messagesDictionary.values)
-//                        self.messages.sort(by: { (m1, m2) -> Bool in
-//                            return (m1.timestamp!.intValue > m2.timestamp!.intValue)
-//                        })
+                        
+                        self.messagesDictionary[toId] = message
+                        self.messages = Array(self.messagesDictionary.values)
+                        self.messages.sort(by: { (m1, m2) -> Bool in
+                            return (m1.timestamp!.intValue > m2.timestamp!.intValue)
+                        })
                     }
+                    
                     
                     self.timer?.invalidate()
                     self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)

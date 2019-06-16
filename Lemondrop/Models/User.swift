@@ -20,6 +20,16 @@ class User{
     var unlockedShirts = [String]()
     var unlockedPants = [String]()
     var rating: Double?
+//    var usersRatedIds = [String]()
+    
+    var token = ""{
+        didSet{
+            UserDefaults.standard.set(token, forKey: "token")
+        }
+    }
+    static let current = User()
+    
+    private init(){}
     
     init(dictionary: NSDictionary){
         

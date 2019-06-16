@@ -191,7 +191,7 @@
                         <outlet property="fullNameTextField" destination="CRR-dN-tWz" id="GI9-Iw-mg5"/>
                         <outlet property="passwordTextField" destination="Xqu-n8-BHL" id="TrZ-uj-xQ1"/>
                         <outlet property="schoolTextField" destination="hem-5P-I8N" id="KlH-HI-dtf"/>
-                        <segue destination="tnD-MF-fp3" kind="showDetail" identifier="showDetailMapView" id="OP9-DJ-5gm"/>
+                        <segue destination="tnD-MF-fp3" kind="show" identifier="showDetailMapView" id="OP9-DJ-5gm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -302,7 +302,7 @@
                         <outlet property="emailTextField" destination="Njj-pI-kuo" id="Gth-xt-HNV"/>
                         <outlet property="passwordTextField" destination="c8X-W4-oOF" id="gpr-gq-WNz"/>
                         <outlet property="signInButton" destination="iO6-lp-fMS" id="Qyz-Lv-nsk"/>
-                        <segue destination="tnD-MF-fp3" kind="showDetail" identifier="showDetailMapView" id="IdI-PT-wMn"/>
+                        <segue destination="tnD-MF-fp3" kind="show" identifier="showDetailMapView" id="IdI-PT-wMn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fzS-wr-0lH" sceneMemberID="firstResponder"/>
@@ -314,14 +314,14 @@
             <objects>
                 <viewController id="JaF-KT-MPa" customClass="MapViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dZk-o0-s2y">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Gku-Ah-MGe"/>
                     </view>
                     <navigationItem key="navigationItem" id="CvF-fO-N5Q"/>
                     <connections>
-                        <segue destination="dwE-3U-M3k" kind="show" id="95T-kP-kdh"/>
+                        <segue destination="dwE-3U-M3k" kind="show" identifier="ProfileStoryboard" id="95T-kP-kdh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xe-Zd-qZG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -489,9 +489,10 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tnD-MF-fp3" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="UUe-5W-aQg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="UUe-5W-aQg">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -575,6 +576,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="IdI-PT-wMn"/>
+        <segue reference="OP9-DJ-5gm"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

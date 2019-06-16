@@ -39,6 +39,8 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         priceTextField.addTarget(self, action: #selector(priceTextFieldDidChange), for: .editingChanged)
 
         startTimePicker.minimumDate = Date()
+        endTimePicker.minimumDate = startTimePicker.date
+        
         startTimePicker.addTarget(self, action: #selector(PopupViewController.textFieldDidChange(_:)),
                                   for: UIControl.Event.valueChanged)
         endTimePicker.addTarget(self, action: #selector(PopupViewController.textFieldDidChange(_:)),
@@ -54,7 +56,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        
+        startTimePicker.maximumDate = endTimePicker.date
         if !standNameTextField.text!.isEmpty && !priceTextField.text!.isEmpty && endTimePicker.date > startTimePicker.date {
             enableSubmitButton()
             print("ENABLED")

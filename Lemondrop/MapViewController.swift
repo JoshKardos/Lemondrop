@@ -23,6 +23,7 @@ class MapViewController: UIViewController{
     var currentUsersStand: LemonadeStand?
     
     static var lemonadeStands = [LemonadeStand]()
+    static var activeLemonadeStands = [LemonadeStand]()
     static var users = [User]()
     static var usernameUserMap = [String: User]()
     static var uidUserMap = [String: User]()
@@ -36,20 +37,23 @@ class MapViewController: UIViewController{
     var zoomLevel: Float = 15.0
     
     var tableView: UITableView!
-    
     var filteredStands = [LemonadeStand]()
-    
     var searchBar: UISearchBar!
-    
+    var greetingLabel = UILabel() {
+        didSet{
+            print("greeting label set to \(greetingLabel.text)")
+        }
+        
+    }
     static var currentUser: User!
+    var profileSegue = "ProfileStoryboard"
+    
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         configureMapbackground()
-        
-        configureTextField()
         
         reload()
         
@@ -61,7 +65,6 @@ class MapViewController: UIViewController{
     
     static func loadUsers(onSuccess: @escaping() -> Void, onFailure: @escaping() -> Void){
         
-        ProgressHUD.show("Loading Stands...")
         users = []
         let ref = Database.database().reference()
         ref.child("users").observeSingleEvent(of: .value) { (snap) in
@@ -80,6 +83,8 @@ class MapViewController: UIViewController{
                     //check that a current user is initiated
                     if newUser.uid == Auth.auth().currentUser?.uid{
                         MapViewController.currentUser = newUser
+                        
+                        
                     }
                 }
                 
@@ -95,29 +100,62 @@ class MapViewController: UIViewController{
             }
         }
     }
+    
+//    static func loadCurrentUserRatingsToOthers(onSuccess: @escaping() -> Void){
+//        
+//        let ref = Database.database().reference()
+//        ref.child("user-rated").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
+//        
+//            let dict = snap.value as! [String : Any]
+//            for (id, _) in dict{
+//                MapViewController.currentUser.usersRatedIds.append(id)
+//            }
+//            onSuccess()
+//        }
+//
+//        
+//    }
     func reload(){
-        print("RELOADING")
+        
+        
+        print("REALDOIGN")
         if !Connectivity.isConnectedToInternet{
+            
             ProgressHUD.showError("Not connected to internet")
-            self.configureFloatingButton()
+            //            self.configureFloatingButton()
+            
         } else {
+            
+            ProgressHUD.show("Reloading...")
             
             MapViewController.loadUsers(onSuccess: {
                 MapViewController.loadLemonadeStands(view: self) {
-                    self.setMarkers()
-                    self.configureFloatingButton()
+                    
+                        self.setMarkers()
+                        
+                        self.configureFloatingButton()
+                        
+                        self.configureTextField()
+                    
+                    
+                    
+                    
+                    
+                    ProgressHUD.showSuccess("Reloaded")
+                    print("RELOADED")
                     
                 }
-            }) {
+            }, onFailure: {
                 
                 AuthService.logout(sender: self)
-                
-            }
+                ProgressHUD.showError("Failed")
+            })
             
             
             
         }
     }
+    
     //adds map to view
     //does not add buttons
     func configureMapbackground(){
@@ -190,7 +228,7 @@ class MapViewController: UIViewController{
             
             if let user = MapViewController.currentUser{
                 self.presentProfileView(user: user)
-
+                
             } else {
                 ProgressHUD.showError("No current user: check internet connection and try refreshing...")
             }
@@ -210,18 +248,46 @@ class MapViewController: UIViewController{
 extension MapViewController: UISearchBarDelegate{
     
     //floating textfield at the top of the screen
+    //no internet needed
     func configureTextField(){
         
-        searchBar = UISearchBar(frame: CGRect(x: 16, y: 42, width: view.bounds.width - 32, height: 42))
+        let borderWidth = CGFloat(integerLiteral: 8)
+        let backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+        let borderColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1).cgColor
+        
+        greetingLabel.frame =  CGRect(x: 16, y: 42, width: view.bounds.width - 32, height: 42)
+        greetingLabel.backgroundColor = backgroundColor
+        greetingLabel.layer.borderColor = borderColor
+        greetingLabel.layer.borderWidth = borderWidth - 2
+        greetingLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        greetingLabel.font = UIFont.boldSystemFont(ofSize: greetingLabel.font.pointSize)
+        
+        let hour = Calendar.current.component(.hour, from: Date())
+        print(hour)
+        if hour < 12 && hour > 3 {
+            self.greetingLabel.text = "    Good Morning, \(MapViewController.currentUser.fullname!)"
+        } else if hour < 17 {
+            self.greetingLabel.text = "    Good Afternoon, \(MapViewController.currentUser.fullname!)"
+        } else {
+            self.greetingLabel.text = "    Good Evening, \(MapViewController.currentUser.fullname!)"
+        }
+        
+        
+        
+        print("greeting label set to \(self.greetingLabel.text)")
+        
+        self.view.addSubview(greetingLabel)
+        
+        searchBar = UISearchBar(frame: CGRect(x: 16, y: greetingLabel.frame.maxY, width: view.bounds.width - 32, height: 42))
         
         searchBar.barTintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         searchBar.searchBarStyle = .minimal
         searchBar.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        searchBar.layer.borderWidth = 8
-        searchBar.layer.borderColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+        searchBar.layer.borderWidth = borderWidth
+        searchBar.layer.borderColor = borderColor
         searchBar.returnKeyType = .done
         searchBar.delegate = self
-        searchBar.placeholder = "Search for a Lemonade Stand"
+        searchBar.placeholder = "Search for an Active Lemonade Stand"
         self.view.addSubview(searchBar)
         
     }
@@ -235,12 +301,22 @@ extension MapViewController: UISearchBarDelegate{
     }
     func presentProfileView(user: User){
         
-        let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
-        profileVC.setUser(user: user)
-        //present navigation bar when going to profile view cotnroller
+        performSegue(withIdentifier: profileSegue, sender: self)
         
-        navigationController?.pushViewController(profileVC, animated: true)
-        
+//        let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
+//        profileVC.setUser(user: user)
+//        //present navigation bar when going to profile view cotnroller
+//
+//        navigationController?.pushViewController(profileVC, animated: true)
+//
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == profileSegue{
+            
+            let destination = segue.destination as! ProfileViewController
+            destination.user = MapViewController.currentUser
+            
+        }
     }
     func presentEstablishStandView(){
         
@@ -295,7 +371,7 @@ extension MapViewController: UISearchBarDelegate{
     func filterContent(searchText: String){
         
         
-        self.filteredStands = MapViewController.lemonadeStands.filter{ stand in
+        self.filteredStands = MapViewController.activeLemonadeStands.filter{ stand in
             
             let string = ("\(stand.standName)")
             
@@ -343,28 +419,18 @@ extension MapViewController: GMSMapViewDelegate{
                     
                     if let dict = stand as? NSDictionary {
                         let lemonadeStand = LemonadeStand(dictionary: dict)
-                        if lemonadeStand.endTime > Date().timeIntervalSince1970{
-                            
-                            
-                            //check if this stand was created by the current user
-                            if lemonadeStand.userId == (Auth.auth().currentUser?.uid)! {
-                                view.workingAStand = true
-                                view.currentUsersStand = lemonadeStand
-                            }
-                            
-                            MapViewController.lemonadeStands.append(lemonadeStand)
-                            //thjis will bring up an issue with different time zones
-                            
-                            
-                        }
+                        
+                        MapViewController.lemonadeStands.append(lemonadeStand)
+                        //thjis will bring up an issue with different time zones
+                        
+                        
+                        
                         
                     }
                 }
                 
                 onSuccess()
-                ProgressHUD.showSuccess("Loaded \(MapViewController.lemonadeStands.count) stand(s)")
             } else {
-                ProgressHUD.showSuccess("No stands to load..")
                 view.configureFloatingButton()
                 
             }
@@ -376,8 +442,16 @@ extension MapViewController: GMSMapViewDelegate{
     func setMarkers(){
         
         for stand in MapViewController.lemonadeStands{
-            
-            setMarker(stand: stand)
+            if stand.endTime > Date().timeIntervalSince1970 && stand.startTime <= Date().timeIntervalSince1970{
+                
+                MapViewController.activeLemonadeStands.append(stand)
+                //check if this stand was created by the current user
+                if stand.userId == (Auth.auth().currentUser?.uid)! {
+                    self.workingAStand = true
+                    self.currentUsersStand = stand
+                }
+                setMarker(stand: stand)
+            }
             
         }
         
@@ -388,9 +462,9 @@ extension MapViewController: GMSMapViewDelegate{
         
         let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude), longitude: CLLocationDegrees(floatLiteral: stand.longitude))
         let marker = GMSMarker(position: location.coordinate)
-        
+        marker.icon = UIImage(named: "mapViewLemon")
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm"
+        dateFormatter.dateFormat = "h:mm"
         let timestampDate = NSDate(timeIntervalSince1970: stand.endTime)
         
         

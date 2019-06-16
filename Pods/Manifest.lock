@@ -1,5 +1,8 @@
 PODS:
   - Alamofire (4.8.2)
+  - AWSCore (2.9.8)
+  - AWSSNS (2.9.8):
+    - AWSCore (= 2.9.8)
   - Cosmos (19.0.3)
   - Firebase/Auth (6.0.0):
     - Firebase/CoreOnly
@@ -90,6 +93,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - AWSSNS
   - Cosmos (~> 19.0)
   - Firebase/Auth
   - Firebase/Core
@@ -104,6 +108,8 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - AWSCore
+    - AWSSNS
     - Cosmos
     - Firebase
     - FirebaseAnalytics
@@ -126,6 +132,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  AWSCore: 5da86c5afde44a87b06a2df50601bca81a8cee13
+  AWSSNS: 19a224e89c5c74a45f7bfeeb6bec5578bb8d2d5f
   Cosmos: a6fb17284281fa12cf4c85c2efecd440a215ec44
   Firebase: fa80b9d987ca014a1ba9357496ef2a0178b28b12
   FirebaseAnalytics: 1743c5f4de3687d0745709dfdc4b1dea1484f44c
@@ -146,6 +154,6 @@ SPEC CHECKSUMS:
   ProgressHUD: 4e4efbaf4f5de8bd32e0c4c3b6644a90ea1a8c3e
   SideMenu: 1dcaabce84538c53325c287f7fe62999379a641c
 
-PODFILE CHECKSUM: 7cf845908193e6b77090c158dbe589f88fad5039
+PODFILE CHECKSUM: 38905dbb2234e10a9ed897bb126c14489c4d9aa0
 
 COCOAPODS: 1.6.2

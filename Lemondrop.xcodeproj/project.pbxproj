@@ -34,6 +34,10 @@
 		B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */; };
 		B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */; };
 		B3CB357422AC4F4100BB0A95 /* Lemondrop.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */; };
+		B3CB357722AD7A0E00BB0A95 /* UNService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357622AD7A0E00BB0A95 /* UNService.swift */; };
+		B3CB357922B02C0800BB0A95 /* SNSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357822B02C0800BB0A95 /* SNSService.swift */; };
+		B3CB357B22B435F700BB0A95 /* UserStandsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */; };
+		B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357C22B4365400BB0A95 /* StandCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -80,6 +84,10 @@
 		B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
 		B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lemondrop.entitlements; sourceTree = "<group>"; };
+		B3CB357622AD7A0E00BB0A95 /* UNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNService.swift; sourceTree = "<group>"; };
+		B3CB357822B02C0800BB0A95 /* SNSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNSService.swift; sourceTree = "<group>"; };
+		B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStandsTableViewController.swift; sourceTree = "<group>"; };
+		B3CB357C22B4365400BB0A95 /* StandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandCell.swift; sourceTree = "<group>"; };
 		FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,9 +146,12 @@
 				B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */,
 				B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */,
 				B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */,
+				B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */,
 				B36C5EE822A7BD9400E548B5 /* ChatLogViewController.swift */,
 				B36C5EEF22A833EA00E548B5 /* MessagesViewController.swift */,
 				B36C5EF122A97BEA00E548B5 /* AddMessageThreadViewController.swift */,
+				B3CB357622AD7A0E00BB0A95 /* UNService.swift */,
+				B3CB357822B02C0800BB0A95 /* SNSService.swift */,
 				B36C5EEE22A832DA00E548B5 /* Views */,
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B3A287702293B684000CB1F4 /* GoogleService-Info.plist */,
@@ -155,6 +166,7 @@
 				B36C5EE222A6D8B400E548B5 /* UserAndStandCell.swift */,
 				B36C5EEC22A8311400E548B5 /* DirectMessageBubble.swift */,
 				B36C5EF322A9859300E548B5 /* UserCell.swift */,
+				B3CB357C22B4365400BB0A95 /* StandCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -237,6 +249,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
@@ -291,6 +306,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
+				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
@@ -305,6 +322,8 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
@@ -376,6 +395,7 @@
 				B36C5EED22A8311400E548B5 /* DirectMessageBubble.swift in Sources */,
 				B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */,
 				B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */,
+				B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */,
 				B36C5EF022A833EA00E548B5 /* MessagesViewController.swift in Sources */,
 				B36C5EF222A97BEB00E548B5 /* AddMessageThreadViewController.swift in Sources */,
 				B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */,
@@ -387,11 +407,14 @@
 				B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */,
 				B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */,
 				B3A2877922946477000CB1F4 /* User.swift in Sources */,
+				B3CB357722AD7A0E00BB0A95 /* UNService.swift in Sources */,
 				B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */,
 				B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */,
+				B3CB357B22B435F700BB0A95 /* UserStandsTableViewController.swift in Sources */,
 				B36C5EEB22A8300F00E548B5 /* Message.swift in Sources */,
 				B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */,
 				B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */,
+				B3CB357922B02C0800BB0A95 /* SNSService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

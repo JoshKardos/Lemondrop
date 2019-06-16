@@ -20,6 +20,7 @@ class DirectMessageBubble: UICollectionViewCell{
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.backgroundColor = UIColor.clear
         tv.textColor = UIColor.white
+        tv.isEditable = false
         return tv
     }()
     static let blueColor = UIColor.blue
@@ -59,7 +60,7 @@ class DirectMessageBubble: UICollectionViewCell{
 //        
         //x,y,w,h
         bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
-        
+//        bubbleViewRightAnchor?.isActive = true
         
         bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8)
         
