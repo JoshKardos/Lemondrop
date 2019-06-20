@@ -173,7 +173,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         submitButton.setTitleColor(UIColor.green, for: .normal)
     }
     func getCityName(completion: @escaping () -> Void){
-        guard let url = URL(string:  "https://maps.googleapis.com/maps/api/geocode/json?latlng=\((MapViewController.currentLocation?.coordinate.latitude)!),\((MapViewController.currentLocation?.coordinate.longitude)!)&key=AIzaSyBcOTLyZeAbG_6jOf-3U2txCM26j_zq4vA") else {
+        guard let url = URL(string:  "https://maps.googleapis.com/maps/api/geocode/json?latlng=\((MapViewController.currentLocation?.coordinate.latitude)!),\((MapViewController.currentLocation?.coordinate.longitude)!)&key=\(ApiKeys.googleMapsApiKey)") else {
             completion()
             return
         }
