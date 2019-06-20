@@ -19,7 +19,7 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var sendButton: UIButton!
     
-    let toolbar = UIToolbar()
+//    let toolbar = UIToolbar()
 //    let bottomContainerView = UIView() // holds text field and send button
     var otherUser: User?{
         didSet {
@@ -37,6 +37,7 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         //        ProgressHUD.show("Loading...")
         super.viewDidLoad()
         
+        textField.returnKeyType = .done
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
         
@@ -45,14 +46,11 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         sendButton.addTarget(self, action: #selector(sendPressed), for: .touchUpInside)
         setupBottomComponents()
         
-//        print(bottomContainerView.frame.height)
-        
         let layout = UICollectionViewFlowLayout()
-//        let collectionViewFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height - 200)//- (bottomContainerView.frame.height) - self.navigationController!.navigationBar.frame.size.height)
-//        collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
+
         collectionView!.register(DirectMessageBubble.self, forCellWithReuseIdentifier: cellId)
         
-        collectionView!.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        collectionView!.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView!.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 58, right: 0)
         
         collectionView!.alwaysBounceVertical = true
@@ -210,20 +208,23 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        toolbar.sizeToFit()
+//        toolbar.sizeToFit()
         
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(self.doneClicked))
+//        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+//
+//        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(self.doneClicked))
         
         //        cancelButton.titleLabel?.font =  UIFont(name: "Cancel", size: 12)
-        let font = UIFont.systemFont(ofSize: 15);
-        cancelButton.setTitleTextAttributes([NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.red], for:UIControl.State.normal)
+//        let font = UIFont.systemFont(ofSize: 15);
+//        cancelButton.setTitleTextAttributes([NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.red], for:UIControl.State.normal)
         
-        toolbar.setItems([flexibleSpace, cancelButton], animated: false)
-        textField.inputAccessoryView = toolbar
+//        toolbar.setItems([flexibleSpace, cancelButton], animated: false)
+//        textField.inputAccessoryView = toolbar
     }
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
+    }
     @objc func doneClicked(){
         view.endEditing(true)
     }
@@ -244,7 +245,10 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
     }
     @objc func keyboardWillHide(_ notification: Notification) {
         
-        self.view.frame.origin.y = origin!
+        if let origin = origin {
+            
+            self.view.frame.origin.y = origin
+        }
     }
     
     
@@ -279,6 +283,8 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
             
             let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId!)
             recipientUserMessagesRef.updateChildValues([messageId!: 1])
+            
+            SNSService.shared.publish(description: "Message from: ", from: MapViewController.currentUser!, to: self.otherUser!)
         })
         view.endEditing(true)
     }

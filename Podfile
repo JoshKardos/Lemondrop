@@ -20,6 +20,7 @@ pod 'GoogleMaps'
   pod 'Cosmos', '~> 19.0'
   pod 'SideMenu'
   pod 'AWSSNS'
+  pod 'SwiftyJSON', '~> 4.0'
 end
 
 

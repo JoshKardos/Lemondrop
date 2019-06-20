@@ -90,7 +90,7 @@ class AuthService {
         initialUnlockedPants["1"] = "1"
         
         usersRef.child(uid).setValue(["fullname": fullname, "email" : email, "school": school, "age": age, "uid": uid, "avatar": initialAvatarValues, "unlockedHats": initialUnlockedHats, "unlockedShirts": initialUnlockedShirts, "unlockedPants": initialUnlockedPants])
-        
+        Database.database().reference().child("fullnames").updateChildValues([fullname : 1])
         AuthService.setToken()
         onSuccess()
     }
@@ -105,7 +105,7 @@ class AuthService {
             return
         }
         User.current.token = token!
-        
+        print("Token \(token)")
         SNSService.shared.register()
         
     }

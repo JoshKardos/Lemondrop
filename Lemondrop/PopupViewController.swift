@@ -11,6 +11,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import ProgressHUD
 import Alamofire
+import SwiftyJSON
 
 class PopupViewController: UIViewController, UITextFieldDelegate {
     
@@ -23,7 +24,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var startTimePicker: UIDatePicker!
     @IBOutlet weak var endTimePicker: UIDatePicker!
     var delegate: MapViewController?
-    
+    var cityName: String?
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -98,11 +99,18 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         }
         
         
+        getCityName {
+            
+        }
+        
+        
         let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Lemonade Stand", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
+            self.getCityName {
+                self.saveLemonadeStand()
+            }
             
-            self.saveLemonadeStand()
             
         }))
         alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
@@ -129,7 +137,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
             UIApplication.shared.beginIgnoringInteractionEvents()
             Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).observe(.value) { (snapshot) in
                 if let user = snapshot.value as? NSDictionary{
-                    newStandRef.setValue(["standId": newStandRefId!, "latitude": self.delegate!.currentLocation!.coordinate.latitude, "longitude": self.delegate!.currentLocation?.coordinate.longitude, "standName": self.standNameTextField.text!,"startTime": self.startTimePicker.date.timeIntervalSince1970 ,"endTime": self.endTimePicker.date.timeIntervalSince1970,"pricePerGlass": self.priceTextField.text!, "userID": (Auth.auth().currentUser?.uid)!, "creatorFullname": user["fullname"]]){ (error, ref) in
+                    newStandRef.setValue(["standId": newStandRefId!, "latitude": MapViewController.currentLocation!.coordinate.latitude, "longitude": MapViewController.currentLocation?.coordinate.longitude, "standName": self.standNameTextField.text!,"startTime": self.startTimePicker.date.timeIntervalSince1970 ,"endTime": self.endTimePicker.date.timeIntervalSince1970,"pricePerGlass": self.priceTextField.text!, "userID": (Auth.auth().currentUser?.uid)!, "creatorFullname": user["fullname"], "city": self.cityName!]){ (error, ref) in
                         //it's okay to store the  user's fullname in the stand node becuase the stands don't
                         //have a long lifetime, its not like a soicla media post
                         if error != nil{
@@ -163,6 +171,30 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     func enableSubmitButton(){
         submitButton.isEnabled = true
         submitButton.setTitleColor(UIColor.green, for: .normal)
+    }
+    func getCityName(completion: @escaping () -> Void){
+        guard let url = URL(string:  "https://maps.googleapis.com/maps/api/geocode/json?latlng=\((MapViewController.currentLocation?.coordinate.latitude)!),\((MapViewController.currentLocation?.coordinate.longitude)!)&key=AIzaSyBcOTLyZeAbG_6jOf-3U2txCM26j_zq4vA") else {
+            completion()
+            return
+        }
+        print(url)
+        
+        Alamofire.request(url, method: .get)
+            .responseJSON { response in
+                if response.result.isSuccess {
+                    let googleJSON : JSON = JSON(response.result.value!)
+                    print(googleJSON["results"][0]["address_components"][3]["long_name"])
+                    self.cityName = googleJSON["results"][0]["address_components"][3]["long_name"].string
+                    completion()
+                    return
+                } else {
+                    ProgressHUD.showError("Error fetching location data")
+                }
+        }
+        
+        
+        
+        
     }
     
 }

@@ -17,6 +17,8 @@
 		B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */; };
 		B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FC228F541200FF6ED6 /* AuthService.swift */; };
 		B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FE228F826300FF6ED6 /* LemonadeStand.swift */; };
+		B36745DD22B84ACB00ED5A06 /* CorkboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */; };
+		B36745E122B9F07C00ED5A06 /* StickyNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36745E022B9F07C00ED5A06 /* StickyNote.swift */; };
 		B36C5EDC229ED5CE00E548B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */; };
 		B36C5EDE22A09D2D00E548B5 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */; };
 		B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */; };
@@ -67,6 +69,8 @@
 		B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		B34074FC228F541200FF6ED6 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		B34074FE228F826300FF6ED6 /* LemonadeStand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LemonadeStand.swift; sourceTree = "<group>"; };
+		B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorkboardViewController.swift; sourceTree = "<group>"; };
+		B36745E022B9F07C00ED5A06 /* StickyNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyNote.swift; sourceTree = "<group>"; };
 		B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B36C5EDD22A09D2D00E548B5 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersTableViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B3A287702293B684000CB1F4 /* GoogleService-Info.plist */,
 				B34074EC228E35F000FF6ED6 /* Info.plist */,
+				B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */,
 			);
 			path = Lemondrop;
 			sourceTree = "<group>";
@@ -167,6 +172,7 @@
 				B36C5EEC22A8311400E548B5 /* DirectMessageBubble.swift */,
 				B36C5EF322A9859300E548B5 /* UserCell.swift */,
 				B3CB357C22B4365400BB0A95 /* StandCell.swift */,
+				B36745E022B9F07C00ED5A06 /* StickyNote.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -315,6 +321,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/ProgressHUD/ProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -331,6 +338,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -398,6 +406,7 @@
 				B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */,
 				B36C5EF022A833EA00E548B5 /* MessagesViewController.swift in Sources */,
 				B36C5EF222A97BEB00E548B5 /* AddMessageThreadViewController.swift in Sources */,
+				B36745DD22B84ACB00ED5A06 /* CorkboardViewController.swift in Sources */,
 				B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */,
 				B36C5EF422A9859300E548B5 /* UserCell.swift in Sources */,
 				B34074F7228E64C100FF6ED6 /* MapViewController.swift in Sources */,
@@ -413,6 +422,7 @@
 				B3CB357B22B435F700BB0A95 /* UserStandsTableViewController.swift in Sources */,
 				B36C5EEB22A8300F00E548B5 /* Message.swift in Sources */,
 				B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */,
+				B36745E122B9F07C00ED5A06 /* StickyNote.swift in Sources */,
 				B34074FF228F826300FF6ED6 /* LemonadeStand.swift in Sources */,
 				B3CB357922B02C0800BB0A95 /* SNSService.swift in Sources */,
 			);

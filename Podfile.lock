@@ -90,6 +90,7 @@ PODS:
   - nanopb/encode (0.3.901)
   - ProgressHUD (2.60)
   - SideMenu (5.0.3)
+  - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -104,6 +105,7 @@ DEPENDENCIES:
   - GooglePlaces
   - ProgressHUD
   - SideMenu
+  - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -129,6 +131,7 @@ SPEC REPOS:
     - nanopb
     - ProgressHUD
     - SideMenu
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
@@ -153,7 +156,8 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   ProgressHUD: 4e4efbaf4f5de8bd32e0c4c3b6644a90ea1a8c3e
   SideMenu: 1dcaabce84538c53325c287f7fe62999379a641c
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 38905dbb2234e10a9ed897bb126c14489c4d9aa0
+PODFILE CHECKSUM: 883cc90cf39da0038539d103ad7b0ce9172690da
 
 COCOAPODS: 1.6.2

@@ -17,6 +17,7 @@ class UsersTableViewController: UITableViewController {
         super.viewDidLoad()
         searchBar.returnKeyType = .done
         searchBar.delegate = self
+        self.title = "Users"
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         

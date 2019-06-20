@@ -15,13 +15,15 @@ import Floaty
 import FirebaseDatabase
 import FirebaseAuth
 import ProgressHUD
+import Alamofire
+import SwiftyJSON
 
 class MapViewController: UIViewController{
     
     
     var workingAStand = false
     var currentUsersStand: LemonadeStand?
-    
+    let iphone7ScreenHeight: CGFloat = 677.0
     static var lemonadeStands = [LemonadeStand]()
     static var activeLemonadeStands = [LemonadeStand]()
     static var users = [User]()
@@ -31,7 +33,7 @@ class MapViewController: UIViewController{
     static let googleMapsApiKey = ApiKeys.googleMapsApiKey
     
     var locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
+    static var currentLocation: CLLocation?
     var mapView: GMSMapView!
     var placesClient: GMSPlacesClient!
     var zoomLevel: Float = 15.0
@@ -39,28 +41,70 @@ class MapViewController: UIViewController{
     var tableView: UITableView!
     var filteredStands = [LemonadeStand]()
     var searchBar: UISearchBar!
-    var greetingLabel = UILabel() {
-        didSet{
-            print("greeting label set to \(greetingLabel.text)")
-        }
-        
-    }
+    var greetingLabel = UILabel()
+    
     static var currentUser: User!
     var profileSegue = "ProfileStoryboard"
     
     
     override func viewDidLoad() {
         
-        super.viewDidLoad()
-        
-        configureMapbackground()
-        
-        reload()
+        if Auth.auth().currentUser!.isEmailVerified{
+            
+            super.viewDidLoad()
+            
+            configureMapbackground()
+            
+            reload()
+        } else {
+            Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+                //self.reload()
+                self.configureEmailNotVerifiedPage()
+            })
+        }
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
+    }
+    func configureEmailNotVerifiedPage(){
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 16, width: self.view.frame.width, height: 24))
+        label.text = "Must verify your email"
+        label.textAlignment = .center
+        label.center = self.view.center
+        self.view.addSubview(label)
+        
+        let buttonHeight: CGFloat = 48
+        
+        let signOutButton = UIButton(frame: CGRect(x: 0, y: self.view.frame.height - buttonHeight, width: self.view.frame.width/2, height: buttonHeight))
+        self.view.addSubview(signOutButton)
+        signOutButton.setTitle("Sign Out", for: .normal)
+        signOutButton.setTitleColor(UIColor.white, for: .normal)
+        signOutButton.layer.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+        signOutButton.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+        
+        
+        let resendLinkButton = UIButton(frame: CGRect(x: self.view.frame.width - (self.view.frame.width/2), y: self.view.frame.height - buttonHeight, width: self.view.frame.width/2, height: buttonHeight))
+        self.view.addSubview(resendLinkButton)
+        resendLinkButton.setTitle("Resend Link", for: .normal)
+        resendLinkButton.setTitleColor(UIColor.white, for: .normal)
+        resendLinkButton.layer.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        resendLinkButton.addTarget(self, action: #selector(resendLink), for: .touchUpInside)
+        
+    }
+    
+    @objc func signOut(){
+        AuthService.logout(sender: self)
+        
+    }
+    @objc func resendLink(){
+        
+        Auth.auth().currentUser?.sendEmailVerification(completion: nil)
+        
+        
+        
     }
     
     static func loadUsers(onSuccess: @escaping() -> Void, onFailure: @escaping() -> Void){
@@ -101,20 +145,20 @@ class MapViewController: UIViewController{
         }
     }
     
-//    static func loadCurrentUserRatingsToOthers(onSuccess: @escaping() -> Void){
-//        
-//        let ref = Database.database().reference()
-//        ref.child("user-rated").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
-//        
-//            let dict = snap.value as! [String : Any]
-//            for (id, _) in dict{
-//                MapViewController.currentUser.usersRatedIds.append(id)
-//            }
-//            onSuccess()
-//        }
-//
-//        
-//    }
+    //    static func loadCurrentUserRatingsToOthers(onSuccess: @escaping() -> Void){
+    //
+    //        let ref = Database.database().reference()
+    //        ref.child("user-rated").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
+    //
+    //            let dict = snap.value as! [String : Any]
+    //            for (id, _) in dict{
+    //                MapViewController.currentUser.usersRatedIds.append(id)
+    //            }
+    //            onSuccess()
+    //        }
+    //
+    //
+    //    }
     func reload(){
         
         
@@ -131,11 +175,11 @@ class MapViewController: UIViewController{
             MapViewController.loadUsers(onSuccess: {
                 MapViewController.loadLemonadeStands(view: self) {
                     
-                        self.setMarkers()
-                        
-                        self.configureFloatingButton()
-                        
-                        self.configureTextField()
+                    self.setMarkers()
+                    
+                    self.configureFloatingButton()
+                    
+                    self.configureTextField()
                     
                     
                     
@@ -222,6 +266,11 @@ class MapViewController: UIViewController{
         floaty.addItem("View List of All Users", icon: UIImage(named: "listview")) { (item) in
             self.presentListView()
         }
+        floaty.addItem("Corkboard", icon: UIImage(named: "corkboard")) { (item) in
+            
+            self.performSegue(withIdentifier: "PresentCorkboard", sender: self)
+            
+        }
         
         floaty.addItem("Profile", icon: UIImage(named: "profile")!) { (item) in
             
@@ -242,6 +291,7 @@ class MapViewController: UIViewController{
         self.view.addSubview(floaty)
         
         
+        
     }
     
 }
@@ -255,7 +305,16 @@ extension MapViewController: UISearchBarDelegate{
         let backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
         let borderColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1).cgColor
         
-        greetingLabel.frame =  CGRect(x: 16, y: 42, width: view.bounds.width - 32, height: 42)
+        print(self.view.bounds.height)
+        let topBoxYStart: CGFloat = 42
+        
+        //        print("\(self.view.bounds.height) > \(CGFloat(iphone7ScreenHeight))?")
+        //        if CGFloat(self.view.bounds.height) > CGFloat(iphone7ScreenHeight){
+        //            print("\(self.view.bounds.height) > \(CGFloat(iphone7ScreenHeight))")
+        //            topBoxYStart = view.bounds.height/4
+        //        }
+        
+        greetingLabel.frame =  CGRect(x: 16, y: topBoxYStart, width: view.bounds.width - 32, height: 42)
         greetingLabel.backgroundColor = backgroundColor
         greetingLabel.layer.borderColor = borderColor
         greetingLabel.layer.borderWidth = borderWidth - 2
@@ -287,7 +346,7 @@ extension MapViewController: UISearchBarDelegate{
         searchBar.layer.borderColor = borderColor
         searchBar.returnKeyType = .done
         searchBar.delegate = self
-        searchBar.placeholder = "Search for an Active Lemonade Stand"
+        searchBar.placeholder = "Get directions by stand name"
         self.view.addSubview(searchBar)
         
     }
@@ -303,12 +362,12 @@ extension MapViewController: UISearchBarDelegate{
         
         performSegue(withIdentifier: profileSegue, sender: self)
         
-//        let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
-//        profileVC.setUser(user: user)
-//        //present navigation bar when going to profile view cotnroller
-//
-//        navigationController?.pushViewController(profileVC, animated: true)
-//
+        //        let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
+        //        profileVC.setUser(user: user)
+        //        //present navigation bar when going to profile view cotnroller
+        //
+        //        navigationController?.pushViewController(profileVC, animated: true)
+        //
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == profileSegue{
@@ -431,7 +490,7 @@ extension MapViewController: GMSMapViewDelegate{
                 
                 onSuccess()
             } else {
-                view.configureFloatingButton()
+                onSuccess()
                 
             }
         }
@@ -537,7 +596,7 @@ extension MapViewController: CLLocationManagerDelegate {
     // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location: CLLocation = locations.last!
-        currentLocation = location
+        MapViewController.currentLocation = location
         
         let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: zoomLevel)
         
@@ -605,9 +664,49 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.transitionMapToStand(stand: filteredStands[indexPath.row])
         
+        //create directions from current location to stand
+        self.drawPath(startLocation: locationManager.location!, endLocation: CLLocation(latitude: filteredStands[indexPath.row].latitude, longitude: filteredStands[indexPath.row].longitude))
     }
     
-    
+    func drawPath(startLocation: CLLocation, endLocation: CLLocation){
+        print("draw payj")
+        let origin = "\(startLocation.coordinate.latitude),\(startLocation.coordinate.longitude)"
+        let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
+        
+        let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)&key=\(ApiKeys.googleDirectionsApiKey)"
+        Alamofire.request(url, method: .get)
+            .responseJSON {(response) in
+            
+            
+            
+            if response.error == nil {
+                
+                do {
+                    let json : JSON  = try JSON(data: response.data!)
+                    let routes = json["routes"].arrayValue
+                    
+                    print("json \(json)")
+                    
+                    for route in routes{
+                        let routeOverviewPolyline = route["overview_polyline"].dictionary
+                        let points = routeOverviewPolyline?["points"]?.stringValue
+                        let path = GMSPath.init(fromEncodedPath: points!)
+                        let polyline = GMSPolyline.init(path: path)
+                        
+                        polyline.strokeWidth = 4
+                        polyline.strokeColor = UIColor.red
+                        polyline.map = self.mapView
+                    }
+                } catch {
+                    print(error)
+                }
+                
+            } else {
+                ProgressHUD.showError("Error getting directions")
+            }
+        }
+        
+    }
     
 }
 extension UIView {
@@ -630,6 +729,58 @@ extension UIView {
         layer.addSublayer(border)
     }
     
+}
+
+extension MapViewController{//bulletin board functions
+    static func getStandsFromUsersSchool() -> [LemonadeStand]{
+        
+        var stands:[LemonadeStand] = []
+        
+        for stand in MapViewController.lemonadeStands{
+            if MapViewController.usernameUserMap[stand.creatorName]?.school.lowercased() == currentUser.school.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) {
+                stands.append(stand)
+            }
+        }
+        
+        
+        return stands
+        
+        
+    }
+    static func getStandsFrom(city: String) -> [LemonadeStand] {
+        
+        
+        
+        var stands:[LemonadeStand] = []
+        
+        for stand in MapViewController.lemonadeStands{
+            if stand.city.lowercased() == city.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)){
+                stands.append(stand)
+            }
+        }
+        
+        
+        return stands
+        
+    }
+    static func getStandsClosingSoon() -> [LemonadeStand]{
+        var stands:[LemonadeStand] = []
+        
+        let date = Date()
+        
+        let hoursToAdd = 1
+        
+        let newDate = Calendar.current.date(byAdding: .month, value: hoursToAdd, to: Date())
+        
+        for stand in MapViewController.lemonadeStands{
+            if Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) <= newDate! && Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) > date {
+                stands.append(stand)
+            }
+        }
+        
+        
+        return stands
+    }
 }
 
 

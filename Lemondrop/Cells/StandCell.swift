@@ -21,6 +21,7 @@ class StandCell: UITableViewCell{
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var businessHoursLabel: UILabel!
+    @IBOutlet weak var cityLabel: UILabel!
     
     @IBOutlet weak var mapView: GMSMapView!
     
@@ -40,7 +41,7 @@ class StandCell: UITableViewCell{
         
         priceLabel.text = "Glass Price: $\(stand.pricePerGlass!)"
         businessHoursLabel.text = "Business Hours: \(startTimeString)-\(endTimeString)"
-        
+        cityLabel.text = stand.city
         
         
         let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude), longitude: CLLocationDegrees(floatLiteral: stand.longitude))
