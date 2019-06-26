@@ -15,13 +15,17 @@ class UserStandsTableViewController: UITableViewController{
     
     override func viewDidLoad() {
         self.filterUserStands()
-    
-        super.viewDidLoad()
-    
-        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        self.tableView.reloadData()
-
-
+        if userStands.count == 0{
+            print("00000")
+            addNoStandsLabel()
+        } else {
+            super.viewDidLoad()
+            
+            self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+            self.tableView.reloadData()
+        }
+        
+        
     }
     
     
@@ -50,7 +54,21 @@ class UserStandsTableViewController: UITableViewController{
         return 1
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        
+        
         return userStands.count
     }
+    
+    func addNoStandsLabel(){
+        
+        let label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 32))
+        label.text = "You haven't established any stands.."
+        label.textColor = UIColor.black
+        label.textAlignment = .center
+        self.view.addSubview(label)
+    }
+    
+    
     
 }

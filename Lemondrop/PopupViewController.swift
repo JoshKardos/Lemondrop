@@ -12,7 +12,7 @@ import FirebaseAuth
 import ProgressHUD
 import Alamofire
 import SwiftyJSON
-
+import HYParentalGate
 class PopupViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var cancelButton: UIButton!
@@ -71,7 +71,9 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     @IBAction func cancelPressed(_ sender: Any) {
         //        let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: nil, userInfo: nil, repeats: true)
         
+        
         let timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { (timer) in
+            
             self.view.removeFromSuperview()
         }
         
@@ -104,25 +106,33 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         }
         
         
-        let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Lemonade Stand", preferredStyle: .alert)
+        HYParentalGate.sharedGate.show { () -> (Void) in
+            
+            
+            let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Lemonade Stand", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
+                self.getCityName {
+                    self.saveLemonadeStand()
+                }
+                
+                
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
+                
+                
+                ProgressHUD.showError("DENIED, must have an adult with you")
+                alert.removeFromParent()
+                
+                
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
+            
+            
+        }
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
-            self.getCityName {
-                self.saveLemonadeStand()
-            }
-            
-            
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
-           
-            
-            ProgressHUD.showError("DENIED, must have an adult with you")
-            alert.removeFromParent()
-            
-            
-        }))
         
-        self.present(alert, animated: true, completion: nil)
         
     }
     

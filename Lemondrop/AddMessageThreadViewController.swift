@@ -16,11 +16,19 @@ class AddMessageThreadViewController: UsersTableViewController {
        
     }
     
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        
         if MapViewController.users[indexPath.row].uid != MapViewController.currentUser!.uid {
-            MessagesViewController.showChatController(otherUser: MapViewController.users[indexPath.row], view: self)
+            
+            if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
+                 MessagesViewController.showChatController(otherUser: self.filteredUsers[indexPath.row], view: self)
+                
+            } else {
+                
+                MessagesViewController.showChatController(otherUser: MapViewController.users[indexPath.row], view: self)
+            }
+            
 
         } else {
             ProgressHUD.showError("Can't Message Yourself")

@@ -21,6 +21,8 @@ pod 'GoogleMaps'
   pod 'SideMenu'
   pod 'AWSSNS'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'HYParentalGate', '~> 1.0'
+  pod 'SwipeCellKit'
 end
 
 

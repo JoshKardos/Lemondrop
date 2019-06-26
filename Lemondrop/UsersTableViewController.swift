@@ -18,11 +18,6 @@ class UsersTableViewController: UITableViewController {
         searchBar.returnKeyType = .done
         searchBar.delegate = self
         self.title = "Users"
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +43,7 @@ class UsersTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserAndStandCell
         
         if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
-            for stand in MapViewController.lemonadeStands{
+            for stand in MapViewController.activeLemonadeStands{
                 if stand.creatorName == filteredUsers[indexPath.row].fullname{
                     
                     cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
@@ -59,7 +54,7 @@ class UsersTableViewController: UITableViewController {
             return cell
         }
         
-        for stand in MapViewController.lemonadeStands{
+        for stand in MapViewController.activeLemonadeStands{
             if stand.creatorName == MapViewController.users[indexPath.row].fullname{
                 
                 cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
@@ -82,6 +77,8 @@ class UsersTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print("USERSTABLEVC")
         if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
             presentProfileView(user: self.filteredUsers[indexPath.row])
         } else {
@@ -89,43 +86,6 @@ class UsersTableViewController: UITableViewController {
         }
         
     }
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    
 }
 
 extension UsersTableViewController: UISearchBarDelegate{

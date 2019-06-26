@@ -1,0 +1,6 @@
+framework module HYParentalGate {
+  umbrella header "HYParentalGate-umbrella.h"
+
+  export *
+  module * { export * }
+}

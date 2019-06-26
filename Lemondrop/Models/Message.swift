@@ -13,15 +13,18 @@ class Message: NSObject{
     var text: String?
     var timestamp: NSNumber?
     var toId: String?
-    
+    var messageId: String?
     override init(){
         super.init()
     }
     init(dictionary: [String: AnyObject]){
         senderId = (dictionary["senderID"] as! String)
-        text = dictionary["text"] as! String
+        text = (dictionary["text"] as! String)
         timestamp = (dictionary["timestamp"] as! NSNumber)
         toId = (dictionary["toId"] as! String)
+        if let id = (dictionary["messageId"] as? String) {
+            messageId = id
+        }
     }
     func chatPartnerId() -> String?{
         

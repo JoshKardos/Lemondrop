@@ -39,5 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(token)
         User.current.token = token
     }
+    
+    
 }
 

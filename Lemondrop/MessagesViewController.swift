@@ -60,7 +60,7 @@ class MessagesViewController: UITableViewController{
     
     static func showChatController(otherUser: User, view: UIViewController){
         
-        let chatLogController =  UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ChatLog") as! ChatLogViewController
+        let chatLogController =  UIStoryboard(name: "DirectMessaging", bundle: nil).instantiateViewController(withIdentifier: "ChatLog") as! ChatLogViewController
         
         chatLogController.otherUser = otherUser
         
@@ -79,7 +79,6 @@ class MessagesViewController: UITableViewController{
         
         //iterate through messages keys
         ref.observe( .childAdded) { (snapshot) in
-            print("SNAP \(snapshot.value)")
             //reference to message by using message key
             let messageId = snapshot.key
             let messageRef = Database.database().reference().child("messages").child(messageId)

@@ -49,7 +49,7 @@ class AuthService {
         }
     }
     
-    static func signUp(fullname: String, email: String, password: String, school: String, age: String, onSuccess: @escaping() -> Void, onError: @escaping(_ errorMessage: String?) -> Void){
+    static func signUp(fullname: String, email: String, password: String, school: String?, age: String?, onSuccess: @escaping() -> Void, onError: @escaping(_ errorMessage: String?) -> Void){
         
         /////////////////////
         ////Create User//////
@@ -62,6 +62,7 @@ class AuthService {
             }
             
             
+            
             if let uid = Auth.auth().currentUser?.uid{
                 
                 self.signUpUser(fullname: fullname, email: email, uid: uid, school: school, age: age, onSuccess: onSuccess)
@@ -70,7 +71,9 @@ class AuthService {
         
     }
     
-    static func signUpUser(fullname: String, email: String, uid: String,  school: String, age: String, onSuccess: @escaping () -> Void){
+    
+    
+    static func signUpUser(fullname: String, email: String, uid: String,  school: String?, age: String?, onSuccess: @escaping () -> Void){
         
         //get referenece to users in the database
         let usersRef = Database.database().reference().child("users")
@@ -89,7 +92,19 @@ class AuthService {
         initialUnlockedPants["0"] = "0"
         initialUnlockedPants["1"] = "1"
         
-        usersRef.child(uid).setValue(["fullname": fullname, "email" : email, "school": school, "age": age, "uid": uid, "avatar": initialAvatarValues, "unlockedHats": initialUnlockedHats, "unlockedShirts": initialUnlockedShirts, "unlockedPants": initialUnlockedPants])
+        
+        var values = ["fullname": fullname, "email" : email, "uid": uid,
+                     "avatar": initialAvatarValues, "unlockedHats": initialUnlockedHats,
+                     "unlockedShirts": initialUnlockedShirts, "unlockedPants": initialUnlockedPants] as [String : Any]
+        
+        if school?.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
+            values["school"] = school
+        }
+        if age?.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
+            values["age"] = age
+        }
+        
+        usersRef.child(uid).setValue(values)
         Database.database().reference().child("fullnames").updateChildValues([fullname : 1])
         AuthService.setToken()
         onSuccess()
@@ -105,9 +120,29 @@ class AuthService {
             return
         }
         User.current.token = token!
-        print("Token \(token)")
         SNSService.shared.register()
         
+    }
+    
+    static func reauthenticateUser(email: String, password: String, onSuccess: @escaping () -> Void, onError: @escaping (String) -> Void){
+        
+        let user = Auth.auth().currentUser;
+        
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        //https://stackoverflow.com/questions/38253185/re-authenticating-user-credentials-swift
+        
+        
+        user?.reauthenticate(with: credential, completion: { (result, error) in
+            
+            if error != nil {
+                onError((error?.localizedDescription)!)
+                return
+            }
+            
+            onSuccess()
+            return
+            
+        })
     }
 }
 

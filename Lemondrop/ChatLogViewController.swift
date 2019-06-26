@@ -12,7 +12,41 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import ProgressHUD
-class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout ,UICollectionViewDelegate , UITextFieldDelegate {
+import SwipeCellKit
+
+class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout ,UICollectionViewDelegate , UITextFieldDelegate, SwipeCollectionViewCellDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
+        //if senderId != currentId
+            // return []
+        if messages[indexPath.row].senderId != Auth.auth().currentUser?.uid{
+            guard orientation == .right else { return nil }
+        } else {
+            guard orientation == .left else { return nil }
+        }
+        
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            // handle action by updating model with deletion
+            
+            if self.messages[indexPath.row].messageId == nil {
+                ProgressHUD.showError("Did Not delete")
+                return
+            }
+            Database.database().reference().child("user-messages").child((Auth.auth().currentUser?.uid)!).child(self.messages[indexPath.row].messageId!).removeValue()
+            
+            self.messages.remove(at: indexPath.row)
+            collectionView.deleteItems(at: [indexPath])
+            
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "delete")
+        
+        return [deleteAction]
+    }
+    
     var origin: CGFloat?
     var messages = [Message]()
     @IBOutlet var collectionView: UICollectionView?
@@ -46,7 +80,6 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         sendButton.addTarget(self, action: #selector(sendPressed), for: .touchUpInside)
         setupBottomComponents()
         
-        let layout = UICollectionViewFlowLayout()
 
         collectionView!.register(DirectMessageBubble.self, forCellWithReuseIdentifier: cellId)
         
@@ -64,7 +97,6 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         
         
     }
-    
     func observeMessages(){
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -118,7 +150,7 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         cell.textView.text = message.text
         
         setUpCell(cell: cell, message: message)
-        
+        cell.delegate = self
         
         cell.bubbleWidthAnchor?.constant = estimatedFrameForText(text: message.text!).width + 32
         
@@ -165,61 +197,10 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
     func setupBottomComponents(){
         
         
-//        bottomContainerView.backgroundColor = UIColor.white
-//        bottomContainerView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(bottomContainerView)
-//
-//        //constrain bottom
-//        bottomContainerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-//        bottomContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-//        bottomContainerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-//        bottomContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//
-//
-//        bottomContainerView.addSubview(sendButton)
-//
-//        sendButton.rightAnchor.constraint(equalTo: bottomContainerView.rightAnchor).isActive = true
-//        sendButton.centerYAnchor.constraint(equalTo: bottomContainerView.centerYAnchor).isActive = true
-//        sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-//
-//        sendButton.heightAnchor.constraint(equalTo: bottomContainerView.heightAnchor).isActive = true
-//
-//
-//
-//        bottomContainerView.addSubview(inputTextField)
-//
-//        inputTextField.leftAnchor.constraint(equalTo: bottomContainerView.leftAnchor, constant: 8).isActive = true
-//        inputTextField.centerYAnchor.constraint(equalTo: bottomContainerView.centerYAnchor).isActive = true
-//        inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
-//        inputTextField.heightAnchor.constraint(equalTo: bottomContainerView.heightAnchor).isActive = true
-//
-//        let separatorLineView = UIView()
-//        separatorLineView.backgroundColor = UIColor.lightGray
-//        separatorLineView.translatesAutoresizingMaskIntoConstraints = false
-//        bottomContainerView.addSubview(separatorLineView)
-//
-//        separatorLineView.leftAnchor.constraint(equalTo: bottomContainerView.leftAnchor).isActive = true
-//        separatorLineView.topAnchor.constraint(equalTo: bottomContainerView.topAnchor).isActive = true
-//        separatorLineView.widthAnchor.constraint(equalTo: bottomContainerView.widthAnchor).isActive = true
-//        separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-//
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-//        toolbar.sizeToFit()
-        
-//        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-//
-//        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(self.doneClicked))
-        
-        //        cancelButton.titleLabel?.font =  UIFont(name: "Cancel", size: 12)
-//        let font = UIFont.systemFont(ofSize: 15);
-//        cancelButton.setTitleTextAttributes([NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.red], for:UIControl.State.normal)
-        
-//        toolbar.setItems([flexibleSpace, cancelButton], animated: false)
-//        textField.inputAccessoryView = toolbar
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
@@ -256,7 +237,12 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         
         if textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             view.endEditing(true)
-            ProgressHUD.showError("Did Not Send")
+            ProgressHUD.showError("Empty message")
+            return
+        }
+        
+        if !Connectivity.isConnectedToInternet{
+            ProgressHUD.showError("No internet connection")
             return
         }
         
@@ -267,7 +253,7 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         let timestamp = Int(NSDate().timeIntervalSince1970)
         let toId = otherUser!.uid
         
-        let values = ["text": textField.text!, "senderID": uid, "toId": toId, "timestamp": timestamp] as [String : Any]
+        let values = ["text": textField.text!, "senderID": uid, "toId": toId, "timestamp": timestamp, "messageId": childRef.key!] as [String : Any]
         
         childRef.updateChildValues(values, withCompletionBlock: { (error, snapshot) in
             if error != nil{

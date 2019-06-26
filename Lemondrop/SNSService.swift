@@ -82,7 +82,6 @@ class SNSService{
     static func unsubscribe(subscriptionArn: String?){
         
        let unsubscribeInput = AWSSNSUnsubscribeInput()
-        print("THIS ENDPOINT \(SNSService.deviceEndpoint)")
         unsubscribeInput?.subscriptionArn = subscriptionArn
         AWSSNS.default().unsubscribe(unsubscribeInput!).continueWith { (task) -> Any? in
     
@@ -100,16 +99,10 @@ class SNSService{
             
             
             if task.error != nil {
-                print("TASK ERROR: \(task.error)" )
                 return nil
             }
             let response = task.result
-            print("susbcriptions count \(response!.subscriptions!.count)")
-            print("description \(response?.description())")
             for subscription in response!.subscriptions! {
-                
-                print("Subscription endpoint \(subscription.endpoint)")
-                print("Subscription arn \(subscription.subscriptionArn)")
                 
                 if subscription.endpoint == SNSService.deviceEndpoint {
                     SNSService.unsubscribe(subscriptionArn: subscription.subscriptionArn)

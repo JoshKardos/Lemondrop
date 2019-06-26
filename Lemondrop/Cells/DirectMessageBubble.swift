@@ -10,7 +10,8 @@ import Foundation
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
-class DirectMessageBubble: UICollectionViewCell{
+import SwipeCellKit
+class DirectMessageBubble: SwipeCollectionViewCell{
     
     
     let textView: UITextView = {

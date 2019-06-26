@@ -13,16 +13,20 @@ import SideMenu
 import FirebaseDatabase
 import ProgressHUD
 import StoreKit
+import HYParentalGate
 class ProfileViewController: UIViewController{
     
     static var hatNames = ["white-hat", "blue-hat", "goldhat"]
     static var shirtNames = ["white-shirt", "blue-shirt", "goldshirt"]
     static var pantNames = ["white-pants", "blue-pants", "goldpants"]
+    
+   
+    @IBOutlet weak var bottomScrollView: UIScrollView!
+    
     let avatarBackgroundColor: CGColor =  #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
     var hatIndex = Int(){
         didSet{
             hatImage.image = UIImage(named: ProfileViewController.hatNames[hatIndex])
-            print(ProfileViewController.hatNames[hatIndex])
             if !user.unlockedHats.contains(String(hatIndex)){
                 hatImage.layer.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
                 enableLockButton(button: hatLockButton)
@@ -84,6 +88,7 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var ratingStars: CosmosView!
     var user: User!
     
+    @IBOutlet weak var dmButton: UIButton!
     @IBOutlet weak var ratingLabel: UILabel!
     
     @IBOutlet var outfitArrows: [UIButton]!
@@ -93,52 +98,64 @@ class ProfileViewController: UIViewController{
         
         super.viewDidLoad()
         title = "Profile"
-        ratingStars.settings.fillMode = .precise
-        configureView()
+        ratingStars.settings.fillMode = .half
         SKPaymentQueue.default().add(self)
         
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("profile appeared")
         navigationController?.isNavigationBarHidden = false
         
         
-        guard let uid = Auth.auth().currentUser?.uid else {
+        guard let _ = Auth.auth().currentUser?.uid else {//user signed out
             performSegue(withIdentifier: "ToMainStoryboard", sender: self)
             return
         }
         
-        print(uid)
-        
-        
-        
-        
+        configureView()
         
     }
     override func viewDidDisappear(_ animated: Bool) {
         SKPaymentQueue.default().remove(self)
     }
-    func configureView(){
+    
+    func setTextFields(){
         
         nameField.text = user.fullname!
-        schoolField.text = user.school!
-        ageField.text = user.ageString!
+        
+        if let school = user.school{
+            schoolField.text = school
+        } else {
+            schoolField.text = "Not Set"
+        }
+        
+        if let age = user.ageString{
+            
+            ageField.text = age
+        } else {
+            ageField.text = "Not Set"
+        }
+    }
+    
+    func configureView(){
+        
         
         if user.uid == Auth.auth().currentUser?.uid{//if current user
             
+            user = MapViewController.currentUser
+            
+            setTextFields()
+            
             let settingsButton = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(self.settingsTapped))
             self.navigationItem.setRightBarButton(settingsButton, animated: true)
-            
-            self.submitRatingButton.isHidden = true
+            dmButton.isHidden = true
+            dmButton.isEnabled = false
             disableRating()
             
         } else {//not current user
+            setTextFields()
             
-            ratingStars.didFinishTouchingCosmos = { rating in
-                
-                self.allowRating()
-            }
+            self.allowRating()
             
             self.disableArrows()
             
@@ -156,12 +173,15 @@ class ProfileViewController: UIViewController{
         
     }
     
-    @IBAction func saveOutfitPressed(_ sender: Any) {
+    @IBAction func dmButtonPressed(_ sender: Any) {
         
+        MessagesViewController.showChatController(otherUser: user, view: self)
+        
+    }
+    @IBAction func saveOutfitPressed(_ sender: Any) {
         
         if !user.unlockedHats.contains(String(hatIndex)) || !user.unlockedShirts.contains(String(shirtIndex)) || !user.unlockedPants.contains(String(pantsIndex)){
             
-            print("ERROR")
             ProgressHUD.showError("You have not unlocked all of these clothes yet")
             return
         } else if !Connectivity.isConnectedToInternet{
@@ -190,6 +210,10 @@ class ProfileViewController: UIViewController{
     }
     @IBAction func submitRatingPressed(_ sender: Any) {
         
+        if !Connectivity.isConnectedToInternet{
+            ProgressHUD.showError("Check internet connection")
+            return
+        }
         Database.database().reference().child("user-rated").child((Auth.auth().currentUser?.uid)!).child(user.uid!).setValue(1) { (error, ref) in
             
             
@@ -236,17 +260,23 @@ class ProfileViewController: UIViewController{
     }
     
     func handleLockClick(){
-        if SKPaymentQueue.canMakePayments(){
-            let paymentRequest = SKMutablePayment()
-            paymentRequest.productIdentifier = self.iapProductId!
-            SKPaymentQueue.default().add(paymentRequest)
-        } else {//cant make payments
-            
-        }
+        
+        HYParentalGate.sharedGate.show(successHandler: {
+            if SKPaymentQueue.canMakePayments(){
+                let paymentRequest = SKMutablePayment()
+                paymentRequest.productIdentifier = self.iapProductId!
+                SKPaymentQueue.default().add(paymentRequest)
+            } else {//cant make payments
+                
+            }
+        })
+        
+       
     }
     
     func disableRating(){
         self.submitRatingButton.isEnabled = false
+        self.submitRatingButton.isHidden = true
         self.ratingStars.isUserInteractionEnabled = false
     }
     func allowRating(){
@@ -260,7 +290,11 @@ class ProfileViewController: UIViewController{
         
         
         if !Connectivity.isConnectedToInternet{
-            
+            let label = UILabel(frame: self.ratingStars.frame)
+            label.text = "Not Connected to Internet"
+            label.textAlignment = .center
+            label.textColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
+            self.bottomScrollView.addSubview(label)
             self.ratingStars.rating = 0.0
             return
         }
@@ -278,13 +312,16 @@ class ProfileViewController: UIViewController{
                     }
                     
                 }
-                
+                let formatter = NumberFormatter()
+                formatter.minimumFractionDigits = 2
+                formatter.maximumFractionDigits = 2
                 self.ratingStars.rating = ( totalScore / Double(numRatings) )
-                self.ratingLabel.text = "Rating: \( totalScore / Double(numRatings))"
+                let rating = formatter.string(from: NSNumber(value: self.ratingStars!.rating))
+                self.ratingLabel.text = "Rating: \(rating!)"
                 
             } else {
                 self.ratingLabel.text = "Rating: NONE"
-                self.ratingStars.rating = 0.0
+                self.ratingStars.rating = 0.00
             }
         }
     }
@@ -373,16 +410,12 @@ extension ProfileViewController: SKPaymentTransactionObserver{
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions{
             if transaction.transactionState == .purchased{
-                print("Transaction successful")
                 purchaseOutfit()
                 SKPaymentQueue.default().finishTransaction(transaction)
             } else if transaction.transactionState == .failed{
-                print("Transaction failed")
-                
                 if let error = transaction.error {
                     let errorDescription = error.localizedDescription
                     ProgressHUD.showError("Failed: \(errorDescription)")
-                    print("Transaction failed due to error: \(errorDescription)")
                 }
                 SKPaymentQueue.default().finishTransaction(transaction)
             } else if transaction.transactionState == .restored{
@@ -396,8 +429,6 @@ extension ProfileViewController: SKPaymentTransactionObserver{
     func purchaseOutfit(){
         
         //add to current user node
-        print(self.iapAvatarNodeToAdjust!)
-        print(Auth.auth().currentUser!.uid)
         let ref = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child(self.iapAvatarNodeToAdjust!)
         
         
@@ -419,9 +450,5 @@ extension ProfileViewController: SKPaymentTransactionObserver{
         
         
         
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        print("profile disapperaing")
     }
 }

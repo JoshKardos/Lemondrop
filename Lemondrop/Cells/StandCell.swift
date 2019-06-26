@@ -40,7 +40,7 @@ class StandCell: UITableViewCell{
         let endTimeString = dateFormatter.string(from: date as Date)
         
         priceLabel.text = "Glass Price: $\(stand.pricePerGlass!)"
-        businessHoursLabel.text = "Business Hours: \(startTimeString)-\(endTimeString)"
+        businessHoursLabel.text = "Hours: \(startTimeString)-\(endTimeString)"
         cityLabel.text = stand.city
         
         

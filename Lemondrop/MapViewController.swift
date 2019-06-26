@@ -39,13 +39,14 @@ class MapViewController: UIViewController{
     var zoomLevel: Float = 15.0
     
     var tableView: UITableView!
-    var filteredStands = [LemonadeStand]()
+    static var filteredStands = [LemonadeStand]()
     var searchBar: UISearchBar!
     var greetingLabel = UILabel()
     
     static var currentUser: User!
     var profileSegue = "ProfileStoryboard"
     
+    var reloadView: UIView?
     
     override func viewDidLoad() {
         
@@ -59,39 +60,38 @@ class MapViewController: UIViewController{
         } else {
             Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
                 //self.reload()
-                self.configureEmailNotVerifiedPage()
+                MapViewController.configureEmailNotVerifiedPage(viewController: self)
             })
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
     }
-    func configureEmailNotVerifiedPage(){
+    static func configureEmailNotVerifiedPage(viewController: UIViewController){
         
-        let label = UILabel(frame: CGRect(x: 0, y: 16, width: self.view.frame.width, height: 24))
+        let label = UILabel(frame: CGRect(x: 0, y: 16, width: viewController.view.frame.width, height: 24))
         label.text = "Must verify your email"
         label.textAlignment = .center
-        label.center = self.view.center
-        self.view.addSubview(label)
+        label.center = viewController.view.center
+        viewController.view.addSubview(label)
         
         let buttonHeight: CGFloat = 48
         
-        let signOutButton = UIButton(frame: CGRect(x: 0, y: self.view.frame.height - buttonHeight, width: self.view.frame.width/2, height: buttonHeight))
-        self.view.addSubview(signOutButton)
+        let signOutButton = UIButton(frame: CGRect(x: 0, y: viewController.view.frame.height - buttonHeight, width: viewController.view.frame.width/2, height: buttonHeight))
+        viewController.view.addSubview(signOutButton)
         signOutButton.setTitle("Sign Out", for: .normal)
         signOutButton.setTitleColor(UIColor.white, for: .normal)
         signOutButton.layer.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
-        signOutButton.addTarget(self, action: #selector(signOut), for: .touchUpInside)
+        signOutButton.addTarget(viewController, action: #selector(signOut), for: .touchUpInside)
         
         
-        let resendLinkButton = UIButton(frame: CGRect(x: self.view.frame.width - (self.view.frame.width/2), y: self.view.frame.height - buttonHeight, width: self.view.frame.width/2, height: buttonHeight))
-        self.view.addSubview(resendLinkButton)
+        let resendLinkButton = UIButton(frame: CGRect(x: viewController.view.frame.width - (viewController.view.frame.width/2), y: viewController.view.frame.height - buttonHeight, width: viewController.view.frame.width/2, height: buttonHeight))
+        viewController.view.addSubview(resendLinkButton)
         resendLinkButton.setTitle("Resend Link", for: .normal)
         resendLinkButton.setTitleColor(UIColor.white, for: .normal)
         resendLinkButton.layer.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        resendLinkButton.addTarget(self, action: #selector(resendLink), for: .touchUpInside)
+        resendLinkButton.addTarget(viewController, action: #selector(resendLink), for: .touchUpInside)
         
     }
     
@@ -101,15 +101,17 @@ class MapViewController: UIViewController{
     }
     @objc func resendLink(){
         
-        Auth.auth().currentUser?.sendEmailVerification(completion: nil)
+        Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
+            
+            ProgressHUD.showSuccess("Sent a new verification link")
         
-        
-        
+        })
     }
     
     static func loadUsers(onSuccess: @escaping() -> Void, onFailure: @escaping() -> Void){
         
         users = []
+        
         let ref = Database.database().reference()
         ref.child("users").observeSingleEvent(of: .value) { (snap) in
             
@@ -122,6 +124,7 @@ class MapViewController: UIViewController{
                     
                     let newUser = User(dictionary: user)
                     MapViewController.users.append(newUser)
+                    print(newUser.fullname)
                     MapViewController.usernameUserMap[newUser.fullname!] = newUser
                     MapViewController.uidUserMap[newUser.uid!] = newUser
                     //check that a current user is initiated
@@ -159,13 +162,56 @@ class MapViewController: UIViewController{
     //
     //
     //    }
+    
+    static func reloadCurrentUser(){
+        let ref = Database.database().reference()
+        ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
+            
+            if let user = snap.value as? NSDictionary{
+                let newUser = User(dictionary: user)
+                        MapViewController.currentUser = newUser
+                    }
+                }
+    }
+    func configureFloatingReloadButton(){
+        //create view background
+        
+        let viewHeightWidth: CGFloat = 120
+        let buttonHeightWidth: CGFloat = viewHeightWidth/2
+        
+        reloadView = UIView(frame: CGRect(x: self.view.frame.width/2 - viewHeightWidth/2, y: self.view.frame.height/2 - viewHeightWidth/2, width: viewHeightWidth, height: viewHeightWidth))
+        reloadView?.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        reloadView?.layer.cornerRadius = 12
+        
+        //create label
+        let labelHeight: CGFloat = 20
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 10, width: viewHeightWidth, height: labelHeight))
+        label.text = "Click to reload..."
+        label.textAlignment = .center
+        label.font = label.font.withSize(15)
+        
+        //create button
+        let button = UIButton(frame: CGRect(x: reloadView!.frame.width/2 - buttonHeightWidth/2, y: labelHeight + 25, width: buttonHeightWidth, height: buttonHeightWidth))
+//        button.center = view.center
+        button.setImage(UIImage(named: "refresh"), for: .normal)
+        button.addTarget(self, action: #selector(reload), for: .touchUpInside)
+
+        reloadView!.addSubview(label)
+        reloadView!.addSubview(button)
+        self.view.addSubview(reloadView!)
+        
+    }
+    @objc
     func reload(){
         
-        
-        print("REALDOIGN")
+        if let view = reloadView{
+            reloadView?.removeFromSuperview()
+        }
         if !Connectivity.isConnectedToInternet{
             
             ProgressHUD.showError("Not connected to internet")
+            configureFloatingReloadButton()
             //            self.configureFloatingButton()
             
         } else {
@@ -181,22 +227,12 @@ class MapViewController: UIViewController{
                     
                     self.configureTextField()
                     
-                    
-                    
-                    
-                    
                     ProgressHUD.showSuccess("Reloaded")
-                    print("RELOADED")
-                    
                 }
             }, onFailure: {
-                
                 AuthService.logout(sender: self)
                 ProgressHUD.showError("Failed")
             })
-            
-            
-            
         }
     }
     
@@ -333,7 +369,6 @@ extension MapViewController: UISearchBarDelegate{
         
         
         
-        print("greeting label set to \(self.greetingLabel.text)")
         
         self.view.addSubview(greetingLabel)
         
@@ -360,14 +395,14 @@ extension MapViewController: UISearchBarDelegate{
     }
     func presentProfileView(user: User){
         
-        performSegue(withIdentifier: profileSegue, sender: self)
+        let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
+        profileVC.setUser(user: user)
+        //present navigation bar when going to profile view cotnroller
         
-        //        let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
-        //        profileVC.setUser(user: user)
-        //        //present navigation bar when going to profile view cotnroller
-        //
-        //        navigationController?.pushViewController(profileVC, animated: true)
-        //
+        navigationController?.pushViewController(profileVC, animated: true)
+        
+//        performSegue(withIdentifier: profileSegue, sender: self)
+        
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == profileSegue{
@@ -430,16 +465,15 @@ extension MapViewController: UISearchBarDelegate{
     func filterContent(searchText: String){
         
         
-        self.filteredStands = MapViewController.activeLemonadeStands.filter{ stand in
+        MapViewController.filteredStands = MapViewController.activeLemonadeStands.filter{ stand in
             
-            let string = ("\(stand.standName)")
+            let string = "\(stand.standName)"
             
             return(string.lowercased().contains(searchText.lowercased()))
             
         }
         
         tableView.reloadData()
-        
         
     }
     
@@ -449,7 +483,7 @@ extension MapViewController: UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         updateSearchResults(for: searchBar)
         
-        if filteredStands.count < 1 {
+        if MapViewController.filteredStands.count < 1 {
             tableView.removeFromSuperview()
         } else {
             self.view.addSubview(tableView)
@@ -465,6 +499,8 @@ extension MapViewController: GMSMapViewDelegate{
     static func loadLemonadeStands(view: MapViewController, onSuccess: @escaping() -> Void){
         
         lemonadeStands = []
+        activeLemonadeStands = []
+        filteredStands = []
         //remove all markers from mapview
         view.mapView.clear()
         view.workingAStand = false
@@ -480,10 +516,6 @@ extension MapViewController: GMSMapViewDelegate{
                         let lemonadeStand = LemonadeStand(dictionary: dict)
                         
                         MapViewController.lemonadeStands.append(lemonadeStand)
-                        //thjis will bring up an issue with different time zones
-                        
-                        
-                        
                         
                     }
                 }
@@ -523,7 +555,7 @@ extension MapViewController: GMSMapViewDelegate{
         let marker = GMSMarker(position: location.coordinate)
         marker.icon = UIImage(named: "mapViewLemon")
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm"
+        dateFormatter.dateFormat = "h:mm a"
         let timestampDate = NSDate(timeIntervalSince1970: stand.endTime)
         
         
@@ -533,10 +565,12 @@ extension MapViewController: GMSMapViewDelegate{
         
         marker.title = "Stand Name: \(stand.standName!) | Created By: \(stand.creatorName!) | Closes At: \(dateFormatter.string(from: timestampDate as Date))"
         
+        print( MapViewController.usernameUserMap[stand.creatorName])
+        
         MapViewController.markerUserMap[marker] = MapViewController.usernameUserMap[stand.creatorName]
     }
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
-        
+        print(MapViewController.markerUserMap[marker]!.fullname)
         self.presentProfileView(user: MapViewController.markerUserMap[marker]!)
         
     }
@@ -642,7 +676,7 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if searchBar.text! != ""{
-            return filteredStands.count
+            return MapViewController.filteredStands.count
         }
         
         return 0
@@ -651,7 +685,7 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
-        cell.textLabel?.text = filteredStands[indexPath.row].standName
+        cell.textLabel?.text = MapViewController.filteredStands[indexPath.row].standName
         
         return cell
     }
@@ -662,14 +696,13 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.transitionMapToStand(stand: filteredStands[indexPath.row])
+        self.transitionMapToStand(stand: MapViewController.filteredStands[indexPath.row])
         
         //create directions from current location to stand
-        self.drawPath(startLocation: locationManager.location!, endLocation: CLLocation(latitude: filteredStands[indexPath.row].latitude, longitude: filteredStands[indexPath.row].longitude))
+        self.drawPath(startLocation: locationManager.location!, endLocation: CLLocation(latitude: MapViewController.filteredStands[indexPath.row].latitude, longitude: MapViewController.filteredStands[indexPath.row].longitude))
     }
     
     func drawPath(startLocation: CLLocation, endLocation: CLLocation){
-        print("draw payj")
         let origin = "\(startLocation.coordinate.latitude),\(startLocation.coordinate.longitude)"
         let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
         
@@ -733,13 +766,24 @@ extension UIView {
 
 extension MapViewController{//bulletin board functions
     static func getStandsFromUsersSchool() -> [LemonadeStand]{
+        if currentUser.school == nil {
+            return []
+        }
+        
         
         var stands:[LemonadeStand] = []
         
+        
+        
         for stand in MapViewController.lemonadeStands{
-            if MapViewController.usernameUserMap[stand.creatorName]?.school.lowercased() == currentUser.school.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) {
-                stands.append(stand)
+            
+            if let otherUserSchool = MapViewController.usernameUserMap[stand.creatorName]?.school{
+                
+                if otherUserSchool.lowercased() == currentUser.school!.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) {
+                    stands.append(stand)
+                }
             }
+            
         }
         
         
@@ -770,7 +814,7 @@ extension MapViewController{//bulletin board functions
         
         let hoursToAdd = 1
         
-        let newDate = Calendar.current.date(byAdding: .month, value: hoursToAdd, to: Date())
+        let newDate = Calendar.current.date(byAdding: .hour, value: hoursToAdd, to: Date())
         
         for stand in MapViewController.lemonadeStands{
             if Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) <= newDate! && Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) > date {

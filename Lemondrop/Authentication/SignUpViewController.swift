@@ -22,7 +22,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var fullnameActivityBar: UIActivityIndicatorView!
     
     @IBOutlet weak var fullnameWarningLabel: UILabel!
-    var fullNameIsUnique: Bool?
+    var fullNameIsUnique = true
     
     
     override func viewDidLoad() {
@@ -52,13 +52,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        if self.fullNameIsUnique!{
+        if self.fullNameIsUnique{
             if validTextFields(){
                 
                 
                 ProgressHUD.show("Waiting...", interaction: false)
                 
-                AuthService.signUp(fullname: self.fullNameTextField.text!, email: self.emailTextField.text!, password: self.passwordTextField.text!, school: self.schoolTextField.text!, age: self.ageTextField.text!, onSuccess:{
+                
+                
+                AuthService.signUp(fullname: self.fullNameTextField.text!, email: self.emailTextField.text!, password: self.passwordTextField.text!, school: self.schoolTextField.text, age: self.ageTextField.text, onSuccess:{
                     
                     ProgressHUD.showSuccess("Success")
                     self.performSegue(withIdentifier: "showDetailMapView", sender: nil)
@@ -143,7 +145,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         //        invitation.range(of: #"\bClue(do)?™?\b"#, options: .regularExpression) != nil // true
         //first name --> "^[a-z]{1,10}$"  last name --> "^[a-z'\\-]{2,20}$",
         
-        if !fullNameTextField.text!.isEmpty && !ageTextField.text!.isEmpty && !schoolTextField.text!.isEmpty && !emailTextField.text!.isEmpty && !passwordTextField.text!.isEmpty{
+        if !fullNameTextField.text!.isEmpty &&  !emailTextField.text!.isEmpty && !passwordTextField.text!.isEmpty{
             
             return true
             

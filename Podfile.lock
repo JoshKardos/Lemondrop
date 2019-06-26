@@ -82,6 +82,7 @@ PODS:
   - GoogleUtilities/UserDefaults (6.1.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.1)
+  - HYParentalGate (1.0.8)
   - leveldb-library (1.20)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
@@ -91,6 +92,7 @@ PODS:
   - ProgressHUD (2.60)
   - SideMenu (5.0.3)
   - SwiftyJSON (4.3.0)
+  - SwipeCellKit (2.6.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -103,9 +105,11 @@ DEPENDENCIES:
   - Floaty (~> 4.2.0)
   - GoogleMaps
   - GooglePlaces
+  - HYParentalGate (~> 1.0)
   - ProgressHUD
   - SideMenu
   - SwiftyJSON (~> 4.0)
+  - SwipeCellKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -127,11 +131,13 @@ SPEC REPOS:
     - GooglePlaces
     - GoogleUtilities
     - GTMSessionFetcher
+    - HYParentalGate
     - leveldb-library
     - nanopb
     - ProgressHUD
     - SideMenu
     - SwiftyJSON
+    - SwipeCellKit
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
@@ -152,12 +158,14 @@ SPEC CHECKSUMS:
   GooglePlaces: e874db179f2675c4f3eeda0b686b540273a578b0
   GoogleUtilities: 84df567c76ca84f67b7bb40e769fdd4acc746a10
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
+  HYParentalGate: 7de99e0a58a1121ef3039e336b0d7c44438c95e3
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   ProgressHUD: 4e4efbaf4f5de8bd32e0c4c3b6644a90ea1a8c3e
   SideMenu: 1dcaabce84538c53325c287f7fe62999379a641c
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+  SwipeCellKit: 935ca28c187ec6e1ffb2b578cf8ddca842bfdcbb
 
-PODFILE CHECKSUM: 883cc90cf39da0038539d103ad7b0ce9172690da
+PODFILE CHECKSUM: 5f29ccd764635a2634bcb1c768da6d60f1489863
 
 COCOAPODS: 1.6.2

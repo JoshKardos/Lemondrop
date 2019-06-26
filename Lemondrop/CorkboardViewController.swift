@@ -11,13 +11,27 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import ProgressHUD
+
+
+import GoogleMaps
+import GooglePlaces
+import CoreLocation
+
 class CorkboardViewController: UIViewController{
     
     
     @IBOutlet weak var filter: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    var standsShowing = [LemonadeStand]()
+    var noStandsLabel: UILabel?
+    var standsShowing = [LemonadeStand](){
+        didSet{
+            
+            noStandsLabel?.removeFromSuperview()
+            if standsShowing.count == 0{
+                configureNoStandsLabel()
+            } 
+        }
+    }
     
     static let cellIdentifier = "StickyNote"
     
@@ -38,13 +52,66 @@ class CorkboardViewController: UIViewController{
         
         return collectionView.backgroundView
     }
-
+    
+    func configureNoStandsLabel(){
+        self.noStandsLabel = UILabel(frame: CGRect(x: (self.view.frame.width/2 - 50), y: (self.view.frame.height/2 - 50), width: 100, height: 100))
+        noStandsLabel!.text = "0 Stands"
+        noStandsLabel!.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.view.addSubview(noStandsLabel!)
+    }
 }
+
 extension CorkboardViewController{//segment controller / filter
     
     func establishSegmentControlTitles(){
-        filter.setTitle( MapViewController.currentUser.school!, forSegmentAt: 0)// = MapViewController.currentUser.school!
-        guard let url = URL(string:  "https://maps.googleapis.com/maps/api/geocode/json?latlng=\((MapViewController.currentLocation?.coordinate.latitude)!),\((MapViewController.currentLocation?.coordinate.longitude)!)&key=\(ApiKeys.googleMapsApiKey)") else {
+        
+        if let school = MapViewController.currentUser.school{
+            filter.setTitle( school, forSegmentAt: 0)// = MapViewController.currentUser.school!
+        } else {
+            filter.setTitle("N/A", forSegmentAt: 0)
+        }
+        
+        
+        filter.setTitle("Closing Soon", forSegmentAt: 2)
+        
+        //
+        
+        
+
+        if CLLocationManager.locationServicesEnabled(){
+            
+        switch CLLocationManager.authorizationStatus(){
+            case .notDetermined, .restricted,.denied:
+                
+                print("Location not enabled")
+                self.filter.setTitle("No Location", forSegmentAt: 1)
+                return
+            case .authorizedAlways, .authorizedWhenInUse:
+                print("Access granted")
+                
+            }
+        } else {
+            
+            
+            print("Location not enabled")
+            self.filter.setTitle("No Location", forSegmentAt: 1)
+            return
+        }
+        
+        guard let locationLatitude = (MapViewController.currentLocation?.coordinate.latitude) else {
+            
+            self.filter.setTitle("No Location", forSegmentAt: 1)
+            print("error getting location latitude")
+            return
+        }
+        guard let locationLongitude = (MapViewController.currentLocation?.coordinate.longitude) else {
+            
+            self.filter.setTitle("No Location", forSegmentAt: 1)
+            print("error getting location longitutde")
+            return
+        }
+        
+        guard let url = URL(string:  "https://maps.googleapis.com/maps/api/geocode/json?latlng=\(locationLatitude),\(locationLongitude)&key=\(ApiKeys.googleMapsApiKey)") else {
             return
         }
         
@@ -56,22 +123,22 @@ extension CorkboardViewController{//segment controller / filter
                     self.filter.setTitle(googleJSON["results"][0]["address_components"][3]["long_name"].string, forSegmentAt: 1)
                     return
                 } else {
-                     self.filter.setTitle("N/A", forSegmentAt: 1)
+                     self.filter.setTitle("No Location", forSegmentAt: 1)
                 }
         }
+        
         
     }
     
     @IBAction func filterClicked(_ sender: Any) {
         if filter.selectedSegmentIndex == 0 {
             standsShowing = MapViewController.getStandsFromUsersSchool()
-            print(0)
         } else if filter.selectedSegmentIndex == 1 {
             standsShowing = MapViewController.getStandsFrom(city: filter.titleForSegment(at: 1)!)
-            print(1)
+            
         } else if filter.selectedSegmentIndex == 2{
             standsShowing = MapViewController.getStandsClosingSoon()
-            print(2)
+            
         }
         collectionView.reloadData()
     }
