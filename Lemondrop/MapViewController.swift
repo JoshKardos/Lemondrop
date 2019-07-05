@@ -27,7 +27,7 @@ class MapViewController: UIViewController{
     static var lemonadeStands = [LemonadeStand]()
     static var activeLemonadeStands = [LemonadeStand]()
     static var users = [User]()
-    static var usernameUserMap = [String: User]()
+//    static var usernameUserMap = [String: User]()
     static var uidUserMap = [String: User]()
     static var markerUserMap = [GMSMarker: User]()
     static let googleMapsApiKey = ApiKeys.googleMapsApiKey
@@ -42,13 +42,21 @@ class MapViewController: UIViewController{
     static var filteredStands = [LemonadeStand]()
     var searchBar: UISearchBar!
     var greetingLabel = UILabel()
-    
+    var distanceTimeView: UIView?
+    var polyline: GMSPolyline?
+    var clearButton: UIButton?
     static var currentUser: User!
     var profileSegue = "ProfileStoryboard"
     
     var reloadView: UIView?
     
+    
+    static var firstTimeLoggingIn = false
     override func viewDidLoad() {
+        
+        // set observer for UIApplication.willEnterForegroundNotification
+//        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
         
         if Auth.auth().currentUser!.isEmailVerified{
             
@@ -58,20 +66,38 @@ class MapViewController: UIViewController{
             
             reload()
         } else {
+            
             Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
                 //self.reload()
+                MapViewController.firstTimeLoggingIn = true
                 MapViewController.configureEmailNotVerifiedPage(viewController: self)
             })
         }
     }
-    
+    // my selector that was defined above
+//    @objc func willEnterForeground() {
+//        print("will enter foreground")
+//        // do stuff
+//        print(Auth.auth().currentUser!.isEmailVerified )
+//        print(MapViewController.firstTimeLoggingIn)
+//        if Auth.auth().currentUser!.isEmailVerified && MapViewController.firstTimeLoggingIn{
+//
+//            configureMapbackground()
+//            reload()
+//
+//        }
+//    }
     override func viewWillAppear(_ animated: Bool) {
+        print("ViewAppeared")
         navigationController?.isNavigationBarHidden = true
+        
+        
     }
     static func configureEmailNotVerifiedPage(viewController: UIViewController){
         
-        let label = UILabel(frame: CGRect(x: 0, y: 16, width: viewController.view.frame.width, height: 24))
-        label.text = "Must verify your email"
+        let label = UILabel(frame: CGRect(x: 0, y: 16, width: viewController.view.frame.width, height: 48))
+        label.numberOfLines = 2
+        label.text = "Must verify your email, sign out and then sign back in when you have finished verifying"
         label.textAlignment = .center
         label.center = viewController.view.center
         viewController.view.addSubview(label)
@@ -124,8 +150,7 @@ class MapViewController: UIViewController{
                     
                     let newUser = User(dictionary: user)
                     MapViewController.users.append(newUser)
-                    print(newUser.fullname)
-                    MapViewController.usernameUserMap[newUser.fullname!] = newUser
+//                    MapViewController.usernameUserMap[newUser.fullname!] = newUser
                     MapViewController.uidUserMap[newUser.uid!] = newUser
                     //check that a current user is initiated
                     if newUser.uid == Auth.auth().currentUser?.uid{
@@ -205,8 +230,15 @@ class MapViewController: UIViewController{
     @objc
     func reload(){
         
-        if let view = reloadView{
+        if let _ = reloadView{
             reloadView?.removeFromSuperview()
+        }
+        if let view = self.distanceTimeView {
+            view.removeFromSuperview()
+        }
+        if let line = self.polyline {
+            line.map = nil
+            
         }
         if !Connectivity.isConnectedToInternet{
             
@@ -265,8 +297,17 @@ class MapViewController: UIViewController{
         
         mapView.isMyLocationEnabled = true
         mapView.delegate = self
-        //enable geocoding https://www.raywenderlich.com/197-google-maps-ios-sdk-tutorial-getting-started
         
+        
+        
+        let view = UIView(frame: CGRect(x: 5, y: mapView.frame.height - 80, width: 60, height: 80))
+        view.isUserInteractionEnabled = true
+        mapView.addSubview(view)
+        
+//        imageView.
+//        let image = imageView.image!
+//        imageView.isUserInteractionEnabled = false
+        //enable geocoding https://www.raywenderlich.com/197-google-maps-ios-sdk-tutorial-getting-started
         
     }
     
@@ -341,14 +382,7 @@ extension MapViewController: UISearchBarDelegate{
         let backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
         let borderColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1).cgColor
         
-        print(self.view.bounds.height)
         let topBoxYStart: CGFloat = 42
-        
-        //        print("\(self.view.bounds.height) > \(CGFloat(iphone7ScreenHeight))?")
-        //        if CGFloat(self.view.bounds.height) > CGFloat(iphone7ScreenHeight){
-        //            print("\(self.view.bounds.height) > \(CGFloat(iphone7ScreenHeight))")
-        //            topBoxYStart = view.bounds.height/4
-        //        }
         
         greetingLabel.frame =  CGRect(x: 16, y: topBoxYStart, width: view.bounds.width - 32, height: 42)
         greetingLabel.backgroundColor = backgroundColor
@@ -397,11 +431,7 @@ extension MapViewController: UISearchBarDelegate{
         
         let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
         profileVC.setUser(user: user)
-        //present navigation bar when going to profile view cotnroller
-        
         navigationController?.pushViewController(profileVC, animated: true)
-        
-//        performSegue(withIdentifier: profileSegue, sender: self)
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -507,7 +537,7 @@ extension MapViewController: GMSMapViewDelegate{
         view.currentUsersStand = nil
         
         Database.database().reference().child("activeLemonadeStands").observeSingleEvent(of: .value) { (snapshot) in
-            print("LEMONADE STAND COUNT \(lemonadeStands.count)")
+            
             if let snap = snapshot.value as? NSDictionary{
                 
                 for (_, stand) in snap {
@@ -565,12 +595,11 @@ extension MapViewController: GMSMapViewDelegate{
         
         marker.title = "Stand Name: \(stand.standName!) | Created By: \(stand.creatorName!) | Closes At: \(dateFormatter.string(from: timestampDate as Date))"
         
-        print( MapViewController.usernameUserMap[stand.creatorName])
         
-        MapViewController.markerUserMap[marker] = MapViewController.usernameUserMap[stand.creatorName]
+        
+        MapViewController.markerUserMap[marker] = MapViewController.uidUserMap[stand.userId!]
     }
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
-        print(MapViewController.markerUserMap[marker]!.fullname)
         self.presentProfileView(user: MapViewController.markerUserMap[marker]!)
         
     }
@@ -696,10 +725,113 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.clearButtonPressed()
+        
         self.transitionMapToStand(stand: MapViewController.filteredStands[indexPath.row])
         
         //create directions from current location to stand
         self.drawPath(startLocation: locationManager.location!, endLocation: CLLocation(latitude: MapViewController.filteredStands[indexPath.row].latitude, longitude: MapViewController.filteredStands[indexPath.row].longitude))
+        
+        //remove table view
+        tableView.removeFromSuperview()
+        //remove keyboard
+        searchBar.endEditing(true)
+        
+    }
+    
+    @objc
+    func clearButtonPressed(){
+        self.polyline?.map = nil
+        self.distanceTimeView?.removeFromSuperview()
+        self.clearButton?.removeFromSuperview()
+    }
+    
+    func configureDistanceView(distance: String, time: String){
+        
+        clearButton = UIButton(frame: CGRect(x: 8, y: self.view.frame.height-138, width: 54, height: 24))
+//        clearButton.layer.cornerRadius = 16
+        
+        guard let button = clearButton else {
+            return
+        }
+        button.setTitle("Clear", for: .normal)
+        button.layer.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
+        button.titleLabel?.textAlignment = .center
+        button.addTarget(self, action: #selector(clearButtonPressed), for: .touchUpInside)
+        
+        self.distanceTimeView = UIView(frame: CGRect(origin: CGPoint(x: 8, y: CGFloat(self.view.frame.height - 106)), size: CGSize(width: self.view.frame.width/2 - 25, height: 79)))
+        
+        guard let view = self.distanceTimeView else {
+            return
+        }
+        let timePlaceholderLabel = UILabel(frame: CGRect(x: 0, y: 2, width: view.frame.width, height: 16))
+        timePlaceholderLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        timePlaceholderLabel.text = "Time"
+        timePlaceholderLabel.textAlignment = .center
+        
+        let timeLabel = UILabel(frame: CGRect(x: 0, y: 18, width: view.frame.width, height: 16))
+        timeLabel.text = time
+        timeLabel.textAlignment = .center
+        timeLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        
+        let distancePlaceholderLabel = UILabel(frame: CGRect(x: 0, y: view.frame.height/2 + 4, width: view.frame.width, height: 16))
+        distancePlaceholderLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        distancePlaceholderLabel.text = "Distance"
+        distancePlaceholderLabel.textAlignment = .center
+        let distanceLabel = UILabel(frame: CGRect(x: 0, y: view.frame.height/2 + 16 + 4, width: view.frame.width, height: 16))
+        distanceLabel.text = distance
+        distanceLabel.textAlignment = .center
+        distanceLabel.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        view.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
+        self.view.addSubview(button)
+         view.layer.cornerRadius = 12
+         view.addSubview(timePlaceholderLabel)
+         view.addSubview(timeLabel)
+         view.addSubview(distancePlaceholderLabel)
+         view.addSubview(distanceLabel)
+        self.view.addSubview(view)
+        
+    }
+    func getDistance(startLocation: CLLocation, endLocation: CLLocation){
+        
+        let origin = "\(startLocation.coordinate.latitude),\(startLocation.coordinate.longitude)"
+        let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
+        let url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=\(origin)&destinations=\(destination)&key=\(ApiKeys.googleDistanceMatrixApiKey)"
+        
+        
+        
+        Alamofire.request(url, method: .get)
+            .responseJSON {(response) in
+                
+                if response.error == nil {
+                    
+                    do {
+                        let json : JSON  = try JSON(data: response.data!)
+                        let elements = json["rows"][0]["elements"].arrayValue
+                        
+                        print("json \(json)")
+                        print("ELEMENTS \(elements)")
+                    
+                        let distanceString = elements[0]["distance"]["text"].stringValue
+                        let timeString = elements[0]["duration"]["text"].stringValue
+                        
+                        self.configureDistanceView(distance: distanceString, time: timeString)
+                        
+                        print(distanceString)
+                    } catch {
+                        print(error)
+                    }
+                    
+                } else {
+                    ProgressHUD.showError("Error getting directions")
+                }
+        }
+        
+
+        
     }
     
     func drawPath(startLocation: CLLocation, endLocation: CLLocation){
@@ -710,16 +842,13 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
         Alamofire.request(url, method: .get)
             .responseJSON {(response) in
             
-            
-            
             if response.error == nil {
                 
                 do {
                     let json : JSON  = try JSON(data: response.data!)
                     let routes = json["routes"].arrayValue
                     
-                    print("json \(json)")
-                    
+                    //distance = json["routes"][0]["legs"][1]
                     for route in routes{
                         let routeOverviewPolyline = route["overview_polyline"].dictionary
                         let points = routeOverviewPolyline?["points"]?.stringValue
@@ -729,6 +858,9 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
                         polyline.strokeWidth = 4
                         polyline.strokeColor = UIColor.red
                         polyline.map = self.mapView
+                        self.polyline = polyline
+                        
+                        self.getDistance(startLocation: startLocation, endLocation: endLocation)
                     }
                 } catch {
                     print(error)
@@ -777,7 +909,7 @@ extension MapViewController{//bulletin board functions
         
         for stand in MapViewController.lemonadeStands{
             
-            if let otherUserSchool = MapViewController.usernameUserMap[stand.creatorName]?.school{
+            if let otherUserSchool = MapViewController.uidUserMap[stand.userId]?.school{
                 
                 if otherUserSchool.lowercased() == currentUser.school!.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) {
                     stands.append(stand)

@@ -11,6 +11,7 @@ import GoogleMaps
 import GooglePlaces
 import Firebase
 import AWSSNS
+import OneSignal
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,9 +25,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey(MapViewController.googleMapsApiKey)
         GMSPlacesClient.provideAPIKey(MapViewController.googleMapsApiKey)
     
-        UNService.shared.authorize()
-        SNSService.shared.configure()
+//        UNService.shared.authorize()
         
+        let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
+        // Replace 'YOUR_APP_ID' with your OneSignal App ID.
+        OneSignal.initWithLaunchOptions(launchOptions,
+                                        appId: ApiKeys.oneSignalAppId,
+                                        handleNotificationAction: nil,
+                                        settings: onesignalInitSettings)
+        
+        OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification;
+        
+        // Recommend moving the below line to prompt for push after informing the user about
+        //   how your app will use them.
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+            print("User accepted notifications: \(accepted)")
+        
+        })
+        
+        
+//        SNSService.shared.configure()
+//        
         FirebaseApp.configure()
         
         return true
@@ -36,10 +55,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("did register for un")
     
         let token = deviceToken.reduce(""){ $0 + String(format: "%02X", $1)}
-        print(token)
+        print("token \(token)")
         User.current.token = token
     }
     
+    func applicationWillTerminate(_ application: UIApplication) {
+        
+    }
     
 }
 

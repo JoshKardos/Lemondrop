@@ -45,7 +45,21 @@
 		B3CB357B22B435F700BB0A95 /* UserStandsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */; };
 		B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357C22B4365400BB0A95 /* StandCell.swift */; };
 		B3F7F45D22BC5F28001B25E8 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7F45C22BC5F28001B25E8 /* ChangeEmailViewController.swift */; };
+		B3F7F46522C520D3001B25E8 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7F46422C520D3001B25E8 /* NotificationService.swift */; };
+		B3F7F46922C520D4001B25E8 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B3F7F46222C520D3001B25E8 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B3F7F46E22C722C8001B25E8 /* SetEndTimePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7F46D22C722C8001B25E8 /* SetEndTimePopupViewController.swift */; };
+		CAEBA7245132DCB47A90726B /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5BCE53F632BE6E492C2871F /* Pods_OneSignalNotificationServiceExtension.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B3F7F46722C520D4001B25E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B34074D5228E35EE00FF6ED6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B3F7F46122C520D3001B25E8;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		B3CB357222AC3C6C00BB0A95 /* Embed App Extensions */ = {
@@ -54,6 +68,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				B3F7F46922C520D4001B25E8 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,6 +78,8 @@
 /* Begin PBXFileReference section */
 		343C9D0A3D72B419AC3F06FD /* Pods_Lemondrop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Lemondrop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8122957C3EB312FD4243B64F /* Pods-Lemondrop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.debug.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.debug.xcconfig"; sourceTree = "<group>"; };
+		843FA187CD7309C78EA1F33C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		9F382821328135B96FD7E900 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		B34074DD228E35EE00FF6ED6 /* Lemondrop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lemondrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B34074E2228E35EE00FF6ED6 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +119,11 @@
 		B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStandsTableViewController.swift; sourceTree = "<group>"; };
 		B3CB357C22B4365400BB0A95 /* StandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandCell.swift; sourceTree = "<group>"; };
 		B3F7F45C22BC5F28001B25E8 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
+		B3F7F46222C520D3001B25E8 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3F7F46422C520D3001B25E8 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		B3F7F46622C520D4001B25E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3F7F46D22C722C8001B25E8 /* SetEndTimePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEndTimePopupViewController.swift; sourceTree = "<group>"; };
+		B5BCE53F632BE6E492C2871F /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +137,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B3F7F45F22C520D3001B25E8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAEBA7245132DCB47A90726B /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -123,6 +153,8 @@
 			children = (
 				8122957C3EB312FD4243B64F /* Pods-Lemondrop.debug.xcconfig */,
 				FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */,
+				9F382821328135B96FD7E900 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				843FA187CD7309C78EA1F33C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -131,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				B34074DF228E35EE00FF6ED6 /* Lemondrop */,
+				B3F7F46322C520D3001B25E8 /* OneSignalNotificationServiceExtension */,
 				B34074DE228E35EE00FF6ED6 /* Products */,
 				1B830EF95352B76630B45AB5 /* Pods */,
 				CC9950477193C2C4736B1854 /* Frameworks */,
@@ -141,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				B34074DD228E35EE00FF6ED6 /* Lemondrop.app */,
+				B3F7F46222C520D3001B25E8 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,6 +208,7 @@
 				B36745E222BC039000ED5A06 /* EditProfileViewController.swift */,
 				B36745E822BC4F8300ED5A06 /* ChangePasswordViewController.swift */,
 				B3F7F45C22BC5F28001B25E8 /* ChangeEmailViewController.swift */,
+				B3F7F46D22C722C8001B25E8 /* SetEndTimePopupViewController.swift */,
 			);
 			path = Lemondrop;
 			sourceTree = "<group>";
@@ -221,11 +256,21 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		B3F7F46322C520D3001B25E8 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				B3F7F46422C520D3001B25E8 /* NotificationService.swift */,
+				B3F7F46622C520D4001B25E8 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
+			sourceTree = "<group>";
+		};
 		CC9950477193C2C4736B1854 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */,
 				343C9D0A3D72B419AC3F06FD /* Pods_Lemondrop.framework */,
+				B5BCE53F632BE6E492C2871F /* Pods_OneSignalNotificationServiceExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -248,11 +293,30 @@
 			buildRules = (
 			);
 			dependencies = (
+				B3F7F46822C520D4001B25E8 /* PBXTargetDependency */,
 			);
 			name = Lemondrop;
 			productName = Lemondrop;
 			productReference = B34074DD228E35EE00FF6ED6 /* Lemondrop.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B3F7F46122C520D3001B25E8 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3F7F46C22C520D4001B25E8 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				98D1E63355B84AFD69D07F18 /* [CP] Check Pods Manifest.lock */,
+				B3F7F45E22C520D3001B25E8 /* Sources */,
+				B3F7F45F22C520D3001B25E8 /* Frameworks */,
+				B3F7F46022C520D3001B25E8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = B3F7F46222C520D3001B25E8 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -281,6 +345,9 @@
 							};
 						};
 					};
+					B3F7F46122C520D3001B25E8 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
 				};
 			};
 			buildConfigurationList = B34074D8228E35EE00FF6ED6 /* Build configuration list for PBXProject "Lemondrop" */;
@@ -297,6 +364,7 @@
 			projectRoot = "";
 			targets = (
 				B34074DC228E35EE00FF6ED6 /* Lemondrop */,
+				B3F7F46122C520D3001B25E8 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -314,6 +382,13 @@
 				B36C5EDE22A09D2D00E548B5 /* Profile.storyboard in Resources */,
 				B34074E8228E35F000FF6ED6 /* Assets.xcassets in Resources */,
 				B34074E6228E35EE00FF6ED6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3F7F46022C520D3001B25E8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +412,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/HYParentalGate/HYParentalGate.framework",
+				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/ProgressHUD/ProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -356,6 +432,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HYParentalGate.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -384,6 +461,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Lemondrop-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		98D1E63355B84AFD69D07F18 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -423,6 +522,7 @@
 			files = (
 				B36745E322BC039000ED5A06 /* EditProfileViewController.swift in Sources */,
 				B36C5EED22A8311400E548B5 /* DirectMessageBubble.swift in Sources */,
+				B3F7F46E22C722C8001B25E8 /* SetEndTimePopupViewController.swift in Sources */,
 				B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */,
 				B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */,
 				B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */,
@@ -452,7 +552,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B3F7F45E22C520D3001B25E8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3F7F46522C520D3001B25E8 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B3F7F46822C520D4001B25E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B3F7F46122C520D3001B25E8 /* OneSignalNotificationServiceExtension */;
+			targetProxy = B3F7F46722C520D4001B25E8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B34074E4228E35EE00FF6ED6 /* Main.storyboard */ = {
@@ -594,6 +710,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8122957C3EB312FD4243B64F /* Pods-Lemondrop.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Lemondrop/Lemondrop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -615,6 +732,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FF03F70A81D7B0CCC5B6B917 /* Pods-Lemondrop.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Lemondrop/Lemondrop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -629,6 +747,46 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B3F7F46A22C520D4001B25E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F382821328135B96FD7E900 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S879Z9A2RC;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B3F7F46B22C520D4001B25E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 843FA187CD7309C78EA1F33C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S879Z9A2RC;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -649,6 +807,15 @@
 			buildConfigurations = (
 				B34074F0228E35F000FF6ED6 /* Debug */,
 				B34074F1228E35F000FF6ED6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3F7F46C22C520D4001B25E8 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3F7F46A22C520D4001B25E8 /* Debug */,
+				B3F7F46B22C520D4001B25E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -23,6 +23,13 @@ pod 'GoogleMaps'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'HYParentalGate', '~> 1.0'
   pod 'SwipeCellKit'
+  pod 'OneSignal', '>= 2.6.2', '< 3.0'
+  pod 'MarqueeLabel'
 end
 
+target 'OneSignalNotificationServiceExtension' do
+  use_frameworks!
+  
+  pod 'OneSignal', '>= 2.6.2', '< 3.0'
+end
 

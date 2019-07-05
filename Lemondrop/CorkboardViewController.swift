@@ -112,6 +112,7 @@ extension CorkboardViewController{//segment controller / filter
         }
         
         guard let url = URL(string:  "https://maps.googleapis.com/maps/api/geocode/json?latlng=\(locationLatitude),\(locationLongitude)&key=\(ApiKeys.googleMapsApiKey)") else {
+            self.filter.setTitle("No Location", forSegmentAt: 1)
             return
         }
         
@@ -119,6 +120,7 @@ extension CorkboardViewController{//segment controller / filter
             .responseJSON { response in
                 if response.result.isSuccess {
                     let googleJSON : JSON = JSON(response.result.value!)
+                    print(googleJSON)
                     print(googleJSON["results"][0]["address_components"][3]["long_name"])
                     self.filter.setTitle(googleJSON["results"][0]["address_components"][3]["long_name"].string, forSegmentAt: 1)
                     return
@@ -134,7 +136,10 @@ extension CorkboardViewController{//segment controller / filter
         if filter.selectedSegmentIndex == 0 {
             standsShowing = MapViewController.getStandsFromUsersSchool()
         } else if filter.selectedSegmentIndex == 1 {
-            standsShowing = MapViewController.getStandsFrom(city: filter.titleForSegment(at: 1)!)
+            guard let title = filter.titleForSegment(at: 1) else {
+                return
+            }
+            standsShowing = MapViewController.getStandsFrom(city: title)
             
         } else if filter.selectedSegmentIndex == 2{
             standsShowing = MapViewController.getStandsClosingSoon()

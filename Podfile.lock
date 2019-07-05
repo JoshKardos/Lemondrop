@@ -84,11 +84,13 @@ PODS:
   - GTMSessionFetcher/Core (1.2.1)
   - HYParentalGate (1.0.8)
   - leveldb-library (1.20)
+  - MarqueeLabel (4.0.0)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - OneSignal (2.10.0)
   - ProgressHUD (2.60)
   - SideMenu (5.0.3)
   - SwiftyJSON (4.3.0)
@@ -106,6 +108,8 @@ DEPENDENCIES:
   - GoogleMaps
   - GooglePlaces
   - HYParentalGate (~> 1.0)
+  - MarqueeLabel
+  - OneSignal (< 3.0, >= 2.6.2)
   - ProgressHUD
   - SideMenu
   - SwiftyJSON (~> 4.0)
@@ -133,7 +137,9 @@ SPEC REPOS:
     - GTMSessionFetcher
     - HYParentalGate
     - leveldb-library
+    - MarqueeLabel
     - nanopb
+    - OneSignal
     - ProgressHUD
     - SideMenu
     - SwiftyJSON
@@ -160,12 +166,14 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   HYParentalGate: 7de99e0a58a1121ef3039e336b0d7c44438c95e3
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  MarqueeLabel: b55b26e690b6ad41faedd95cbf5eae6f1d1735b4
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  OneSignal: 0f5ff711d9f25da54885e4ab06ef0abc221a46ef
   ProgressHUD: 4e4efbaf4f5de8bd32e0c4c3b6644a90ea1a8c3e
   SideMenu: 1dcaabce84538c53325c287f7fe62999379a641c
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   SwipeCellKit: 935ca28c187ec6e1ffb2b578cf8ddca842bfdcbb
 
-PODFILE CHECKSUM: 5f29ccd764635a2634bcb1c768da6d60f1489863
+PODFILE CHECKSUM: eb49e7818f05c617bbfd7a7c4ca5929926695428
 
 COCOAPODS: 1.6.2

@@ -59,12 +59,7 @@ class SignInViewController: UIViewController {
             
         }, onError: { errorString in
             
-            ProgressHUD.showError(errorString!)
+            ProgressHUD.showError("Invalid email/password combination")
         })
-    }
-
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
     }
 }

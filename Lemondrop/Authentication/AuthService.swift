@@ -10,6 +10,7 @@ import FirebaseAuth
 import FirebaseStorage
 import FirebaseDatabase
 import ProgressHUD
+import OneSignal
 class AuthService {
     
     
@@ -20,7 +21,7 @@ class AuthService {
                 return
             }
             
-            AuthService.setToken()
+            AuthService.addPlayerId()
             onSuccess()
             
         }
@@ -28,12 +29,16 @@ class AuthService {
     static func logout(sender: UIViewController?){
         
         do {
+            
+            AuthService.deletePlayerId()
+
+            
             try Auth.auth().signOut()
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
             let signInVC = storyboard.instantiateViewController(withIdentifier: "SignInViewController")
-            SNSService.deleteSubscriptions()
+//            SNSService.deleteSubscriptions()
             
             if let sender = sender {
                 sender.present(signInVC, animated: true, completion: nil)
@@ -52,7 +57,7 @@ class AuthService {
     static func signUp(fullname: String, email: String, password: String, school: String?, age: String?, onSuccess: @escaping() -> Void, onError: @escaping(_ errorMessage: String?) -> Void){
         
         /////////////////////
-        ////Create User//////
+        ////Create User/////
         /////////////////////
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
@@ -106,21 +111,49 @@ class AuthService {
         
         usersRef.child(uid).setValue(values)
         Database.database().reference().child("fullnames").updateChildValues([fullname : 1])
-        AuthService.setToken()
+        AuthService.addPlayerId()
         onSuccess()
+        
     }
     
-    static func setToken(){
+    static func addPlayerId(){
         
-        print("SETTING TOKEN")
         
-        let token = UserDefaults.standard.string(forKey: "token")
-        
-        guard let _ = token  else {
+        guard let playerId = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId else {
             return
         }
-        User.current.token = token!
-        SNSService.shared.register()
+        Database.database().reference().child("user-playerIds").child((Auth.auth().currentUser?.uid)!).updateChildValues([playerId:"1"])//setValue( [playerId : 1] )
+        
+    }
+    static func deletePlayerId(){
+        guard let playerId = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId else {
+            print("Bad playerid")
+            return
+        }
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("Bad uid")
+            return
+        }
+        Database.database().reference().child("user-playerIds").child(uid).child(playerId).removeValue { (error, ref) in
+            if error != nil {
+                print(error?.localizedDescription)
+                return
+            }
+            
+        }
+        
+    }
+    static func setToken(){
+        
+//        print("SETTING TOKEN")
+//
+//        let token = UserDefaults.standard.string(forKey: "token")
+//
+//        guard let _ = token  else {
+//            return
+//        }
+////        User.current.token = token!
+//        SNSService.shared.register()
         
     }
     
@@ -130,8 +163,7 @@ class AuthService {
         
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         //https://stackoverflow.com/questions/38253185/re-authenticating-user-credentials-swift
-        
-        
+    
         user?.reauthenticate(with: credential, completion: { (result, error) in
             
             if error != nil {

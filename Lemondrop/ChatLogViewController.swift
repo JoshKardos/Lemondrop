@@ -13,7 +13,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import ProgressHUD
 import SwipeCellKit
-
+import OneSignal
 class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout ,UICollectionViewDelegate , UITextFieldDelegate, SwipeCollectionViewCellDelegate {
     
     func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
@@ -270,12 +270,33 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
             let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId!)
             recipientUserMessagesRef.updateChildValues([messageId!: 1])
             
-            SNSService.shared.publish(description: "Message from: ", from: MapViewController.currentUser!, to: self.otherUser!)
+            self.notifyUser()
+            
+//            SNSService.shared.publish(description: "Message from: ", from: MapViewController.currentUser!, to: self.otherUser!)
         })
         view.endEditing(true)
     }
     
-    
+    func notifyUser(){
+        
+        Database.database().reference().child("user-playerIds").child((self.otherUser?.uid)!).observe( .value) { (snapshot) in
+            print(snapshot)
+            print(snapshot.value)
+            if let dictionary = snapshot.value as? NSDictionary{
+                var usersEndpoints:[String] = []
+                
+                for (key, _) in dictionary{
+                    usersEndpoints.append(key as! String)
+                }
+                
+                OneSignal.postNotification(["contents": ["en":"\(MapViewController.currentUser.fullname!) sent you a message"],
+                                            "include_player_ids": usersEndpoints])
+            }
+            
+        }
+//        OneSignal.postNotification(["contents": ["en":"\(MapViewController.currentUser.fullname) sent you a message"],
+//                                    "included_segments": [self.otherUser?.uid!]])
+    }
     
 }
 

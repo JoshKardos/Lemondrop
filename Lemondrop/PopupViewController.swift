@@ -20,7 +20,8 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var priceTextField: UITextField!
     @IBOutlet weak var standNameTextField: UITextField!
-    
+    static var standCreated = false
+    @IBOutlet weak var reopenStandButton: UIButton!
     @IBOutlet weak var startTimePicker: UIDatePicker!
     @IBOutlet weak var endTimePicker: UIDatePicker!
     var delegate: MapViewController?
@@ -28,7 +29,9 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        PopupViewController.standCreated = false
         container.layer.cornerRadius = 12
+        reopenStandButton.layer.cornerRadius = 12
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         priceTextField.delegate = self
         disableSubmitButton()
@@ -48,7 +51,14 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
                                 for: UIControl.Event.valueChanged)
         
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if PopupViewController.standCreated{
+            view.removeFromSuperview()
+            self.delegate?.reload()
+        }
+        
+    }
     @objc func priceTextFieldDidChange(_ textField: UITextField) {
         
         if let amountString = textField.text?.currencyInputFormatting() {
@@ -99,11 +109,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
             ProgressHUD.showError("Internet connection failure")
             return
         }
-        
-        
-        getCityName {
-            
-        }
+    
         
         
         HYParentalGate.sharedGate.show { () -> (Void) in
@@ -140,6 +146,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         
         
         let newStandRef = Database.database().reference().child("activeLemonadeStands").childByAutoId()
+        
         let newStandRefId = newStandRef.key
         
         if Connectivity.isConnectedToInternet {
@@ -168,9 +175,6 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
                 }
             }
             UIApplication.shared.endIgnoringInteractionEvents()
-            
-            
-            
         }
     }
     
@@ -207,6 +211,14 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    @IBAction func reopenStandPressed(_ sender: Any) {
+        
+        let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserStands") as! ClickableUserStandsTableViewController
+        view.navigationController?.isNavigationBarHidden = false
+        navigationController?.pushViewController(view, animated: true)
+        
+        
+    }
 }
 
 

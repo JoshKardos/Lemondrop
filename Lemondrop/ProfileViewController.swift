@@ -386,7 +386,7 @@ extension ProfileViewController{//hadnle avatar view
     //changing avatar image to the left
     @IBAction func hatLeftPressed(_ sender: Any) {
         
-        handleLeftArrow(index: &self.hatIndex, staticArray: ProfileViewController.hatNames)
+        handleLeftArrow(index: &hatIndex, staticArray: ProfileViewController.hatNames)
         
     }
     @IBAction func hatRightPressed(_ sender: Any) {

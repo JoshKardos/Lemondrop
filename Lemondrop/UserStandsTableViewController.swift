@@ -9,11 +9,16 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
+import ProgressHUD
 class UserStandsTableViewController: UITableViewController{
     
     var userStands = [LemonadeStand]()
     
     override func viewDidLoad() {
+        
+        self.navigationController?.isNavigationBarHidden = false
+        
         self.filterUserStands()
         if userStands.count == 0{
             print("00000")
@@ -41,6 +46,9 @@ class UserStandsTableViewController: UITableViewController{
         
         
         
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        return
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -72,3 +80,41 @@ class UserStandsTableViewController: UITableViewController{
     
     
 }
+class ClickableUserStandsTableViewController: UserStandsTableViewController{
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("selected")
+        
+        
+        
+        
+        let alert = UIAlertController(title: "Are you sure?", message: "Confirm you want to reopen '\(userStands[indexPath.row].standName!)'?", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
+            
+            
+            alert.removeFromParent()
+            
+            
+                     let popoverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "setEndTime") as! SetEndTimePopupViewController
+                    popoverVC.stand = self.userStands[indexPath.row]
+                    self.addChild(popoverVC)
+                    popoverVC.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.addSubview(popoverVC.view)
+                    popoverVC.didMove(toParent: self)
+            
+            
+            
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
+            
+            alert.removeFromParent()
+            
+            
+        }))
+        
+        self.present(alert, animated:  true, completion: nil)
+    }
+}
+

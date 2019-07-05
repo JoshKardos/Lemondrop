@@ -19,6 +19,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var validatePasswordTextField: UITextField!
     
+    @IBOutlet weak var registerButton: UIButton!
+    @IBOutlet weak var alreadyMemberButton: UIButton!
+    
     @IBOutlet weak var fullnameActivityBar: UIActivityIndicatorView!
     
     @IBOutlet weak var fullnameWarningLabel: UILabel!
@@ -31,14 +34,37 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         self.fullnameActivityBar.isHidden = true
         fullNameTextField.addTarget(self, action: #selector(fullNameFieldDidChange(_:)), for: .editingChanged)
+        
+        fullNameTextField.becomeFirstResponder()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    @IBOutlet weak var alreadyMembarBottomConstraint: NSLayoutConstraint!
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        
+        
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            
+        }
+        
+    }
+    @objc func keyboardWillHide(_ notification: Notification) {
+        
+//        if let origin = origin {
+//
+//            self.view.frame.origin.y = origin
+//        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         
         
         
         if Auth.auth().currentUser != nil {
-            AuthService.setToken()
+//            AuthService.setToken()
+            AuthService.addPlayerId()
             self.performSegue(withIdentifier: "showDetailMapView", sender: nil)
         }
         
@@ -154,9 +180,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         return false
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        view.endEditing(true)
+//    }
     
 }
 

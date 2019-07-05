@@ -14,10 +14,10 @@ import Floaty
 import FirebaseDatabase
 import FirebaseAuth
 import ProgressHUD
-
+import MarqueeLabel
 class StandCell: UITableViewCell{
     
-    @IBOutlet weak var standNameLabel: UILabel!
+    @IBOutlet weak var standNameLabel: MarqueeLabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var businessHoursLabel: UILabel!
@@ -32,6 +32,8 @@ class StandCell: UITableViewCell{
         dateFormatter.dateFormat = "MMM dd, yyyy"
         
         standNameLabel.text = "Stand Name: \(stand.standName!)"
+        
+        
         let date = NSDate(timeIntervalSince1970: stand.endTime)
         dateLabel.text = "Date: \(dateFormatter.string(from: date as Date))"
         

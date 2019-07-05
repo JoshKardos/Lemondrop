@@ -44,6 +44,9 @@ class SNSService{
                 print("returning inregister1")
                 print(SNSService.deviceEndpoint)
                 return nil }
+            print("SNSSERVICEENDPOINT \(SNSService.deviceEndpoint)")
+            print("ENDPOINT \(endpoint)")
+            
             SNSService.deviceEndpoint = endpoint
             
             guard let topicInput = AWSSNSCreateTopicInput() else {
