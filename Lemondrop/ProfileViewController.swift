@@ -81,11 +81,16 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var pantsImage: UIImageView!
     
     @IBOutlet weak var nameField: UILabel!
+    @IBOutlet weak var businessNameLeftLabel: UILabel!
+    @IBOutlet weak var businessNameLabel: UILabel!
+    @IBOutlet weak var standTotalLeftLabel: UILabel!
+    @IBOutlet weak var standTotalLabel: UILabel!
+    @IBOutlet weak var bpNotCreatedLabel: UILabel!
+    @IBOutlet weak var createBP: UIButton!
     
     @IBOutlet weak var submitRatingButton: UIButton!
     @IBOutlet weak var ratingStars: CosmosView!
     var user: User!
-    
     @IBOutlet weak var dmButton: UIButton!
     @IBOutlet weak var ratingLabel: UILabel!
     
@@ -122,27 +127,19 @@ class ProfileViewController: UIViewController{
     }
     
     func configureView(){
-        
-        
         if user.uid == Auth.auth().currentUser?.uid{//if current user
-            
             user = MapViewController.currentUser
-            
             setTextFields()
-            
             let settingsButton = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(self.settingsTapped))
             self.navigationItem.setRightBarButton(settingsButton, animated: true)
             dmButton.isHidden = true
             dmButton.isEnabled = false
+            handleBusinessProfileView()
             disableRating()
-            
         } else {//not current user
             setTextFields()
-            
             self.allowRating()
-            
             self.disableArrows()
-            
         }
         
         let hatIndex = Int(self.user.avatar["hatIndex"]!)!
@@ -157,10 +154,18 @@ class ProfileViewController: UIViewController{
         
     }
     
+    func handleBusinessProfileView () {
+        // if bp is set up
+        //  disable not creatBP label
+        //  disable createBP button
+        //  set text fields
+        // else not set up
+        //  disable left labels
+        // disable right labels
+    }
+    
     @IBAction func dmButtonPressed(_ sender: Any) {
-        
         MessagesViewController.showChatController(otherUser: user, view: self)
-        
     }
     @IBAction func saveOutfitPressed(_ sender: Any) {
         
