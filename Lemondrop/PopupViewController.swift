@@ -82,7 +82,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         //        let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: nil, userInfo: nil, repeats: true)
         
         
-        let timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { (timer) in
+        let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { (timer) in
             
             self.view.removeFromSuperview()
         }
@@ -112,47 +112,32 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     
         
         
-        HYParentalGate.sharedGate.show { () -> (Void) in
-            
-            
-            let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Lemonade Stand", preferredStyle: .alert)
+//        HYParentalGate.sharedGate.show { () -> (Void) in
+        
+            let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Stand", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
                 self.getCityName {
                     self.saveLemonadeStand()
                 }
-                
-                
             }))
             alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
-                
-                
                 ProgressHUD.showError("DENIED, must have an adult with you")
                 alert.removeFromParent()
-                
-                
             }))
-            
             self.present(alert, animated: true, completion: nil)
-            
-            
-        }
-        
-        
-        
+//        }
     }
     
     func saveLemonadeStand(){
         
-        
-        let newStandRef = Database.database().reference().child("activeLemonadeStands").childByAutoId()
-        
+        let newStandRef = Database.database().reference().child(FirebaseNodes.activeStands).childByAutoId()
         let newStandRefId = newStandRef.key
         
         if Connectivity.isConnectedToInternet {
             ProgressHUD.show("Saving...")
             UIApplication.shared.beginIgnoringInteractionEvents()
-            Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).observe(.value) { (snapshot) in
+            Database.database().reference().child(FirebaseNodes.users).child((Auth.auth().currentUser?.uid)!).observe(.value) { (snapshot) in
                 if let user = snapshot.value as? NSDictionary{
                     newStandRef.setValue(["standId": newStandRefId!, "latitude": MapViewController.currentLocation!.coordinate.latitude, "longitude": MapViewController.currentLocation?.coordinate.longitude, "standName": self.standNameTextField.text!,"startTime": self.startTimePicker.date.timeIntervalSince1970 ,"endTime": self.endTimePicker.date.timeIntervalSince1970,"pricePerGlass": self.priceTextField.text!, "userID": (Auth.auth().currentUser?.uid)!, "creatorFullname": user["fullname"], "city": self.cityName!]){ (error, ref) in
                         //it's okay to store the  user's fullname in the stand node becuase the stands don't
@@ -171,7 +156,6 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
                         UIApplication.shared.endIgnoringInteractionEvents()
                         return
                     }
-                    
                 }
             }
             UIApplication.shared.endIgnoringInteractionEvents()

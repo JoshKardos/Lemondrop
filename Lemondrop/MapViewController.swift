@@ -21,11 +21,12 @@ import SwiftyJSON
 class MapViewController: UIViewController{
     
     
+    let floaty = Floaty()
     var workingAStand = false
-    var currentUsersStand: LemonadeStand?
+    var currentUsersStand: Stand?
     let iphone7ScreenHeight: CGFloat = 677.0
-    static var lemonadeStands = [LemonadeStand]()
-    static var activeLemonadeStands = [LemonadeStand]()
+    static var lemonadeStands = [Stand]()
+    static var activeStands = [Stand]()
     static var users = [User]()
 //    static var usernameUserMap = [String: User]()
     static var uidUserMap = [String: User]()
@@ -39,7 +40,7 @@ class MapViewController: UIViewController{
     var zoomLevel: Float = 15.0
     
     var tableView: UITableView!
-    static var filteredStands = [LemonadeStand]()
+    static var filteredStands = [Stand]()
     var searchBar: UISearchBar!
     var greetingLabel = UILabel()
     var distanceTimeView: UIView?
@@ -74,24 +75,9 @@ class MapViewController: UIViewController{
             })
         }
     }
-    // my selector that was defined above
-//    @objc func willEnterForeground() {
-//        print("will enter foreground")
-//        // do stuff
-//        print(Auth.auth().currentUser!.isEmailVerified )
-//        print(MapViewController.firstTimeLoggingIn)
-//        if Auth.auth().currentUser!.isEmailVerified && MapViewController.firstTimeLoggingIn{
-//
-//            configureMapbackground()
-//            reload()
-//
-//        }
-//    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        print("ViewAppeared")
         navigationController?.isNavigationBarHidden = true
-        
-        
     }
     static func configureEmailNotVerifiedPage(viewController: UIViewController){
         
@@ -139,7 +125,7 @@ class MapViewController: UIViewController{
         users = []
         
         let ref = Database.database().reference()
-        ref.child("users").observeSingleEvent(of: .value) { (snap) in
+        ref.child(FirebaseNodes.users).observeSingleEvent(of: .value) { (snap) in
             
             MapViewController.users = []
             
@@ -173,30 +159,15 @@ class MapViewController: UIViewController{
         }
     }
     
-    //    static func loadCurrentUserRatingsToOthers(onSuccess: @escaping() -> Void){
-    //
-    //        let ref = Database.database().reference()
-    //        ref.child("user-rated").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
-    //
-    //            let dict = snap.value as! [String : Any]
-    //            for (id, _) in dict{
-    //                MapViewController.currentUser.usersRatedIds.append(id)
-    //            }
-    //            onSuccess()
-    //        }
-    //
-    //
-    //    }
-    
     static func reloadCurrentUser(){
         let ref = Database.database().reference()
-        ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
+        ref.child(FirebaseNodes.users).child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
             
             if let user = snap.value as? NSDictionary{
                 let newUser = User(dictionary: user)
-                        MapViewController.currentUser = newUser
-                    }
-                }
+                MapViewController.currentUser = newUser
+            }
+        }
     }
     func configureFloatingReloadButton(){
         //create view background
@@ -298,30 +269,28 @@ class MapViewController: UIViewController{
         mapView.isMyLocationEnabled = true
         mapView.delegate = self
         
-        
-        
-        let view = UIView(frame: CGRect(x: 5, y: mapView.frame.height - 80, width: 60, height: 80))
-        view.isUserInteractionEnabled = true
-        mapView.addSubview(view)
-        
-//        imageView.
-//        let image = imageView.image!
-//        imageView.isUserInteractionEnabled = false
-        //enable geocoding https://www.raywenderlich.com/197-google-maps-ios-sdk-tutorial-getting-started
-        
     }
     
-    func transitionMapToStand(stand: LemonadeStand?){
+    func transitionMapToStand(stand: Stand?){
         if let lemonadeStand = stand{
             self.mapView.camera = GMSCameraPosition(latitude: lemonadeStand.latitude, longitude: lemonadeStand.longitude, zoom: self.zoomLevel)
         }
     }
     
+    func closeStandEarly(stand: Stand?){
+        Database.database().reference().child(FirebaseNodes.activeStands).child(stand!.standId!).child(FirebaseNodes.endTime).setValue(Date().timeIntervalSince1970) { (error, ref) in
+            if error == nil {
+                ProgressHUD.showSuccess()
+                self.reload()
+            } else {
+                ProgressHUD.showError("Failure closing stand...")
+            }
+        }
+    }
     
     //floating right button
     //floaty library used
     func configureFloatingButton(){
-        let floaty = Floaty()
         floaty.items = []
         floaty.buttonColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
         
@@ -329,25 +298,29 @@ class MapViewController: UIViewController{
         
         if !workingAStand{
             
-            floaty.addItem("Establish Lemonade Stand", icon: UIImage(named: "Lemon")!) { (item) in
+            floaty.addItem("Open Up!", icon: UIImage(named: "open-button")!) { (item) in
                 self.presentEstablishStandView()
             }
         } else {
+            floaty.addItem("Close down early", icon: UIImage(named: "close-button")!) { (item) in
+                
+                self.closeStandEarly(stand: self.currentUsersStand)
+                
+            }
+
             floaty.addItem("Locate your Stand", icon: UIImage(named: "Lemon")!) { (item) in
-                
                 self.transitionMapToStand(stand: self.currentUsersStand)
-                
             }
         }
         
         floaty.addItem("View List of All Users", icon: UIImage(named: "listview")) { (item) in
             self.presentListView()
         }
-        floaty.addItem("Corkboard", icon: UIImage(named: "corkboard")) { (item) in
-            
-            self.performSegue(withIdentifier: "PresentCorkboard", sender: self)
-            
-        }
+//        floaty.addItem("Corkboard", icon: UIImage(named: "corkboard")) { (item) in
+//            
+//            self.performSegue(withIdentifier: "PresentCorkboard", sender: self)
+//            
+//        }
         
         floaty.addItem("Profile", icon: UIImage(named: "profile")!) { (item) in
             
@@ -495,7 +468,7 @@ extension MapViewController: UISearchBarDelegate{
     func filterContent(searchText: String){
         
         
-        MapViewController.filteredStands = MapViewController.activeLemonadeStands.filter{ stand in
+        MapViewController.filteredStands = MapViewController.activeStands.filter{ stand in
             
             let string = "\(stand.standName)"
             
@@ -512,7 +485,6 @@ extension MapViewController: UISearchBarDelegate{
     //search bar text changed
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         updateSearchResults(for: searchBar)
-        
         if MapViewController.filteredStands.count < 1 {
             tableView.removeFromSuperview()
         } else {
@@ -529,21 +501,21 @@ extension MapViewController: GMSMapViewDelegate{
     static func loadLemonadeStands(view: MapViewController, onSuccess: @escaping() -> Void){
         
         lemonadeStands = []
-        activeLemonadeStands = []
+        activeStands = []
         filteredStands = []
         //remove all markers from mapview
         view.mapView.clear()
         view.workingAStand = false
         view.currentUsersStand = nil
         
-        Database.database().reference().child("activeLemonadeStands").observeSingleEvent(of: .value) { (snapshot) in
+        Database.database().reference().child(FirebaseNodes.activeStands).observeSingleEvent(of: .value) { (snapshot) in
             
             if let snap = snapshot.value as? NSDictionary{
                 
                 for (_, stand) in snap {
                     
                     if let dict = stand as? NSDictionary {
-                        let lemonadeStand = LemonadeStand(dictionary: dict)
+                        let lemonadeStand = Stand(dictionary: dict)
                         
                         MapViewController.lemonadeStands.append(lemonadeStand)
                         
@@ -565,7 +537,7 @@ extension MapViewController: GMSMapViewDelegate{
         for stand in MapViewController.lemonadeStands{
             if stand.endTime > Date().timeIntervalSince1970 && stand.startTime <= Date().timeIntervalSince1970{
                 
-                MapViewController.activeLemonadeStands.append(stand)
+                MapViewController.activeStands.append(stand)
                 //check if this stand was created by the current user
                 if stand.userId == (Auth.auth().currentUser?.uid)! {
                     self.workingAStand = true
@@ -579,7 +551,7 @@ extension MapViewController: GMSMapViewDelegate{
         
     }
     
-    func setMarker(stand: LemonadeStand){
+    func setMarker(stand: Stand){
         
         let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude), longitude: CLLocationDegrees(floatLiteral: stand.longitude))
         let marker = GMSMarker(position: location.coordinate)
@@ -644,7 +616,7 @@ extension MapViewController: GMSMapViewDelegate{
     
     static func reloadCurrentUser(onSuccess: @escaping() -> Void){
         let ref = Database.database().reference()
-        ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
+        ref.child(FirebaseNodes.users).child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
             if let userSnap = snap.value as? NSDictionary{
                 
                 let newUser = User(dictionary: userSnap)
@@ -897,37 +869,37 @@ extension UIView {
 }
 
 extension MapViewController{//bulletin board functions
-    static func getStandsFromUsersSchool() -> [LemonadeStand]{
-        if currentUser.school == nil {
-            return []
-        }
+    static func getStandsFromUsersSchool() -> [Stand]{
+//        if currentUser.school == nil {
+//            return []
+//        }
+//
+        
+        var stands:[Stand] = []
         
         
-        var stands:[LemonadeStand] = []
         
-        
-        
-        for stand in MapViewController.lemonadeStands{
-            
-            if let otherUserSchool = MapViewController.uidUserMap[stand.userId]?.school{
-                
-                if otherUserSchool.lowercased() == currentUser.school!.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) {
-                    stands.append(stand)
-                }
-            }
-            
-        }
+//        for stand in MapViewController.lemonadeStands{
+//            
+//            if let otherUserSchool = MapViewController.uidUserMap[stand.userId]?.school{
+//                
+//                if otherUserSchool.lowercased() == currentUser.school!.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) {
+//                    stands.append(stand)
+//                }
+//            }
+//            
+//        }
         
         
         return stands
         
         
     }
-    static func getStandsFrom(city: String) -> [LemonadeStand] {
+    static func getStandsFrom(city: String) -> [Stand] {
         
         
         
-        var stands:[LemonadeStand] = []
+        var stands:[Stand] = []
         
         for stand in MapViewController.lemonadeStands{
             if stand.city.lowercased() == city.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)){
@@ -939,8 +911,8 @@ extension MapViewController{//bulletin board functions
         return stands
         
     }
-    static func getStandsClosingSoon() -> [LemonadeStand]{
-        var stands:[LemonadeStand] = []
+    static func getStandsClosingSoon() -> [Stand]{
+        var stands:[Stand] = []
         
         let date = Date()
         

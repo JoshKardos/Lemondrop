@@ -14,7 +14,7 @@ import FirebaseAuth
 class SetEndTimePopupViewController: UIViewController {
     @IBOutlet weak var endTimePicker: UIDatePicker!
     
-    var stand: LemonadeStand!
+    var stand: Stand!
     @IBOutlet weak var container: UIView!
     
     override func viewDidLoad() {
@@ -48,11 +48,11 @@ class SetEndTimePopupViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    func reopenStand(stand: LemonadeStand, endAt withDate: Date){
+    func reopenStand(stand: Stand, endAt withDate: Date){
         
-        let newRef = Database.database().reference().child("activeLemonadeStands").childByAutoId()
+        let newRef = Database.database().reference().child(FirebaseNodes.activeStands).childByAutoId()
         
-        let newStand = LemonadeStand(otherStand: stand, id: newRef.key!)
+        let newStand = Stand(otherStand: stand, id: newRef.key!)
         
         if Connectivity.isConnectedToInternet {
             ProgressHUD.show("Saving...")

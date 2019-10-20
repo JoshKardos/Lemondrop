@@ -36,7 +36,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         fullNameTextField.addTarget(self, action: #selector(fullNameFieldDidChange(_:)), for: .editingChanged)
         
         fullNameTextField.becomeFirstResponder()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -46,9 +45,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @objc func keyboardWillShow(_ notification: Notification) {
         
         
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            
-        }
+//        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+//            
+//        }
         
     }
     @objc func keyboardWillHide(_ notification: Notification) {
@@ -147,7 +146,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     func checkIsUniqueFullname(completion: @escaping (Bool)->()){
         
-        Database.database().reference().child("fullnames").observeSingleEvent(of: .value) { (snap) in
+        Database.database().reference().child(FirebaseNodes.fullnames).observeSingleEvent(of: .value) { (snap) in
             if let dict = snap.value as? [String: Any] {
                 for (name, _) in dict {
                     

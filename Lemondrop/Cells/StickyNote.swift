@@ -14,7 +14,7 @@ class StickyNote: UICollectionViewCell {
     @IBOutlet weak var closingTimeLabel: UILabel!
     @IBOutlet weak var byUsernameLabel: UILabel!
     
-    func configureCell(stand: LemonadeStand){
+    func configureCell(stand: Stand){
         
         standNameLabel.text = stand.standName
         byUsernameLabel.text = "By: \(stand.creatorName!)"

@@ -13,7 +13,7 @@ import FirebaseDatabase
 import ProgressHUD
 class UserStandsTableViewController: UITableViewController{
     
-    var userStands = [LemonadeStand]()
+    var userStands = [Stand]()
     
     override func viewDidLoad() {
         
@@ -29,25 +29,20 @@ class UserStandsTableViewController: UITableViewController{
             self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
             self.tableView.reloadData()
         }
-        
-        
     }
-    
     
     func filterUserStands(){
         
         for stand in MapViewController.lemonadeStands{
-            
             if stand.userId == (Auth.auth().currentUser?.uid)!{
                 userStands.append(stand)
             }
         }
-        
-        
-        
-        
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! StandCell
+        cell.standNameLabel.triggerScrollStart()
         return
     }
     
@@ -62,9 +57,6 @@ class UserStandsTableViewController: UITableViewController{
         return 1
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        
-        
         return userStands.count
     }
     
@@ -76,44 +68,24 @@ class UserStandsTableViewController: UITableViewController{
         label.textAlignment = .center
         self.view.addSubview(label)
     }
-    
-    
-    
 }
 class ClickableUserStandsTableViewController: UserStandsTableViewController{
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected")
-        
-        
-        
-        
         let alert = UIAlertController(title: "Are you sure?", message: "Confirm you want to reopen '\(userStands[indexPath.row].standName!)'?", preferredStyle: .actionSheet)
-        
         alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
-            
-            
             alert.removeFromParent()
-            
-            
-                     let popoverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "setEndTime") as! SetEndTimePopupViewController
-                    popoverVC.stand = self.userStands[indexPath.row]
-                    self.addChild(popoverVC)
-                    popoverVC.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-                    self.view.addSubview(popoverVC.view)
-                    popoverVC.didMove(toParent: self)
-            
-            
-            
+            let popoverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "setEndTime") as! SetEndTimePopupViewController
+            popoverVC.stand = self.userStands[indexPath.row]
+            self.addChild(popoverVC)
+            popoverVC.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            self.view.addSubview(popoverVC.view)
+            popoverVC.didMove(toParent: self)
         }))
         alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
-            
             alert.removeFromParent()
-            
-            
         }))
-        
         self.present(alert, animated:  true, completion: nil)
     }
 }

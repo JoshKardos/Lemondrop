@@ -10,7 +10,6 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 import Firebase
-import AWSSNS
 import OneSignal
 
 @UIApplicationMain
@@ -24,8 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GMSServices.provideAPIKey(MapViewController.googleMapsApiKey)
         GMSPlacesClient.provideAPIKey(MapViewController.googleMapsApiKey)
-    
-//        UNService.shared.authorize()
         
         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
         // Replace 'YOUR_APP_ID' with your OneSignal App ID.

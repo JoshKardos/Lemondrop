@@ -34,7 +34,7 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
                 ProgressHUD.showError("Did Not delete")
                 return
             }
-            Database.database().reference().child("user-messages").child((Auth.auth().currentUser?.uid)!).child(self.messages[indexPath.row].messageId!).removeValue()
+            Database.database().reference().child(FirebaseNodes.userMessages).child((Auth.auth().currentUser?.uid)!).child(self.messages[indexPath.row].messageId!).removeValue()
             
             self.messages.remove(at: indexPath.row)
             collectionView.deleteItems(at: [indexPath])
@@ -100,14 +100,14 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
     func observeMessages(){
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
+        let userMessagesRef = Database.database().reference().child(FirebaseNodes.userMessages).child(uid)
         
         
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
             
-            let messagesRef = Database.database().reference().child("messages").child(messageId)
+            let messagesRef = Database.database().reference().child(FirebaseNodes.messages).child(messageId)
             
             messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -247,7 +247,7 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
         }
         
         let uid = Auth.auth().currentUser!.uid
-        let ref = Database.database().reference().child("messages")
+        let ref = Database.database().reference().child(FirebaseNodes.messages)
         let childRef = ref.childByAutoId()
         
         let timestamp = Int(NSDate().timeIntervalSince1970)
@@ -261,13 +261,13 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
                 return
             }
             self.textField.text = nil
-            let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
+            let userMessagesRef = Database.database().reference().child(FirebaseNodes.userMessages).child(uid)
             let messageId = childRef.key
             
             userMessagesRef.updateChildValues([messageId!: 1])
             
             
-            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId!)
+            let recipientUserMessagesRef = Database.database().reference().child(FirebaseNodes.userMessages).child(toId!)
             recipientUserMessagesRef.updateChildValues([messageId!: 1])
             
             self.notifyUser()
@@ -279,7 +279,7 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
     
     func notifyUser(){
         
-        Database.database().reference().child("user-playerIds").child((self.otherUser?.uid)!).observe( .value) { (snapshot) in
+        Database.database().reference().child(FirebaseNodes.userPlayerIds).child((self.otherUser?.uid)!).observe( .value) { (snapshot) in
             print(snapshot)
             print(snapshot.value)
             if let dictionary = snapshot.value as? NSDictionary{

@@ -11,9 +11,7 @@ class User{
     
     var uid: String!
     var fullname: String!
-    var ageString: String!
     var email: String!
-    var school: String?
     var avatar: [String: String]!
     
     var unlockedHats = [String]()
@@ -36,14 +34,6 @@ class User{
         uid = (dictionary["uid"] as! String)
         fullname = (dictionary["fullname"] as! String)
         email = (dictionary["email"] as! String)
-        
-        if let age = (dictionary["age"] as? String){
-            ageString = age
-        }
-        if let school = (dictionary["school"] as? String){
-            self.school = school
-        }
-        
         avatar = (dictionary["avatar"] as! [String: String])
         
         //unlocked hats

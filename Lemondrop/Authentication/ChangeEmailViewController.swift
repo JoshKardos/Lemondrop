@@ -40,7 +40,7 @@ class ChangeEmailViewController: UIViewController {
                 }
                 
                 
-                Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["email": newEmailString])
+                Database.database().reference().child(FirebaseNodes.users).child((Auth.auth().currentUser?.uid)!).updateChildValues(["email": newEmailString])
                 ProgressHUD.showSuccess("Email successfully changed... Now you will be signed out")
                 
                 AuthService.logout(sender: nil)
@@ -60,7 +60,7 @@ class ChangeEmailViewController: UIViewController {
         
         
     }
-    @IBAction func denyPressed(_ sender: Any) {
+    @IBAction func cancelPressed(_ sender: Any) {
         
         navigationController?.popViewController(animated: true)
         

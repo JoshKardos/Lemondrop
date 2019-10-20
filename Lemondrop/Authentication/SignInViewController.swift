@@ -24,8 +24,11 @@ class SignInViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         handleTextField()
+        emailTextField.becomeFirstResponder()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+
     }
-    
+    @objc func keyboardWillShow(_ notification: Notification) { }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if Auth.auth().currentUser != nil {
@@ -35,12 +38,10 @@ class SignInViewController: UIViewController {
     func handleTextField(){
         emailTextField.addTarget(self, action:#selector(self.textFieldDidChange), for: UIControl.Event.editingChanged)
         passwordTextField.addTarget(self, action:#selector(self.textFieldDidChange), for: UIControl.Event.editingChanged)
-        
     }
     
     @objc func textFieldDidChange(){
         guard let email = emailTextField.text, !email.isEmpty, let password = passwordTextField.text, !password.isEmpty else {
-            
             signInButton.isEnabled = false
             return
         }
@@ -48,17 +49,13 @@ class SignInViewController: UIViewController {
     }
     
     @IBAction func signInButton(_ sender: Any) {
-        
-        
         view.endEditing(true)
         ProgressHUD.show("Waiting...", interaction: false)
         
         AuthService.signIn(email: emailTextField.text!, password: passwordTextField.text!, onSuccess:{
             ProgressHUD.showSuccess("Success")
             self.performSegue(withIdentifier: "showDetailMapView", sender: nil)
-            
         }, onError: { errorString in
-            
             ProgressHUD.showError("Invalid email/password combination")
         })
     }

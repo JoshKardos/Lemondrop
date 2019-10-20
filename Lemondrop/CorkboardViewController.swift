@@ -23,13 +23,13 @@ class CorkboardViewController: UIViewController{
     @IBOutlet weak var filter: UISegmentedControl!
     @IBOutlet weak var collectionView: UICollectionView!
     var noStandsLabel: UILabel?
-    var standsShowing = [LemonadeStand](){
+    var standsShowing = [Stand](){
         didSet{
             
             noStandsLabel?.removeFromSuperview()
             if standsShowing.count == 0{
                 configureNoStandsLabel()
-            } 
+            }
         }
     }
     
@@ -65,19 +65,15 @@ extension CorkboardViewController{//segment controller / filter
     
     func establishSegmentControlTitles(){
         
-        if let school = MapViewController.currentUser.school{
-            filter.setTitle( school, forSegmentAt: 0)// = MapViewController.currentUser.school!
-        } else {
-            filter.setTitle("N/A", forSegmentAt: 0)
-        }
+//        if let school = MapViewController.currentUser.school{
+//            filter.setTitle( school, forSegmentAt: 0)// = MapViewController.currentUser.school!
+//        } else {
+//            filter.setTitle("N/A", forSegmentAt: 0)
+//        }
         
         
         filter.setTitle("Closing Soon", forSegmentAt: 2)
         
-        //
-        
-        
-
         if CLLocationManager.locationServicesEnabled(){
             
         switch CLLocationManager.authorizationStatus(){
@@ -88,7 +84,7 @@ extension CorkboardViewController{//segment controller / filter
                 return
             case .authorizedAlways, .authorizedWhenInUse:
                 print("Access granted")
-                
+            
             }
         } else {
             

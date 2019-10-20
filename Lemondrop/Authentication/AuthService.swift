@@ -20,7 +20,6 @@ class AuthService {
                 onError(error!.localizedDescription)
                 return
             }
-            
             AuthService.addPlayerId()
             onSuccess()
             
@@ -38,8 +37,7 @@ class AuthService {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
             let signInVC = storyboard.instantiateViewController(withIdentifier: "SignInViewController")
-//            SNSService.deleteSubscriptions()
-            
+
             if let sender = sender {
                 sender.present(signInVC, animated: true, completion: nil)
             } 
@@ -81,7 +79,7 @@ class AuthService {
     static func signUpUser(fullname: String, email: String, uid: String,  school: String?, age: String?, onSuccess: @escaping () -> Void){
         
         //get referenece to users in the database
-        let usersRef = Database.database().reference().child("users")
+        let usersRef = Database.database().reference().child(FirebaseNodes.users)
 
         
         let initialAvatarValues = ["hatIndex": "0", "shirtIndex": "0", "pantsIndex": "0"]
@@ -110,7 +108,7 @@ class AuthService {
         }
         
         usersRef.child(uid).setValue(values)
-        Database.database().reference().child("fullnames").updateChildValues([fullname : 1])
+        Database.database().reference().child(FirebaseNodes.fullnames).updateChildValues([fullname : 1])
         AuthService.addPlayerId()
         onSuccess()
         
@@ -122,7 +120,7 @@ class AuthService {
         guard let playerId = OneSignal.getPermissionSubscriptionState().subscriptionStatus.userId else {
             return
         }
-        Database.database().reference().child("user-playerIds").child((Auth.auth().currentUser?.uid)!).updateChildValues([playerId:"1"])//setValue( [playerId : 1] )
+        Database.database().reference().child(FirebaseNodes.userPlayerIds).child((Auth.auth().currentUser?.uid)!).updateChildValues([playerId:"1"])//setValue( [playerId : 1] )
         
     }
     static func deletePlayerId(){
@@ -134,7 +132,7 @@ class AuthService {
             print("Bad uid")
             return
         }
-        Database.database().reference().child("user-playerIds").child(uid).child(playerId).removeValue { (error, ref) in
+        Database.database().reference().child(FirebaseNodes.userPlayerIds).child(uid).child(playerId).removeValue { (error, ref) in
             if error != nil {
                 print(error?.localizedDescription)
                 return

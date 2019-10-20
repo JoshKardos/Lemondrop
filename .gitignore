@@ -1,1 +1,8 @@
 ApiKeys.swift
+.DS_Store
+Lemondrop.xcworkspace/
+Lemondrop/.DS_Store
+Podfile
+Podfile.lock
+Pods/
+

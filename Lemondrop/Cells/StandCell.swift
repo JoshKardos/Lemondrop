@@ -28,7 +28,7 @@ class StandCell: UITableViewCell{
     let dateFormatter = DateFormatter()
     
     
-    func configureCell(stand: LemonadeStand){
+    func configureCell(stand: Stand){
         dateFormatter.dateFormat = "MMM dd, yyyy"
         
         standNameLabel.text = "Stand Name: \(stand.standName!)"
@@ -40,7 +40,8 @@ class StandCell: UITableViewCell{
         dateFormatter.dateFormat = "h:mm a"
         let startTimeString = dateFormatter.string(from: NSDate(timeIntervalSince1970: stand.startTime) as Date)
         let endTimeString = dateFormatter.string(from: date as Date)
-        
+        print(stand.standId)
+        print(stand.pricePerGlass)
         priceLabel.text = "Glass Price: $\(stand.pricePerGlass!)"
         businessHoursLabel.text = "Hours: \(startTimeString)-\(endTimeString)"
         cityLabel.text = stand.city

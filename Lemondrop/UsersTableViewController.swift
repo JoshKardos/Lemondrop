@@ -42,26 +42,26 @@ class UsersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserAndStandCell
         
-        if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
-            for stand in MapViewController.activeLemonadeStands{
+        if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{ // search bar is empty, show all users
+            for stand in MapViewController.activeStands{
                 if stand.creatorName == filteredUsers[indexPath.row].fullname{
                     
                     cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
                     return cell
                 }
             }
-            cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: No stand")
+            cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand is currently closed")
             return cell
         }
         
-        for stand in MapViewController.activeLemonadeStands{
+        for stand in MapViewController.activeStands{ // filter users based off search bar text
             if stand.creatorName == MapViewController.users[indexPath.row].fullname{
                 
                 cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
                 return cell
             }
         }
-        cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand: No stand")
+        cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand is currently closed")
         return cell
     }
     
@@ -70,21 +70,16 @@ class UsersTableViewController: UITableViewController {
         let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
         profileVC.setUser(user: user)
         //present navigation bar when going to profile view cotnroller
-        
         navigationController?.pushViewController(profileVC, animated: true)
-        
     }
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print("USERSTABLEVC")
         if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
             presentProfileView(user: self.filteredUsers[indexPath.row])
         } else {
             presentProfileView(user: MapViewController.users[indexPath.row])
         }
-        
     }
 }
 

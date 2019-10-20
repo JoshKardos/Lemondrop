@@ -75,13 +75,13 @@ class MessagesViewController: UITableViewController{
             return
         }
         //ref of users messages keys
-        let ref = Database.database().reference().child("user-messages").child(uid)
+        let ref = Database.database().reference().child(FirebaseNodes.userMessages).child(uid)
         
         //iterate through messages keys
         ref.observe( .childAdded) { (snapshot) in
             //reference to message by using message key
             let messageId = snapshot.key
-            let messageRef = Database.database().reference().child("messages").child(messageId)
+            let messageRef = Database.database().reference().child(FirebaseNodes.messages).child(messageId)
             
             //observe message reference
             messageRef.observe(.value, with: { (snapshot) in

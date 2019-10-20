@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreLocation
-class LemonadeStand{
+class Stand{
     var latitude: Double!
     var longitude: Double!
     var standName: String!
@@ -63,6 +63,7 @@ class LemonadeStand{
             return
         }
         let price = Double(pricePerGlass)
+        print(price)
         self.creatorName = username
         self.userId = userId
         self.latitude = latitude
@@ -75,7 +76,7 @@ class LemonadeStand{
         self.standId = id
     }
     
-    init(otherStand: LemonadeStand, id: String){
+    init(otherStand: Stand, id: String){
         self.creatorName = otherStand.creatorName
         self.userId = otherStand.userId
         self.latitude = otherStand.latitude

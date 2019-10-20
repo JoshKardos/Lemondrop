@@ -27,18 +27,6 @@ class EditProfileViewController: UIViewController {
         
         fullnameTextField.text = MapViewController.currentUser.fullname!
         
-        if let age = MapViewController.currentUser.ageString{
-            ageTextField.text = age
-        } else {
-            ageTextField.placeholder = "N/A"
-        }
-        
-        if let school = MapViewController.currentUser.school{
-            schoolTextField.text = school
-        } else {
-            schoolTextField.placeholder = "N/A"
-        }
-        
         // Do any additional setup after loading the view.
         fullnameActivityBar.isHidden = true
         fullnameTextField.addTarget(self, action: #selector(fullNameFieldDidChange(_:)), for: .editingChanged)
@@ -95,12 +83,12 @@ class EditProfileViewController: UIViewController {
             
             values["age"] = ageTextField.text!
         }
-        Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(values) { (error, ref) in
+        Database.database().reference().child(FirebaseNodes.users).child((Auth.auth().currentUser?.uid)!).updateChildValues(values) { (error, ref) in
             if error == nil {
                 
                 //delete old username from database
-                Database.database().reference().child("fullnames").child(oldFullname!).removeValue()
-                Database.database().reference().child("fullnames").child(self.fullnameTextField.text!).setValue(1)
+                Database.database().reference().child(FirebaseNodes.fullnames).child(oldFullname!).removeValue()
+                Database.database().reference().child(FirebaseNodes.fullnames).child(self.fullnameTextField.text!).setValue(1)
                 
                 MapViewController.reloadCurrentUser()
                 ProgressHUD.showSuccess("Successfully changed your information")
@@ -116,7 +104,7 @@ class EditProfileViewController: UIViewController {
     
     func checkIsUniqueFullname(completion: @escaping (Bool)->()){
         
-        Database.database().reference().child("fullnames").observeSingleEvent(of: .value) { (snap) in
+        Database.database().reference().child(FirebaseNodes.fullnames).observeSingleEvent(of: .value) { (snap) in
             if let dict = snap.value as? [String: Any] {
                 for (name, _) in dict {
                     

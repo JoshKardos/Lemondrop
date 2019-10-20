@@ -81,8 +81,6 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var pantsImage: UIImageView!
     
     @IBOutlet weak var nameField: UILabel!
-    @IBOutlet weak var schoolField: UILabel!
-    @IBOutlet weak var ageField: UILabel!
     
     @IBOutlet weak var submitRatingButton: UIButton!
     @IBOutlet weak var ratingStars: CosmosView!
@@ -120,21 +118,7 @@ class ProfileViewController: UIViewController{
     }
     
     func setTextFields(){
-        
         nameField.text = user.fullname!
-        
-        if let school = user.school{
-            schoolField.text = school
-        } else {
-            schoolField.text = "Not Set"
-        }
-        
-        if let age = user.ageString{
-            
-            ageField.text = age
-        } else {
-            ageField.text = "Not Set"
-        }
     }
     
     func configureView(){
@@ -192,7 +176,7 @@ class ProfileViewController: UIViewController{
         let newAvatarValue = ["hatIndex": String(hatIndex), "shirtIndex": String(shirtIndex), "pantsIndex": String(pantsIndex)] 
         
         
-        let ref = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("avatar")
+        let ref = Database.database().reference().child(FirebaseNodes.users).child(Auth.auth().currentUser!.uid).child(FirebaseNodes.avatar)
         ref.updateChildValues(newAvatarValue) { (error, ref) in
             
             if error == nil{
@@ -214,13 +198,8 @@ class ProfileViewController: UIViewController{
             ProgressHUD.showError("Check internet connection")
             return
         }
-        Database.database().reference().child("user-rated").child((Auth.auth().currentUser?.uid)!).child(user.uid!).setValue(1) { (error, ref) in
-            
-            
-            
-            
-            
-            let ref = Database.database().reference().child("user-ratings").child(self.user.uid!).childByAutoId()
+        Database.database().reference().child(FirebaseNodes.userRated).child((Auth.auth().currentUser?.uid)!).child(user.uid!).setValue(1) { (error, ref) in
+            let ref = Database.database().reference().child(FirebaseNodes.userRatings).child(self.user.uid!).childByAutoId()
             let values = ["ratingId": ref.key!, "score": self.ratingStars.rating, "raterId": (Auth.auth().currentUser?.uid)!] as [String : Any]
             
             ref.setValue(values) { (error, ref) in
@@ -260,8 +239,7 @@ class ProfileViewController: UIViewController{
     }
     
     func handleLockClick(){
-        
-        HYParentalGate.sharedGate.show(successHandler: {
+//        HYParentalGate.sharedGate.show(successHandler: {
             if SKPaymentQueue.canMakePayments(){
                 let paymentRequest = SKMutablePayment()
                 paymentRequest.productIdentifier = self.iapProductId!
@@ -269,9 +247,7 @@ class ProfileViewController: UIViewController{
             } else {//cant make payments
                 
             }
-        })
-        
-       
+//        })
     }
     
     func disableRating(){
@@ -298,7 +274,7 @@ class ProfileViewController: UIViewController{
             self.ratingStars.rating = 0.0
             return
         }
-        Database.database().reference().child("user-ratings").child(user.uid!).observe(.value) { (snapshot) in
+        Database.database().reference().child(FirebaseNodes.userRatings).child(user.uid!).observe(.value) { (snapshot) in
             
             if let snap = snapshot.value as? NSDictionary{
                 
@@ -326,12 +302,8 @@ class ProfileViewController: UIViewController{
         }
     }
     @objc func settingsTapped(){
-        
         performSegue(withIdentifier: "presentSettings", sender: nil)
-        
     }
-    
-    
 }
 
 extension ProfileViewController{//hadnle avatar view
@@ -385,7 +357,6 @@ extension ProfileViewController{//hadnle avatar view
     }
     //changing avatar image to the left
     @IBAction func hatLeftPressed(_ sender: Any) {
-        
         handleLeftArrow(index: &hatIndex, staticArray: ProfileViewController.hatNames)
         
     }
@@ -427,28 +398,18 @@ extension ProfileViewController: SKPaymentTransactionObserver{
     }
     
     func purchaseOutfit(){
-        
         //add to current user node
-        let ref = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child(self.iapAvatarNodeToAdjust!)
-        
-        
+        let ref = Database.database().reference().child(FirebaseNodes.users).child(Auth.auth().currentUser!.uid).child(self.iapAvatarNodeToAdjust!)
         ref.observeSingleEvent(of: .value) { (snapshot) in
             ref.child(String(snapshot.childrenCount)).setValue(String(self.indexToBuy!))
             MapViewController.reloadCurrentUser() {
                 self.user = MapViewController.currentUser
                 self.configureView()
             }
-            
         }
-        
-        
     }
     
-    static func logOutAndPresentSignUpView(){
-        
+    static func logOutAndPresentSignUpView() {
         AuthService.logout(sender: nil)
-        
-        
-        
     }
 }
