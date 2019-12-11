@@ -12,8 +12,12 @@ import Foundation
 import CoreLocation
 class FirebaseNodes {
     
+    static let storageRef = "gs://lemondrop-1558064397092.appspot.com"
+    // static let photoMenus = "photoMenus"
+    
     // head children
-    static let stands = "stands" // done
+    static let standMenus = "stand-menus"
+    static let stands = "stands"
     static let fullnames = "fullnames"
     static let messages = "messages"
     static let userMessages = "user-messages"
@@ -44,15 +48,14 @@ class FirebaseNodes {
     static let ratingId = "ratingId"
     static let score = "score"
     
-    // massages children
-    
+    // messages children
     static let messageId = "messasgeId"
     static let senderID = "senderID"
     static let text = "text"
     static let timestamp = "timestamp"
     static let toId = "toId"
     
-    // activeLemonadeStands children
+    // stands children
     static let city = "city"
     static let creatorFullname = "creatorFullname"
     static let endTime = "endTime"
@@ -66,5 +69,9 @@ class FirebaseNodes {
     
     //business children
     static let name = "name"
+    
+    // standMenus children
+    static let photoMenu = "photoMenu"
+    static let listMenu = "listMenu"
     
 }
