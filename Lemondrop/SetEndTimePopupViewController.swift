@@ -50,7 +50,7 @@ class SetEndTimePopupViewController: UIViewController {
     */
     func reopenStand(stand: Stand, endAt withDate: Date){
         
-        let newRef = Database.database().reference().child(FirebaseNodes.activeStands).childByAutoId()
+        let newRef = Database.database().reference().child(FirebaseNodes.stands).childByAutoId()
         
         let newStand = Stand(otherStand: stand, id: newRef.key!)
         
@@ -58,7 +58,7 @@ class SetEndTimePopupViewController: UIViewController {
             ProgressHUD.show("Saving...")
             UIApplication.shared.beginIgnoringInteractionEvents()
             
-            newRef.setValue(["standId": newRef.key!, "latitude": newStand.latitude, "longitude": newStand.longitude, "standName": newStand.standName!,"startTime": Date().timeIntervalSince1970 ,"endTime": withDate.timeIntervalSince1970,"pricePerGlass": String(newStand.pricePerGlass!), "userID": (Auth.auth().currentUser?.uid)!, "creatorFullname": newStand.creatorName!, "city": newStand.city!]){ (error, ref) in
+            newRef.setValue(["standId": newRef.key!, "latitude": newStand.latitude, "longitude": newStand.longitude, "standName": newStand.standName!,"startTime": Date().timeIntervalSince1970 ,"endTime": withDate.timeIntervalSince1970, "userID": (Auth.auth().currentUser?.uid)!, "creatorFullname": newStand.creatorName!, "city": newStand.city!]){ (error, ref) in
                 //it's okay to store the  user's fullname in the stand node becuase the stands don't
                 //have a long lifetime, its not like a soicla media post
                 if error != nil{

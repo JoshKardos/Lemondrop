@@ -98,7 +98,7 @@ class AuthService {
         
         var values = ["fullname": fullname, "email" : email, "uid": uid,
                      "avatar": initialAvatarValues, "unlockedHats": initialUnlockedHats,
-                     "unlockedShirts": initialUnlockedShirts, "unlockedPants": initialUnlockedPants] as [String : Any]
+                     "unlockedShirts": initialUnlockedShirts, "unlockedPants": initialUnlockedPants, "hasBusinessProfile": "0"] as [String : Any]
         
         if school?.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
             values["school"] = school

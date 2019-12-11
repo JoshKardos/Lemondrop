@@ -280,8 +280,6 @@ class ChatLogViewController: UIViewController, UICollectionViewDataSource, UICol
     func notifyUser(){
         
         Database.database().reference().child(FirebaseNodes.userPlayerIds).child((self.otherUser?.uid)!).observe( .value) { (snapshot) in
-            print(snapshot)
-            print(snapshot.value)
             if let dictionary = snapshot.value as? NSDictionary{
                 var usersEndpoints:[String] = []
                 

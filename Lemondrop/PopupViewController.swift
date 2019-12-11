@@ -12,7 +12,6 @@ import FirebaseAuth
 import ProgressHUD
 import Alamofire
 import SwiftyJSON
-import HYParentalGate
 class PopupViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var cancelButton: UIButton!
@@ -110,28 +109,23 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
             return
         }
     
+        let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Stand", preferredStyle: .alert)
         
-        
-//        HYParentalGate.sharedGate.show { () -> (Void) in
-        
-            let alert = UIAlertController(title: "ATTENTION!", message: "Confirm that somebody 18 or older will be with you at this Stand", preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
-                self.getCityName {
-                    self.saveLemonadeStand()
-                }
-            }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
-                ProgressHUD.showError("DENIED, must have an adult with you")
-                alert.removeFromParent()
-            }))
-            self.present(alert, animated: true, completion: nil)
-//        }
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
+            self.getCityName {
+                self.saveLemonadeStand()
+            }
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
+            ProgressHUD.showError("DENIED, must have an adult with you")
+            alert.removeFromParent()
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func saveLemonadeStand(){
         
-        let newStandRef = Database.database().reference().child(FirebaseNodes.activeStands).childByAutoId()
+        let newStandRef = Database.database().reference().child(FirebaseNodes.stands).childByAutoId()
         let newStandRefId = newStandRef.key
         
         if Connectivity.isConnectedToInternet {

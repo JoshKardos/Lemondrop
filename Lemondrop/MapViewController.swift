@@ -20,19 +20,16 @@ import SwiftyJSON
 
 class MapViewController: UIViewController{
     
-    
     let floaty = Floaty()
     var workingAStand = false
     var currentUsersStand: Stand?
-    let iphone7ScreenHeight: CGFloat = 677.0
     static var lemonadeStands = [Stand]()
     static var activeStands = [Stand]()
     static var users = [User]()
-//    static var usernameUserMap = [String: User]()
     static var uidUserMap = [String: User]()
     static var markerUserMap = [GMSMarker: User]()
-    static let googleMapsApiKey = ApiKeys.googleMapsApiKey
-    
+    static var currentUsersBusiness: Business?
+    static var currentUserStands = [Stand]()
     var locationManager = CLLocationManager()
     static var currentLocation: CLLocation?
     var mapView: GMSMapView!
@@ -54,17 +51,10 @@ class MapViewController: UIViewController{
     
     static var firstTimeLoggingIn = false
     override func viewDidLoad() {
-        
-        // set observer for UIApplication.willEnterForegroundNotification
-//        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-
-        
         if Auth.auth().currentUser!.isEmailVerified{
             
             super.viewDidLoad()
-            
             configureMapbackground()
-            
             reload()
         } else {
             
@@ -126,14 +116,9 @@ class MapViewController: UIViewController{
         
         let ref = Database.database().reference()
         ref.child(FirebaseNodes.users).observeSingleEvent(of: .value) { (snap) in
-            
             MapViewController.users = []
-            
             if let usersSnap = snap.value as? [String: NSDictionary]{
-                
                 for(_, user) in usersSnap {
-                    
-                    
                     let newUser = User(dictionary: user)
                     MapViewController.users.append(newUser)
 //                    MapViewController.usernameUserMap[newUser.fullname!] = newUser
@@ -141,22 +126,33 @@ class MapViewController: UIViewController{
                     //check that a current user is initiated
                     if newUser.uid == Auth.auth().currentUser?.uid{
                         MapViewController.currentUser = newUser
-                        
-                        
+                        //load business here
+                        MapViewController.loadBusiness(userId: newUser.uid)
                     }
                 }
-                
                 if MapViewController.currentUser == nil{
-                    print("Must be a current user")
+                    print("There must be a current user")
                     onFailure()
-                    
                 }
-                
                 onSuccess()
             } else {
                 onFailure()
             }
         }
+    }
+    
+    static func loadBusiness(userId id: String) {
+
+        currentUsersBusiness = nil
+        Database.database().reference().child(FirebaseNodes.userBusiness).child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let businessId = snapshot.value as? String {
+                Database.database().reference().child(FirebaseNodes.businesses).child(businessId).observe(.value, with: { (snapshot) in
+                    if let businessDictionary = snapshot.value as? [String: AnyObject] {
+                        MapViewController.currentUsersBusiness = Business(dictionary: businessDictionary)
+                    }
+                })
+            }
+        }, withCancel: nil)
     }
     
     static func reloadCurrentUser(){
@@ -278,7 +274,7 @@ class MapViewController: UIViewController{
     }
     
     func closeStandEarly(stand: Stand?){
-        Database.database().reference().child(FirebaseNodes.activeStands).child(stand!.standId!).child(FirebaseNodes.endTime).setValue(Date().timeIntervalSince1970) { (error, ref) in
+        Database.database().reference().child(FirebaseNodes.stands).child(stand!.standId!).child(FirebaseNodes.endTime).setValue(Date().timeIntervalSince1970) { (error, ref) in
             if error == nil {
                 ProgressHUD.showSuccess()
                 self.reload()
@@ -286,6 +282,14 @@ class MapViewController: UIViewController{
                 ProgressHUD.showError("Failure closing stand...")
             }
         }
+    }
+    
+    func presentEstablishBusinessAlert(){
+        let alert = UIAlertController(title: "Establish your business!", message: "Go to your profile page and click Create It Now", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment: "Default action"), style: .default, handler: { _ in
+            alert.removeFromParent()
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     //floating right button
@@ -298,22 +302,24 @@ class MapViewController: UIViewController{
         
         if !workingAStand{
             
-            floaty.addItem("Open Up!", icon: UIImage(named: "open-button")!) { (item) in
-                self.presentEstablishStandView()
+            if MapViewController.currentUser.hasBusinessProfile! {
+                floaty.addItem("Open Up!", icon: UIImage(named: "open-button")!) { (item) in
+                    self.presentEstablishStandView()
+                }
+            } else {
+                floaty.addItem("Establish your business first", icon: UIImage(named: "open-button")!) { (item) in
+                    self.presentEstablishBusinessAlert()
+                }
             }
         } else {
             floaty.addItem("Close down early", icon: UIImage(named: "close-button")!) { (item) in
-                
                 self.closeStandEarly(stand: self.currentUsersStand)
-                
             }
-
             floaty.addItem("Locate your Stand", icon: UIImage(named: "Lemon")!) { (item) in
                 self.transitionMapToStand(stand: self.currentUsersStand)
             }
         }
-        
-        floaty.addItem("View List of All Users", icon: UIImage(named: "listview")) { (item) in
+        floaty.addItem("Search for Users", icon: UIImage(named: "listview")) { (item) in
             self.presentListView()
         }
 //        floaty.addItem("Corkboard", icon: UIImage(named: "corkboard")) { (item) in
@@ -323,27 +329,17 @@ class MapViewController: UIViewController{
 //        }
         
         floaty.addItem("Profile", icon: UIImage(named: "profile")!) { (item) in
-            
-            
             if let user = MapViewController.currentUser{
                 self.presentProfileView(user: user)
-                
             } else {
                 ProgressHUD.showError("No current user: check internet connection and try refreshing...")
             }
         }
         floaty.addItem("Refresh", icon: UIImage(named: "refresh")!) { (item) in
-            
-            
             self.reload()
         }
-        
         self.view.addSubview(floaty)
-        
-        
-        
     }
-    
 }
 extension MapViewController: UISearchBarDelegate{
     
@@ -365,7 +361,6 @@ extension MapViewController: UISearchBarDelegate{
         greetingLabel.font = UIFont.boldSystemFont(ofSize: greetingLabel.font.pointSize)
         
         let hour = Calendar.current.component(.hour, from: Date())
-        print(hour)
         if hour < 12 && hour > 3 {
             self.greetingLabel.text = "    Good Morning, \(MapViewController.currentUser.fullname!)"
         } else if hour < 17 {
@@ -373,9 +368,6 @@ extension MapViewController: UISearchBarDelegate{
         } else {
             self.greetingLabel.text = "    Good Evening, \(MapViewController.currentUser.fullname!)"
         }
-        
-        
-        
         
         self.view.addSubview(greetingLabel)
         
@@ -396,23 +388,16 @@ extension MapViewController: UISearchBarDelegate{
     func presentListView(){
         let listVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "lemonadeStandListView")
         navigationController?.pushViewController(listVC, animated: true)
-        
-        
-        
     }
     func presentProfileView(user: User){
-        
         let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
         profileVC.setUser(user: user)
         navigationController?.pushViewController(profileVC, animated: true)
-        
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == profileSegue{
-            
             let destination = segue.destination as! ProfileViewController
             destination.user = MapViewController.currentUser
-            
         }
     }
     func presentEstablishStandView(){
@@ -431,12 +416,9 @@ extension MapViewController: UISearchBarDelegate{
         if let _ = tableView {
             tableView.removeFromSuperview()
         }
-        
-        
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
         view.endEditing(true)
         tableView.removeFromSuperview()
     }
@@ -466,21 +448,12 @@ extension MapViewController: UISearchBarDelegate{
     
     
     func filterContent(searchText: String){
-        
-        
         MapViewController.filteredStands = MapViewController.activeStands.filter{ stand in
-            
             let string = "\(stand.standName)"
-            
             return(string.lowercased().contains(searchText.lowercased()))
-            
         }
-        
         tableView.reloadData()
-        
     }
-    
-    
     
     //search bar text changed
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -496,10 +469,25 @@ extension MapViewController: UISearchBarDelegate{
 
 extension MapViewController: GMSMapViewDelegate{
     
+    static func loadCurrentUserStandsFromBusiness(onSuccess: @escaping() -> Void){
+        MapViewController.currentUserStands = []
+        Database.database().reference().child(FirebaseNodes.stands).observeSingleEvent(of: .value) { (snapshot) in
+            if let snap = snapshot.value as? NSDictionary{
+                for (_, stand) in snap {
+                    if let dict = stand as? NSDictionary {
+                        let newStand = Stand(dictionary: dict)
+                        if newStand.userId == (Auth.auth().currentUser?.uid)! {
+                            MapViewController.currentUserStands.append(newStand)
+                        }
+                    }
+                }
+                onSuccess()
+            }
+        }
+    }
     
     //loads all lemonade stands, checks if the currrent user is working a stand or not
     static func loadLemonadeStands(view: MapViewController, onSuccess: @escaping() -> Void){
-        
         lemonadeStands = []
         activeStands = []
         filteredStands = []
@@ -507,48 +495,35 @@ extension MapViewController: GMSMapViewDelegate{
         view.mapView.clear()
         view.workingAStand = false
         view.currentUsersStand = nil
-        
-        Database.database().reference().child(FirebaseNodes.activeStands).observeSingleEvent(of: .value) { (snapshot) in
-            
+        Database.database().reference().child(FirebaseNodes.stands).observeSingleEvent(of: .value) { (snapshot) in
             if let snap = snapshot.value as? NSDictionary{
-                
                 for (_, stand) in snap {
-                    
                     if let dict = stand as? NSDictionary {
-                        let lemonadeStand = Stand(dictionary: dict)
-                        
-                        MapViewController.lemonadeStands.append(lemonadeStand)
-                        
+                        let newStand = Stand(dictionary: dict)
+                        MapViewController.lemonadeStands.append(newStand)
+                        //check if this stand was created by the current user
+                        if newStand.userId == (Auth.auth().currentUser?.uid)! {
+                            view.workingAStand = true
+                            MapViewController.currentUserStands.append(newStand)
+                            print(MapViewController.currentUserStands.count)
+                            view.currentUsersStand = newStand
+                        }
                     }
                 }
-                
                 onSuccess()
             } else {
                 onSuccess()
-                
             }
         }
-        
-        
     }
     
     func setMarkers(){
-        
         for stand in MapViewController.lemonadeStands{
-            if stand.endTime > Date().timeIntervalSince1970 && stand.startTime <= Date().timeIntervalSince1970{
-                
+            if stand.isOpen() {
                 MapViewController.activeStands.append(stand)
-                //check if this stand was created by the current user
-                if stand.userId == (Auth.auth().currentUser?.uid)! {
-                    self.workingAStand = true
-                    self.currentUsersStand = stand
-                }
                 setMarker(stand: stand)
             }
-            
         }
-        
-        
     }
     
     func setMarker(stand: Stand){
@@ -559,24 +534,14 @@ extension MapViewController: GMSMapViewDelegate{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         let timestampDate = NSDate(timeIntervalSince1970: stand.endTime)
-        
-        
         marker.map = mapView
-        
-        
-        
         marker.title = "Stand Name: \(stand.standName!) | Created By: \(stand.creatorName!) | Closes At: \(dateFormatter.string(from: timestampDate as Date))"
-        
-        
-        
         MapViewController.markerUserMap[marker] = MapViewController.uidUserMap[stand.userId!]
     }
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         self.presentProfileView(user: MapViewController.markerUserMap[marker]!)
-        
     }
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
-        
         let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 200, height: 120))
         mapView.addSubview(view)
         view.backgroundColor = UIColor.white
@@ -610,7 +575,6 @@ extension MapViewController: GMSMapViewDelegate{
         profileButton.layer.cornerRadius = 6
         view.addSubview(profileButton)
         
-        
         return view
     }
     
@@ -618,7 +582,6 @@ extension MapViewController: GMSMapViewDelegate{
         let ref = Database.database().reference()
         ref.child(FirebaseNodes.users).child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (snap) in
             if let userSnap = snap.value as? NSDictionary{
-                
                 let newUser = User(dictionary: userSnap)
                 MapViewController.currentUser = newUser
                 onSuccess()
@@ -641,10 +604,6 @@ extension MapViewController: CLLocationManagerDelegate {
         } else {
             print("locaation changed")
         }
-        
-        
-        
-        
     }
     
     // Handle authorization for the location manager.
@@ -669,17 +628,13 @@ extension MapViewController: CLLocationManagerDelegate {
         locationManager.stopUpdatingLocation()
         print("Error: \(error)")
     }
-    
-    
 }
 
 extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if searchBar.text! != ""{
             return MapViewController.filteredStands.count
         }
-        
         return 0
     }
     
@@ -773,8 +728,6 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
         let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
         let url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=\(origin)&destinations=\(destination)&key=\(ApiKeys.googleDistanceMatrixApiKey)"
         
-        
-        
         Alamofire.request(url, method: .get)
             .responseJSON {(response) in
                 
@@ -801,15 +754,11 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
                     ProgressHUD.showError("Error getting directions")
                 }
         }
-        
-
-        
     }
     
     func drawPath(startLocation: CLLocation, endLocation: CLLocation){
         let origin = "\(startLocation.coordinate.latitude),\(startLocation.coordinate.longitude)"
         let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
-        
         let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)&key=\(ApiKeys.googleDirectionsApiKey)"
         Alamofire.request(url, method: .get)
             .responseJSON {(response) in
@@ -865,7 +814,6 @@ extension UIView {
         border.frame = CGRect(x: x, y: y, width: width, height: height)
         layer.addSublayer(border)
     }
-    
 }
 
 extension MapViewController{//bulletin board functions
@@ -876,9 +824,6 @@ extension MapViewController{//bulletin board functions
 //
         
         var stands:[Stand] = []
-        
-        
-        
 //        for stand in MapViewController.lemonadeStands{
 //            
 //            if let otherUserSchool = MapViewController.uidUserMap[stand.userId]?.school{
@@ -889,16 +834,10 @@ extension MapViewController{//bulletin board functions
 //            }
 //            
 //        }
-        
-        
         return stands
-        
-        
     }
+    
     static func getStandsFrom(city: String) -> [Stand] {
-        
-        
-        
         var stands:[Stand] = []
         
         for stand in MapViewController.lemonadeStands{
@@ -906,27 +845,19 @@ extension MapViewController{//bulletin board functions
                 stands.append(stand)
             }
         }
-        
-        
         return stands
-        
     }
+    
     static func getStandsClosingSoon() -> [Stand]{
         var stands:[Stand] = []
-        
         let date = Date()
-        
         let hoursToAdd = 1
-        
         let newDate = Calendar.current.date(byAdding: .hour, value: hoursToAdd, to: Date())
-        
         for stand in MapViewController.lemonadeStands{
             if Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) <= newDate! && Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) > date {
                 stands.append(stand)
             }
         }
-        
-        
         return stands
     }
 }

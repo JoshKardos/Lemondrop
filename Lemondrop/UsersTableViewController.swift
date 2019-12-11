@@ -75,6 +75,7 @@ class UsersTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("clicked")
         if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
             presentProfileView(user: self.filteredUsers[indexPath.row])
         } else {

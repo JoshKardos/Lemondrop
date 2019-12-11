@@ -12,14 +12,14 @@ class ProfileSettingsViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
     }
     
     
     
     
     @IBAction func logoutPressed(_ sender: Any) {
+        
+        print("LOGOUT PRESSD")
         
         let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to logout?", preferredStyle: .alert)
         

@@ -41,8 +41,8 @@ class StandCell: UITableViewCell{
         let startTimeString = dateFormatter.string(from: NSDate(timeIntervalSince1970: stand.startTime) as Date)
         let endTimeString = dateFormatter.string(from: date as Date)
         print(stand.standId)
-        print(stand.pricePerGlass)
-        priceLabel.text = "Glass Price: $\(stand.pricePerGlass!)"
+//        print(stand.pricePerGlass)
+//        priceLabel.text = "Glass Price: $\(stand.pricePerGlass!)"
         businessHoursLabel.text = "Hours: \(startTimeString)-\(endTimeString)"
         cityLabel.text = stand.city
         

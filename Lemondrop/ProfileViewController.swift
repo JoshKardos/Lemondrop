@@ -81,16 +81,24 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var pantsImage: UIImageView!
     
     @IBOutlet weak var nameField: UILabel!
+    @IBOutlet weak var businessNameLeftLabel: UILabel!
+    @IBOutlet weak var businessNameLabel: UILabel!
+    @IBOutlet weak var standTotalLeftLabel: UILabel!
+    @IBOutlet weak var standTotalLabel: UILabel!
+    @IBOutlet weak var bpNotCreatedLabel: UILabel!
+    @IBOutlet weak var createBPButton: UIButton!
     
     @IBOutlet weak var submitRatingButton: UIButton!
     @IBOutlet weak var ratingStars: CosmosView!
     var user: User!
-    
+    static var businessId: String! // to use is in EditProfileView
     @IBOutlet weak var dmButton: UIButton!
+    @IBOutlet weak var ratingLeftLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     
     @IBOutlet var outfitArrows: [UIButton]!
     @IBOutlet weak var submitOutfitButton: UIButton!
+    @IBOutlet weak var businessProfileContainer: UIView!
     
     override func viewDidLoad() {
         
@@ -122,27 +130,21 @@ class ProfileViewController: UIViewController{
     }
     
     func configureView(){
-        
-        
         if user.uid == Auth.auth().currentUser?.uid{//if current user
-            
             user = MapViewController.currentUser
-            
             setTextFields()
-            
             let settingsButton = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(self.settingsTapped))
             self.navigationItem.setRightBarButton(settingsButton, animated: true)
             dmButton.isHidden = true
             dmButton.isEnabled = false
+            submitOutfitButton.layer.cornerRadius = submitOutfitButton.frame.height/4
+            handleBusinessProfileView()
             disableRating()
-            
         } else {//not current user
             setTextFields()
-            
+            handleBusinessProfileView()
             self.allowRating()
-            
             self.disableArrows()
-            
         }
         
         let hatIndex = Int(self.user.avatar["hatIndex"]!)!
@@ -157,11 +159,157 @@ class ProfileViewController: UIViewController{
         
     }
     
-    @IBAction func dmButtonPressed(_ sender: Any) {
-        
-        MessagesViewController.showChatController(otherUser: user, view: self)
-        
+    func configureBusinessLabels() {
+        let ref = Database.database().reference()
+        ref.child(FirebaseNodes.userBusiness).child(self.user.uid!).observe(.value) { (snapshot) in
+            if let businessId = snapshot.value as? String {
+                ProfileViewController.businessId = businessId
+                ref.child(FirebaseNodes.businesses).child(businessId).observe(.value, with: { (snapshot) in
+                    if let dict = snapshot.value as? [String: Any] {
+                        if let businessName = dict["name"] as? String{
+                            self.businessNameLabel.text = businessName
+                        }
+                    }
+                })
+                ref.child(FirebaseNodes.businessStands).child(businessId).observe(.value, with: { (snapshot) in
+                    let standsCount = String(snapshot.childrenCount)
+                    self.standTotalLabel.text = standsCount
+                })
+            }
+        }
     }
+    
+    func handleBusinessProfileView () {
+        
+        businessProfileContainer.backgroundColor = UIColor.lightGray
+        businessProfileContainer.layer.cornerRadius = 6
+        if (user.hasBusinessProfile!) {
+            print("HAS BP")
+            //  disable not creatBP label
+            self.bpNotCreatedLabel.isHidden = true
+            self.bpNotCreatedLabel.isEnabled = false
+            //  disable createBP button
+            self.createBPButton.isHidden = true
+            self.createBPButton.isEnabled = false
+            businessNameLabel.isHidden = false
+            businessNameLabel.isEnabled = true
+            businessNameLeftLabel.isHidden = false
+            businessNameLeftLabel.isEnabled = true
+            standTotalLabel.isHidden = false
+            standTotalLabel.isEnabled = true
+            standTotalLeftLabel.isHidden = false
+            standTotalLeftLabel.isEnabled = true
+            //  set text fields
+            self.configureBusinessLabels()
+        } else {// business not set up
+        //  disable left labels
+            businessNameLeftLabel.isHidden = true
+            businessNameLeftLabel.isEnabled = false
+            standTotalLeftLabel.isEnabled = false
+            standTotalLeftLabel.isHidden = true
+        // disable right labels
+            businessNameLabel.isHidden = true
+            businessNameLabel.isEnabled = false
+            standTotalLabel.isEnabled = false
+            standTotalLabel.isHidden = true
+            //  enable not creatBP label
+            self.bpNotCreatedLabel.isHidden = false
+            self.bpNotCreatedLabel.isEnabled = true
+            
+            if (user.uid == Auth.auth().currentUser?.uid) {
+                //  enable createBP button
+                self.createBPButton.layer.cornerRadius = self.createBPButton.frame.height/4
+                self.createBPButton.isHidden = false
+                self.createBPButton.isEnabled = true
+            }
+        }
+    }
+    @IBAction func dmButtonPressed(_ sender: Any) {
+        MessagesViewController.showChatController(otherUser: user, view: self)
+    }
+    @IBAction func createBPButtonPressed(_ sender: Any) {
+        let alert = UIAlertController(title: "Create your business", message: "All we need is the business name", preferredStyle: .alert)
+        
+        alert.addTextField { (textField) in
+            textField.placeholder = "Business name..."
+        }
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            
+            if !Connectivity.isConnectedToInternet{
+                ProgressHUD.showError("Not connected to internet")
+                return
+            }
+            
+            let textField = alert?.textFields![0]
+            self.isUniqueName(textField) { (bool) in
+                if bool {
+                    ProgressHUD.show()
+                    self.saveBusiness(textField)
+                } else {
+                    ProgressHUD.showError("Unfortunately, this name has already been taken by another business.")
+                }
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func isUniqueName(_ textField: UITextField?, completion: @escaping (Bool)->()){
+        
+        Database.database().reference().child(FirebaseNodes.businessNames).observeSingleEvent(of: .value) { (snap) in
+            if let dict = snap.value as? [String: Any] {
+                for (name, _) in dict {
+                    
+                    if name == textField!.text{
+                        completion(false)
+                        return
+                    }
+                    
+                }
+                print("UNIQUE NAME")
+                completion(true)
+            } else {
+                completion(true)
+            }
+        }
+    }
+    
+    func saveBusiness(_ textField: UITextField?) {
+        guard let newBusinessName = textField?.text! else {
+            ProgressHUD.showError("Retype the name...")
+            return
+        }
+        let userRef = Database.database().reference().child(FirebaseNodes.users).child(self.user.uid!)
+        userRef.child(FirebaseNodes.hasBusinessProfile).setValue("1", withCompletionBlock: { (error, ref) in
+            if error != nil {
+                ProgressHUD.showError("Error creating your business... Try again.")
+                return
+            }
+            let newBusinessId = userRef.child(FirebaseNodes.businessId).childByAutoId().key
+            Database.database().reference().child(FirebaseNodes.userBusiness).child(self.user.uid!).setValue(newBusinessId!, withCompletionBlock: { (error, ref) in
+                if error != nil {
+                    ProgressHUD.showError("Error creating your business... Try again.")
+                    return
+                }
+                let businessRef = Database.database().reference().child(FirebaseNodes.businesses).child(newBusinessId!)
+                businessRef.setValue([FirebaseNodes.name: newBusinessName, FirebaseNodes.businessId: newBusinessId, FirebaseNodes.userID: self.user.uid!], withCompletionBlock: { (error, ref) in
+                    Database.database().reference().child(FirebaseNodes.businessNames).child(newBusinessName).setValue(1, withCompletionBlock: { (error, ref) in
+                        if error != nil {
+                            ProgressHUD.showError("Error creating your business... Try again.")
+                            return
+                        }
+                        MapViewController.reloadCurrentUser(onSuccess: {
+                            self.configureView()
+                            ProgressHUD.showSuccess("Successfully created your business!!")
+                        })
+                    })
+                })
+            })
+        })
+    }
+    
     @IBAction func saveOutfitPressed(_ sender: Any) {
         
         if !user.unlockedHats.contains(String(hatIndex)) || !user.unlockedShirts.contains(String(shirtIndex)) || !user.unlockedPants.contains(String(pantsIndex)){
@@ -239,15 +387,13 @@ class ProfileViewController: UIViewController{
     }
     
     func handleLockClick(){
-//        HYParentalGate.sharedGate.show(successHandler: {
-            if SKPaymentQueue.canMakePayments(){
-                let paymentRequest = SKMutablePayment()
-                paymentRequest.productIdentifier = self.iapProductId!
-                SKPaymentQueue.default().add(paymentRequest)
-            } else {//cant make payments
-                
-            }
-//        })
+        if SKPaymentQueue.canMakePayments(){
+            let paymentRequest = SKMutablePayment()
+            paymentRequest.productIdentifier = self.iapProductId!
+            SKPaymentQueue.default().add(paymentRequest)
+        } else {//cant make payments
+            
+        }
     }
     
     func disableRating(){
@@ -293,10 +439,10 @@ class ProfileViewController: UIViewController{
                 formatter.maximumFractionDigits = 2
                 self.ratingStars.rating = ( totalScore / Double(numRatings) )
                 let rating = formatter.string(from: NSNumber(value: self.ratingStars!.rating))
-                self.ratingLabel.text = "Rating: \(rating!)"
+                self.ratingLabel.text = rating!
                 
             } else {
-                self.ratingLabel.text = "Rating: NONE"
+                self.ratingLabel.text = "NONE"
                 self.ratingStars.rating = 0.00
             }
         }
