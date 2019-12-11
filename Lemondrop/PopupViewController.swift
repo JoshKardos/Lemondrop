@@ -69,29 +69,20 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         startTimePicker.maximumDate = endTimePicker.date
         if !standNameTextField.text!.isEmpty && !priceTextField.text!.isEmpty && endTimePicker.date > startTimePicker.date {
             enableSubmitButton()
-            print("ENABLED")
         } else {
             disableSubmitButton()
-            print("DISABLED")
         }
         
     }
     
     @IBAction func cancelPressed(_ sender: Any) {
-        //        let timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: nil, userInfo: nil, repeats: true)
-        
-        
         let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { (timer) in
             
             self.view.removeFromSuperview()
         }
-        
-        
-        
-        
     }
+    
     @IBAction func submitPressed(_ sender: Any) {
-        
         
         priceTextField.text?.removeFirst()
         
@@ -160,17 +151,17 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         submitButton.isEnabled = false
         submitButton.setTitleColor(UIColor.gray, for: .normal)
     }
+    
     func enableSubmitButton(){
         submitButton.isEnabled = true
         submitButton.setTitleColor(UIColor.green, for: .normal)
     }
+    
     func getCityName(completion: @escaping () -> Void){
         guard let url = URL(string:  "https://maps.googleapis.com/maps/api/geocode/json?latlng=\((MapViewController.currentLocation?.coordinate.latitude)!),\((MapViewController.currentLocation?.coordinate.longitude)!)&key=\(ApiKeys.googleMapsApiKey)") else {
             completion()
             return
         }
-        print(url)
-        
         Alamofire.request(url, method: .get)
             .responseJSON { response in
                 if response.result.isSuccess {
@@ -235,4 +226,24 @@ extension String {
         
         return formatter.string(from: number)!
     }
+}
+
+extension UITextField{
+
+ func addDoneButtonToKeyboard(myAction:Selector?){
+    let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 300, height: 40))
+    doneToolbar.barStyle = UIBarStyle.default
+
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+    let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: myAction)
+
+    var items = [UIBarButtonItem]()
+    items.append(flexSpace)
+    items.append(done)
+
+    doneToolbar.items = items
+    doneToolbar.sizeToFit()
+
+    self.inputAccessoryView = doneToolbar
+ }
 }

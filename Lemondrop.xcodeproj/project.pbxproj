@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		62533647C94C5708B24CCAAC /* Pods_Lemondrop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C53EAA09EB2166FFDFA0325A /* Pods_Lemondrop.framework */; };
+		B3033E6723A158A200F7050B /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6623A158A200F7050B /* ListCell.swift */; };
+		B3033E6923A15C2300F7050B /* UploadByListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6823A15C2300F7050B /* UploadByListViewController.swift */; };
+		B3033E6B23A15E7100F7050B /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6A23A15E7100F7050B /* Item.swift */; };
 		B3152BFA235BCADF0098DEF8 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3152BF9235BCADF0098DEF8 /* FirebaseService.swift */; };
 		B3152BFC235D14410098DEF8 /* EditProfileStandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */; };
 		B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */; };
@@ -81,6 +84,9 @@
 /* Begin PBXFileReference section */
 		74F5C8BCBE3C764EAB1EF77B /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		7794A921C9D139D40FDAA27C /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3033E6623A158A200F7050B /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		B3033E6823A15C2300F7050B /* UploadByListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadByListViewController.swift; sourceTree = "<group>"; };
+		B3033E6A23A15E7100F7050B /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		B3152BF9235BCADF0098DEF8 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileStandCell.swift; sourceTree = "<group>"; };
 		B34074DD228E35EE00FF6ED6 /* Lemondrop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lemondrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -209,6 +215,7 @@
 				B36C5EF122A97BEA00E548B5 /* AddMessageThreadViewController.swift */,
 				B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */,
 				B386AE4823A0422A00AF5EE5 /* AddStandViewController.swift */,
+				B3033E6823A15C2300F7050B /* UploadByListViewController.swift */,
 				B36C5EEE22A832DA00E548B5 /* Views */,
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */,
@@ -226,6 +233,7 @@
 				B3CB357C22B4365400BB0A95 /* StandCell.swift */,
 				B36745E022B9F07C00ED5A06 /* StickyNote.swift */,
 				B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */,
+				B3033E6623A158A200F7050B /* ListCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -261,6 +269,7 @@
 				B3A2877822946477000CB1F4 /* User.swift */,
 				B36C5EEA22A8300F00E548B5 /* Message.swift */,
 				B3E4DE81238087BE00CC92CF /* Business.swift */,
+				B3033E6A23A15E7100F7050B /* Item.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -492,9 +501,11 @@
 			files = (
 				B36745E322BC039000ED5A06 /* EditProfileViewController.swift in Sources */,
 				B36C5EED22A8311400E548B5 /* DirectMessageBubble.swift in Sources */,
+				B3033E6B23A15E7100F7050B /* Item.swift in Sources */,
 				B3F7F46E22C722C8001B25E8 /* SetEndTimePopupViewController.swift in Sources */,
 				B3E4DE82238087BE00CC92CF /* Business.swift in Sources */,
 				B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */,
+				B3033E6723A158A200F7050B /* ListCell.swift in Sources */,
 				B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */,
 				B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */,
 				B36C5EF022A833EA00E548B5 /* MessagesViewController.swift in Sources */,
@@ -503,6 +514,7 @@
 				B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */,
 				B36C5EF422A9859300E548B5 /* UserCell.swift in Sources */,
 				B34074F7228E64C100FF6ED6 /* MapViewController.swift in Sources */,
+				B3033E6923A15C2300F7050B /* UploadByListViewController.swift in Sources */,
 				B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */,
 				B36745E922BC4F8300ED5A06 /* ChangePasswordViewController.swift in Sources */,
 				B36C5EE922A7BD9400E548B5 /* ChatLogViewController.swift in Sources */,

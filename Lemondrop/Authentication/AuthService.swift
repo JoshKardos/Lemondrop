@@ -36,6 +36,8 @@ class AuthService {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
+            UploadByListViewController.list = []
+            
             let signInVC = storyboard.instantiateViewController(withIdentifier: "SignInViewController")
 
             if let sender = sender {
