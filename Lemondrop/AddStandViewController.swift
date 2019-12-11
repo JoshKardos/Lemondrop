@@ -47,6 +47,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
     }
     
     deinit {
+        print("DEINIT")
         UploadByListViewController.list = []
     }
     
@@ -54,24 +55,59 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
         navigationController?.popViewController(animated: true)
     }
     
+    func validateTextField() -> Bool{
+        let nameText = standNameTextField!.text!
+        return !(nameText == "" || nameText.trimmingCharacters(in: .whitespacesAndNewlines) == "")
+    }
+    
     @IBAction func submitPressed(_ sender: Any) {
+        
+        if !validateTextField() {
+            ProgressHUD.showError("Invalid stand name")
+            return
+        }
         
         let newStandRef = Database.database().reference().child(FirebaseNodes.stands).childByAutoId()
         let newStandRefId = newStandRef.key!
         let values = ["standId": newStandRefId,"standName": self.standNameTextField!.text!, "uid": (Auth.auth().currentUser?.uid)!, "type": selectedType, "latitude": MapViewController.currentLocation!.coordinate.latitude, "longitude": MapViewController.currentLocation!.coordinate.longitude] as [String : Any]
         let alert = UIAlertController(title: "How would you like to store your menu?", message: "Pick One", preferredStyle: .actionSheet)
-
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Photo & List", comment: "Default action"), style: .default, handler: { _ in
-            // add photo
-            // add list
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .cancel, handler: { _ in
             alert.removeFromParent()
         }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("List", comment: "Default action"), style: .default, handler: { _ in
-            // if list > 0
-            // let value =
-            // values["menuFromList": value ]
-            alert.removeFromParent()
-        }))
+        
+        if UploadByListViewController.list.count > 0, let _ = localPhotoData {
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Photo & List", comment: "Default action"), style: .default, handler: { _ in
+                self.savePhoto(standRefId: newStandRefId, onSuccess: {
+                    self.saveList(standRefId: newStandRefId, onSuccess: {
+                        self.saveLemonadeStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
+                            self.successSaving()
+                        }, onError: {
+                            self.failureSaving()
+                        })
+                    }, onError: {
+                        self.failureSaving()
+                    })
+                }, onError: {
+                    self.failureSaving()
+                })
+                alert.removeFromParent()
+            }))
+        }
+        
+        if UploadByListViewController.list.count > 0 {
+            alert.addAction(UIAlertAction(title: NSLocalizedString("List", comment: "Default action"), style: .default, handler: { _ in
+                self.saveList(standRefId: newStandRefId, onSuccess: {
+                    self.saveLemonadeStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
+                        self.successSaving()
+                    }, onError: {
+                        self.failureSaving()
+                    })
+                }, onError: {
+                    self.failureSaving()
+                })
+                alert.removeFromParent()
+            }))
+        }
         
         if let _ = localPhotoData {
             alert.addAction(UIAlertAction(title: NSLocalizedString("Photo", comment: "Default action"), style: .default, handler: { _ in
@@ -97,6 +133,27 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
             alert.removeFromParent()
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func getMenuList() -> [String: Double]{
+        var mapToReturn = [String: Double]()
+        for item in UploadByListViewController.list {
+            mapToReturn[item.name] = item.price
+        }
+        return mapToReturn
+    }
+    
+    func saveList(standRefId: String, onSuccess: @escaping() -> Void, onError: @escaping() -> Void) {
+        ProgressHUD.show("Saving list...")
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        let values = self.getMenuList()
+        Database.database().reference().child(FirebaseNodes.standMenus).child(standRefId).child(FirebaseNodes.listMenu).setValue(values) { (error, ref) in
+            if error != nil {
+                onError()
+                return
+            }
+            onSuccess()
+        }
     }
     
     func savePhoto(standRefId: String, onSuccess: @escaping() -> Void, onError: @escaping() -> Void) {
@@ -160,6 +217,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
     func successSaving() {
         ProgressHUD.showSuccess("Success!")
         self.navigationController?.popViewController(animated: true)
+        UploadByListViewController.list = []
         UIApplication.shared.endIgnoringInteractionEvents()
     }
     

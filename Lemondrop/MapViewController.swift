@@ -486,11 +486,17 @@ extension MapViewController: GMSMapViewDelegate{
         }
     }
     
-    //loads all lemonade stands, checks if the currrent user is working a stand or not
-    static func loadLemonadeStands(view: MapViewController, onSuccess: @escaping() -> Void){
+    static func resetAllStands() {
         lemonadeStands = []
         activeStands = []
         filteredStands = []
+        currentUserStands = []
+    }
+    
+    //loads all lemonade stands, checks if the currrent user is working a stand or not
+    static func loadLemonadeStands(view: MapViewController, onSuccess: @escaping() -> Void){
+        
+        resetAllStands()
         //remove all markers from mapview
         view.mapView.clear()
         view.workingAStand = false
@@ -505,7 +511,6 @@ extension MapViewController: GMSMapViewDelegate{
                         if newStand.userId == (Auth.auth().currentUser?.uid)! {
                             view.workingAStand = true
                             MapViewController.currentUserStands.append(newStand)
-                            print(MapViewController.currentUserStands.count)
                             view.currentUsersStand = newStand
                         }
                     }
@@ -538,9 +543,11 @@ extension MapViewController: GMSMapViewDelegate{
         marker.title = "Stand Name: \(stand.standName!) | Created By: \(stand.creatorName!) | Closes At: \(dateFormatter.string(from: timestampDate as Date))"
         MapViewController.markerUserMap[marker] = MapViewController.uidUserMap[stand.userId!]
     }
+    
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
         self.presentProfileView(user: MapViewController.markerUserMap[marker]!)
     }
+    
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
         let view = UIView(frame: CGRect.init(x: 0, y: 0, width: 200, height: 120))
         mapView.addSubview(view)
