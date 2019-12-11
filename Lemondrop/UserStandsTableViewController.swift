@@ -21,7 +21,6 @@ class UserStandsTableViewController: UITableViewController{
         
         self.filterUserStands()
         if userStands.count == 0{
-            print("00000")
             addNoStandsLabel()
         } else {
             super.viewDidLoad()

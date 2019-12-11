@@ -19,10 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-       
         
-        GMSServices.provideAPIKey(MapViewController.googleMapsApiKey)
-        GMSPlacesClient.provideAPIKey(MapViewController.googleMapsApiKey)
+        GMSServices.provideAPIKey(ApiKeys.googleMapsApiKey)
+        GMSPlacesClient.provideAPIKey(ApiKeys.googleMapsApiKey)
         
         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
         // Replace 'YOUR_APP_ID' with your OneSignal App ID.

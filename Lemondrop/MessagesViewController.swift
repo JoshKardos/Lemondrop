@@ -89,7 +89,6 @@ class MessagesViewController: UITableViewController{
                 if let dictionary = snapshot.value as? [String: Any]{
                     
                     let message = Message(dictionary: dictionary as [String : Any] as [String : AnyObject])
-                    print("ToID")
                     //should always work
                     if let toId = message.chatPartnerId()  {
                         

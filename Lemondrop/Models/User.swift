@@ -19,7 +19,7 @@ class User{
     var unlockedPants = [String]()
     var rating: Double?
 //    var usersRatedIds = [String]()
-    
+    var hasBusinessProfile: Bool?
     var token = ""{
         didSet{
             UserDefaults.standard.set(token, forKey: "token")
@@ -35,7 +35,7 @@ class User{
         fullname = (dictionary["fullname"] as! String)
         email = (dictionary["email"] as! String)
         avatar = (dictionary["avatar"] as! [String: String])
-        
+        hasBusinessProfile=((dictionary["hasBusinessProfile"] as? NSString)?.boolValue)
         //unlocked hats
         for hatIndex in dictionary["unlockedHats"] as! [String]{
             

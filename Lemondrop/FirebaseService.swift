@@ -13,7 +13,7 @@ import CoreLocation
 class FirebaseNodes {
     
     // head children
-    static let activeStands = "activeLemonadeStands" // done
+    static let stands = "stands" // done
     static let fullnames = "fullnames"
     static let messages = "messages"
     static let userMessages = "user-messages"
@@ -21,6 +21,10 @@ class FirebaseNodes {
     static let userRated = "user-rated"
     static let userRatings = "user-ratings"
     static let users = "users"
+    static let businesses = "businesses"
+    static let userBusiness = "user-business"
+    static let businessNames = "businessNames"
+    static let businessStands = "business-stands"
     
     // users children
     
@@ -32,7 +36,8 @@ class FirebaseNodes {
     static let unlockedHats = "unlockedHats"
     static let unlockedPants = "unlockedPants"
     static let unlockedShirts = "unlockedShirts"
-    
+    static let hasBusinessProfile = "hasBusinessProfile"
+    static let businessId = "businessId"
     // user-ratings children
     
     static let raterId = "raterId"
@@ -45,7 +50,7 @@ class FirebaseNodes {
     static let senderID = "senderID"
     static let text = "text"
     static let timestamp = "timestamp"
-    static let toId = "todId"
+    static let toId = "toId"
     
     // activeLemonadeStands children
     static let city = "city"
@@ -58,5 +63,8 @@ class FirebaseNodes {
     static let standName = "standName"
     static let startTime = "startTime"
     static let userID = "userID"
+    
+    //business children
+    static let name = "name"
     
 }
