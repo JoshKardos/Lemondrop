@@ -16,7 +16,6 @@ class SetEndTimePopupViewController: UIViewController {
     @IBOutlet weak var endTimePicker: UIDatePicker!
     var stand: Stand!
     @IBOutlet weak var container: UIView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         container.layer.cornerRadius = 12
@@ -48,18 +47,16 @@ class SetEndTimePopupViewController: UIViewController {
                 if error != nil{
                     ProgressHUD.showError("Failure opening stand...")
                     UIApplication.shared.endIgnoringInteractionEvents()
-                    
+                    return
                 } else {
                     ProgressHUD.showSuccess("Success, \(stand.standName!) is now opened!")
-                    _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { (timer) in
-                        UserStandsTableViewController.standCreated = true
-                        self.view.removeFromSuperview()
-                    }
-                    self.navigationController?.popToRootViewController(animated: true)
+                    print("setting to true")
+                    UserStandsTableViewController.standCreated = true
+                    self.view.removeFromSuperview()
                     UIApplication.shared.endIgnoringInteractionEvents()
+                    self.navigationController?.popToRootViewController(animated: true)
+                    return
                 }
-                UIApplication.shared.endIgnoringInteractionEvents()
-                return
             }
             
         }

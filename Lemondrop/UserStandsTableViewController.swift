@@ -15,7 +15,6 @@ class UserStandsTableViewController: UITableViewController{
     var delegate: MapViewController?
     var userStands = [Stand]()
     static var standCreated = false
-
     override func viewDidLoad() {
         UserStandsTableViewController.standCreated = false
         self.navigationController?.isNavigationBarHidden = false

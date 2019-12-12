@@ -44,14 +44,11 @@ class MapViewController: UIViewController{
     var clearButton: UIButton?
     static var currentUser: User!
     var profileSegue = "ProfileStoryboard"
-    
     var reloadView: UIView?
-    
-    
     static var firstTimeLoggingIn = false
+    
     override func viewDidLoad() {
         if Auth.auth().currentUser!.isEmailVerified{
-            
             super.viewDidLoad()
             configureMapbackground()
             reload()
@@ -67,7 +64,12 @@ class MapViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
+        if UserStandsTableViewController.standCreated {
+            self.reload()
+            UserStandsTableViewController.standCreated = false
+        }
     }
+    
     static func configureEmailNotVerifiedPage(viewController: UIViewController){
         
         let label = UILabel(frame: CGRect(x: 0, y: 16, width: viewController.view.frame.width, height: 48))
@@ -86,26 +88,21 @@ class MapViewController: UIViewController{
         signOutButton.layer.backgroundColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         signOutButton.addTarget(viewController, action: #selector(signOut), for: .touchUpInside)
         
-        
         let resendLinkButton = UIButton(frame: CGRect(x: viewController.view.frame.width - (viewController.view.frame.width/2), y: viewController.view.frame.height - buttonHeight, width: viewController.view.frame.width/2, height: buttonHeight))
         viewController.view.addSubview(resendLinkButton)
         resendLinkButton.setTitle("Resend Link", for: .normal)
         resendLinkButton.setTitleColor(UIColor.white, for: .normal)
         resendLinkButton.layer.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         resendLinkButton.addTarget(viewController, action: #selector(resendLink), for: .touchUpInside)
-        
     }
     
     @objc func signOut(){
         AuthService.logout(sender: self)
-        
     }
+    
     @objc func resendLink(){
-        
         Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
-            
             ProgressHUD.showSuccess("Sent a new verification link")
-        
         })
     }
     
@@ -195,7 +192,7 @@ class MapViewController: UIViewController{
     }
     @objc
     func reload(){
-        
+        print("IN RELOAD")
         if let _ = reloadView{
             reloadView?.removeFromSuperview()
         }
@@ -213,16 +210,15 @@ class MapViewController: UIViewController{
             //            self.configureFloatingButton()
             
         } else {
-            
+            print("IN ELSE")
+
             ProgressHUD.show("Reloading...")
             
             MapViewController.loadUsers(onSuccess: {
                 MapViewController.loadLemonadeStands(view: self) {
                     
                     self.setMarkers()
-                    
                     self.configureFloatingButton()
-                    
                     self.configureTextField()
                     
                     ProgressHUD.showSuccess("Reloaded")
@@ -247,11 +243,10 @@ class MapViewController: UIViewController{
         locationManager.startUpdatingLocation()
         placesClient = GMSPlacesClient.shared()
         
-        
-        
         let camera = GMSCameraPosition.camera(withLatitude: 38.5116,
                                               longitude: 121.4944,
                                               zoom: zoomLevel)
+        
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
         mapView.settings.myLocationButton = false
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -491,7 +486,6 @@ extension MapViewController: GMSMapViewDelegate{
         resetAllStands()
         //remove all markers from mapview
         view.mapView.clear()
-        view.workingAStand = false
         Database.database().reference().child(FirebaseNodes.stands).observeSingleEvent(of: .value) { (snapshot) in
             if let snap = snapshot.value as? NSDictionary{
                 for (_, stand) in snap {
@@ -501,7 +495,6 @@ extension MapViewController: GMSMapViewDelegate{
                         MapViewController.lemonadeStands.append(newStand)
                         //check if this stand was created by the current user
                         if newStand.userId == (Auth.auth().currentUser?.uid)! {
-                            view.workingAStand = true
                             MapViewController.currentUserStands.append(newStand)
                         }
                     }
@@ -514,10 +507,14 @@ extension MapViewController: GMSMapViewDelegate{
     }
     
     func setMarkers(){
+        workingAStand = false
         for stand in MapViewController.lemonadeStands{
             if stand.isOpen() {
                 MapViewController.activeStands.append(stand)
                 setMarker(stand: stand)
+                if stand.userId == MapViewController.currentUser.uid {
+                    workingAStand = true
+                }
             }
         }
     }
