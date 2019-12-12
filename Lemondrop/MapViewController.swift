@@ -22,7 +22,6 @@ class MapViewController: UIViewController{
     
     let floaty = Floaty()
     var workingAStand = false
-    var currentUsersStand: Stand?
     static var lemonadeStands = [Stand]()
     static var activeStands = [Stand]()
     static var users = [User]()
@@ -269,7 +268,7 @@ class MapViewController: UIViewController{
     
     func transitionMapToStand(stand: Stand?){
         if let lemonadeStand = stand{
-            self.mapView.camera = GMSCameraPosition(latitude: lemonadeStand.latitude, longitude: lemonadeStand.longitude, zoom: self.zoomLevel)
+            self.mapView.camera = GMSCameraPosition(latitude: lemonadeStand.latitude!, longitude: lemonadeStand.longitude!, zoom: self.zoomLevel)
         }
     }
     
@@ -300,32 +299,32 @@ class MapViewController: UIViewController{
         
         floaty.plusColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         
-        if !workingAStand{
+        if MapViewController.currentUser.hasBusinessProfile! {
             
-            if MapViewController.currentUser.hasBusinessProfile! {
-                floaty.addItem("Open Up!", icon: UIImage(named: "open-button")!) { (item) in
-                    self.presentEstablishStandView()
-                }
-            } else {
-                floaty.addItem("Establish your business first", icon: UIImage(named: "open-button")!) { (item) in
-                    self.presentEstablishBusinessAlert()
+            floaty.addItem("Open stands", icon: UIImage(named: "open-button")!) { (item) in
+                self.presentEstablishStandView()
+            }
+            
+            if workingAStand {
+                floaty.addItem("Close stands", icon: UIImage(named: "close-button")!) { (item) in
+//                    self.closeStandEarly(stand: self.currentUsersStand)
                 }
             }
+//            floaty.addItem("Locate your Stand", icon: UIImage(named: "Lemon")!) { (item) in
+//                self.transitionMapToStand(stand: self.currentUsersStand)
+//            }
+            
         } else {
-            floaty.addItem("Close down early", icon: UIImage(named: "close-button")!) { (item) in
-                self.closeStandEarly(stand: self.currentUsersStand)
-            }
-            floaty.addItem("Locate your Stand", icon: UIImage(named: "Lemon")!) { (item) in
-                self.transitionMapToStand(stand: self.currentUsersStand)
+            floaty.addItem("Establish your business first", icon: UIImage(named: "open-button")!) { (item) in
+                self.presentEstablishBusinessAlert()
             }
         }
+
         floaty.addItem("Search for Users", icon: UIImage(named: "listview")) { (item) in
             self.presentListView()
         }
 //        floaty.addItem("Corkboard", icon: UIImage(named: "corkboard")) { (item) in
-//            
 //            self.performSegue(withIdentifier: "PresentCorkboard", sender: self)
-//            
 //        }
         
         floaty.addItem("Profile", icon: UIImage(named: "profile")!) { (item) in
@@ -401,14 +400,7 @@ extension MapViewController: UISearchBarDelegate{
         }
     }
     func presentEstablishStandView(){
-        
-        let popoverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "establishStand") as! PopupViewController
-        popoverVC.delegate = self
-        self.addChild(popoverVC)
-        popoverVC.view.frame = self.view.frame
-        self.view.addSubview(popoverVC.view)
-        popoverVC.didMove(toParent: self)
-        
+        performSegue(withIdentifier: "ShowYourStands", sender: nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -500,18 +492,17 @@ extension MapViewController: GMSMapViewDelegate{
         //remove all markers from mapview
         view.mapView.clear()
         view.workingAStand = false
-        view.currentUsersStand = nil
         Database.database().reference().child(FirebaseNodes.stands).observeSingleEvent(of: .value) { (snapshot) in
             if let snap = snapshot.value as? NSDictionary{
                 for (_, stand) in snap {
                     if let dict = stand as? NSDictionary {
                         let newStand = Stand(dictionary: dict)
+                        newStand.setCreatorName(name: MapViewController.uidUserMap[newStand.userId]!.fullname)
                         MapViewController.lemonadeStands.append(newStand)
                         //check if this stand was created by the current user
                         if newStand.userId == (Auth.auth().currentUser?.uid)! {
                             view.workingAStand = true
                             MapViewController.currentUserStands.append(newStand)
-                            view.currentUsersStand = newStand
                         }
                     }
                 }
@@ -532,13 +523,12 @@ extension MapViewController: GMSMapViewDelegate{
     }
     
     func setMarker(stand: Stand){
-        
-        let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude), longitude: CLLocationDegrees(floatLiteral: stand.longitude))
+        let location = CLLocation(latitude: CLLocationDegrees(floatLiteral: stand.latitude!), longitude: CLLocationDegrees(floatLiteral: stand.longitude!))
         let marker = GMSMarker(position: location.coordinate)
         marker.icon = UIImage(named: "mapViewLemon")
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
-        let timestampDate = NSDate(timeIntervalSince1970: stand.endTime)
+        let timestampDate = NSDate(timeIntervalSince1970: stand.endTime!)
         marker.map = mapView
         marker.title = "Stand Name: \(stand.standName!) | Created By: \(stand.creatorName!) | Closes At: \(dateFormatter.string(from: timestampDate as Date))"
         MapViewController.markerUserMap[marker] = MapViewController.uidUserMap[stand.userId!]
@@ -665,7 +655,7 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
         self.transitionMapToStand(stand: MapViewController.filteredStands[indexPath.row])
         
         //create directions from current location to stand
-        self.drawPath(startLocation: locationManager.location!, endLocation: CLLocation(latitude: MapViewController.filteredStands[indexPath.row].latitude, longitude: MapViewController.filteredStands[indexPath.row].longitude))
+        self.drawPath(startLocation: locationManager.location!, endLocation: CLLocation(latitude: MapViewController.filteredStands[indexPath.row].latitude!, longitude: MapViewController.filteredStands[indexPath.row].longitude!))
         
         //remove table view
         tableView.removeFromSuperview()
@@ -735,18 +725,12 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
         let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
         let url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=\(origin)&destinations=\(destination)&key=\(ApiKeys.googleDistanceMatrixApiKey)"
         
-        Alamofire.request(url, method: .get)
-            .responseJSON {(response) in
-                
+        Alamofire.request(url, method: .get).responseJSON {(response) in
                 if response.error == nil {
-                    
                     do {
                         let json : JSON  = try JSON(data: response.data!)
                         let elements = json["rows"][0]["elements"].arrayValue
                         
-                        print("json \(json)")
-                        print("ELEMENTS \(elements)")
-                    
                         let distanceString = elements[0]["distance"]["text"].stringValue
                         let timeString = elements[0]["duration"]["text"].stringValue
                         
@@ -756,7 +740,6 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
                     } catch {
                         print(error)
                     }
-                    
                 } else {
                     ProgressHUD.showError("Error getting directions")
                 }
@@ -767,11 +750,8 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
         let origin = "\(startLocation.coordinate.latitude),\(startLocation.coordinate.longitude)"
         let destination = "\(endLocation.coordinate.latitude),\(endLocation.coordinate.longitude)"
         let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)&key=\(ApiKeys.googleDirectionsApiKey)"
-        Alamofire.request(url, method: .get)
-            .responseJSON {(response) in
-            
+        Alamofire.request(url, method: .get).responseJSON {(response) in
             if response.error == nil {
-                
                 do {
                     let json : JSON  = try JSON(data: response.data!)
                     let routes = json["routes"].arrayValue
@@ -847,11 +827,11 @@ extension MapViewController{//bulletin board functions
     static func getStandsFrom(city: String) -> [Stand] {
         var stands:[Stand] = []
         
-        for stand in MapViewController.lemonadeStands{
-            if stand.city.lowercased() == city.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)){
-                stands.append(stand)
-            }
-        }
+//        for stand in MapViewController.lemonadeStands{
+//            if stand.city.lowercased() == city.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime!)){
+//                stands.append(stand)
+//            }
+//        }
         return stands
     }
     
@@ -861,7 +841,7 @@ extension MapViewController{//bulletin board functions
         let hoursToAdd = 1
         let newDate = Calendar.current.date(byAdding: .hour, value: hoursToAdd, to: Date())
         for stand in MapViewController.lemonadeStands{
-            if Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) <= newDate! && Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime)) > date {
+            if Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime!)) <= newDate! && Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime!)) > date {
                 stands.append(stand)
             }
         }

@@ -69,7 +69,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
         
         let newStandRef = Database.database().reference().child(FirebaseNodes.stands).childByAutoId()
         let newStandRefId = newStandRef.key!
-        let values = ["standId": newStandRefId,"standName": self.standNameTextField!.text!, "uid": (Auth.auth().currentUser?.uid)!, "type": selectedType, "latitude": MapViewController.currentLocation!.coordinate.latitude, "longitude": MapViewController.currentLocation!.coordinate.longitude] as [String : Any]
+        let values = ["standId": newStandRefId,"standName": self.standNameTextField!.text!, "uid": (Auth.auth().currentUser?.uid)!, "type": selectedType] as [String : Any]
         let alert = UIAlertController(title: "How would you like to store your menu?", message: "Pick One", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .cancel, handler: { _ in
             alert.removeFromParent()

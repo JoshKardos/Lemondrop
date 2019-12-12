@@ -48,14 +48,16 @@ class EditProfileViewController: UIViewController {
         if !MapViewController.currentUser.hasBusinessProfile! {
             businessViewContainer.isHidden = true
         } else {
+            guard let businessName = MapViewController.currentUsersBusiness?.name else {
+                fatalError()
+            }
+            businessStandsLabel.text = "\(businessName) stands"
             standsTableView.addSubview(self.refreshControl)
         }
     }
     
     @objc
     func refresh(_ refreshControl: UIRefreshControl) {
-        
-        print("REFREHSED")
         MapViewController.loadCurrentUserStandsFromBusiness(onSuccess: {
             self.standsTableView.reloadData()
         })
@@ -209,19 +211,16 @@ class EditProfileViewController: UIViewController {
         view.endEditing(true)
     }
 }
-extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource{
-    
-    
-    
+extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return MapViewController.currentUserStands.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileStandCell", for: indexPath)
-        cell.textLabel?.text = MapViewController.currentUserStands[indexPath.row].standName
-        
+        if indexPath.row < MapViewController.currentUserStands.count {
+            cell.textLabel?.text = MapViewController.currentUserStands[indexPath.row].standName
+        }
         return cell
     }
 }

@@ -332,10 +332,10 @@
                                 </constraints>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jg4-h4-JWk">
-                                <rect key="frame" x="0.0" y="347" width="414" height="536"/>
+                                <rect key="frame" x="0.0" y="347" width="414" height="549"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Nsw-HK-kEK" userLabel="Stands Table View">
-                                        <rect key="frame" x="0.0" y="52.5" width="414" height="471.5"/>
+                                        <rect key="frame" x="0.0" y="52.5" width="414" height="496.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="sectionIndexBackgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
@@ -376,13 +376,15 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Nsw-HK-kEK" secondAttribute="bottom" constant="12" id="5Da-ii-dTF"/>
+                                    <constraint firstAttribute="bottom" secondItem="Nsw-HK-kEK" secondAttribute="bottom" id="5Da-ii-dTF"/>
                                     <constraint firstItem="Nsw-HK-kEK" firstAttribute="top" secondItem="3qa-ik-6la" secondAttribute="bottom" constant="12" id="7TM-1u-0Vk"/>
                                     <constraint firstItem="3qa-ik-6la" firstAttribute="top" secondItem="jg4-h4-JWk" secondAttribute="top" constant="20" id="IrY-bu-fhk"/>
                                     <constraint firstItem="3qa-ik-6la" firstAttribute="leading" secondItem="jg4-h4-JWk" secondAttribute="leading" constant="8" id="M4x-ce-Kds"/>
                                     <constraint firstItem="k5k-PQ-nEL" firstAttribute="centerY" secondItem="3qa-ik-6la" secondAttribute="centerY" id="Mmr-oO-M8Y"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="k5k-PQ-nEL" secondAttribute="trailing" constant="8" id="NPy-p8-2LG"/>
                                     <constraint firstAttribute="trailing" secondItem="Nsw-HK-kEK" secondAttribute="trailing" id="f4H-xC-fbh"/>
                                     <constraint firstItem="Nsw-HK-kEK" firstAttribute="leading" secondItem="jg4-h4-JWk" secondAttribute="leading" id="kvf-Kd-C70"/>
+                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="k5k-PQ-nEL" secondAttribute="trailing" constant="164" id="lyh-nQ-VW7"/>
                                     <constraint firstItem="k5k-PQ-nEL" firstAttribute="leading" secondItem="3qa-ik-6la" secondAttribute="trailing" constant="34" id="s0n-PO-Kyg"/>
                                 </constraints>
                             </view>
@@ -405,7 +407,7 @@
                             <constraint firstItem="aNq-43-Sv9" firstAttribute="centerX" secondItem="HxG-qM-x6J" secondAttribute="centerX" id="cGV-bB-ar8"/>
                             <constraint firstItem="CVY-wp-FTe" firstAttribute="centerY" secondItem="xRP-IE-inW" secondAttribute="centerY" id="enM-NO-cFW"/>
                             <constraint firstItem="hTK-tJ-yfz" firstAttribute="centerX" secondItem="Rw5-7M-wgz" secondAttribute="centerX" id="ghh-eF-yS3"/>
-                            <constraint firstAttribute="bottom" secondItem="jg4-h4-JWk" secondAttribute="bottom" constant="13" id="gjX-po-SxN"/>
+                            <constraint firstAttribute="bottom" secondItem="jg4-h4-JWk" secondAttribute="bottom" id="gjX-po-SxN"/>
                             <constraint firstItem="gaY-PQ-Twx" firstAttribute="leading" secondItem="HxG-qM-x6J" secondAttribute="leading" constant="16" id="h2A-Ox-auI"/>
                             <constraint firstItem="HxG-qM-x6J" firstAttribute="trailing" secondItem="gaY-PQ-Twx" secondAttribute="trailing" constant="16" id="uHp-Of-JJq"/>
                         </constraints>

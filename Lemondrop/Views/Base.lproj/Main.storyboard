@@ -495,6 +495,7 @@
                     <connections>
                         <segue destination="dwE-3U-M3k" kind="show" identifier="ProfileStoryboard" id="95T-kP-kdh"/>
                         <segue destination="lBb-Tn-aLa" kind="show" identifier="PresentCorkboard" id="SEI-hN-BFZ"/>
+                        <segue destination="Ysd-2A-Ozw" kind="show" identifier="ShowYourStands" id="P0u-4D-aIl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1xe-Zd-qZG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -677,7 +678,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3h7-uE-uxQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2585.625" y="962.32394366197184"/>
+            <point key="canvasLocation" x="3495" y="1733"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NLP-0T-c9S">
@@ -773,12 +774,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="76k-Bf-LSt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4620" y="962"/>
+            <point key="canvasLocation" x="4673" y="962"/>
         </scene>
         <!--All Stands-->
         <scene sceneID="nRV-KD-0sJ">
             <objects>
-                <tableViewController storyboardIdentifier="UserStands" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ick-ab-Tnp" customClass="ClickableUserStandsTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ick-ab-Tnp" customClass="ClickableUserStandsTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="CfP-nu-2WV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -874,7 +875,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gal-ZT-hO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2586" y="1701"/>
+            <point key="canvasLocation" x="2586" y="1732"/>
         </scene>
         <!--Set End Time Popup View Controller-->
         <scene sceneID="qcV-4t-xVK">
@@ -960,7 +961,172 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OLx-yL-mD9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3495" y="962"/>
+            <point key="canvasLocation" x="4208" y="1732"/>
+        </scene>
+        <!--All Stands-->
+        <scene sceneID="1Hb-wz-d8a">
+            <objects>
+                <tableViewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="6Ow-ak-7dY" customClass="ClickableUserStandsTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="TcK-SP-hiU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="StandCell" rowHeight="241" id="CIr-we-ZXV" customClass="StandCell" customModule="Lemondrop" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="241"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CIr-we-ZXV" id="wcj-gi-5FJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="241"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Stand Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="upq-9c-6qR" customClass="MarqueeLabel" customModule="MarqueeLabel">
+                                            <rect key="frame" x="16" y="23" width="99" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="scrollDuration">
+                                                    <real key="value" value="6"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jpc-tx-E00">
+                                            <rect key="frame" x="16" y="52" width="41" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Glass Price:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XFe-zl-2pz">
+                                            <rect key="frame" x="237" y="26.5" width="67" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oh6-EK-klv" customClass="GMSMapView">
+                                            <rect key="frame" x="0.0" y="80.5" width="320" height="141"/>
+                                            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="141" id="0Ec-PT-tnQ"/>
+                                            </constraints>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Business Hours:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEm-dA-bOu">
+                                            <rect key="frame" x="212.5" y="55.5" width="91.5" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text=" City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SA-RG-jl2">
+                                            <rect key="frame" x="147" y="223.5" width="26" height="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="kEm-dA-bOu" secondAttribute="trailing" constant="16" id="0fG-uB-ayF"/>
+                                        <constraint firstItem="XFe-zl-2pz" firstAttribute="centerY" secondItem="upq-9c-6qR" secondAttribute="centerY" id="Agb-uo-5M7"/>
+                                        <constraint firstItem="XFe-zl-2pz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="upq-9c-6qR" secondAttribute="trailing" constant="8" id="Agt-F4-vyG"/>
+                                        <constraint firstItem="upq-9c-6qR" firstAttribute="leading" secondItem="wcj-gi-5FJ" secondAttribute="leadingMargin" id="Bw9-Be-OEw"/>
+                                        <constraint firstItem="oh6-EK-klv" firstAttribute="leading" secondItem="wcj-gi-5FJ" secondAttribute="leading" id="CH3-eK-56U"/>
+                                        <constraint firstAttribute="trailing" secondItem="XFe-zl-2pz" secondAttribute="trailing" constant="16" id="KPl-GZ-QvH"/>
+                                        <constraint firstItem="Jpc-tx-E00" firstAttribute="leading" secondItem="wcj-gi-5FJ" secondAttribute="leadingMargin" id="PPp-Wx-MRb"/>
+                                        <constraint firstAttribute="bottom" secondItem="3SA-RG-jl2" secondAttribute="bottom" constant="2" id="RDT-Gf-TUJ"/>
+                                        <constraint firstItem="oh6-EK-klv" firstAttribute="top" secondItem="Jpc-tx-E00" secondAttribute="bottom" constant="7.5" id="Z3d-iS-kZ3"/>
+                                        <constraint firstItem="upq-9c-6qR" firstAttribute="top" secondItem="wcj-gi-5FJ" secondAttribute="topMargin" constant="12" id="aMg-0K-Ae3"/>
+                                        <constraint firstItem="Jpc-tx-E00" firstAttribute="top" secondItem="upq-9c-6qR" secondAttribute="bottom" constant="8" id="c1X-FE-fdZ"/>
+                                        <constraint firstItem="3SA-RG-jl2" firstAttribute="top" secondItem="oh6-EK-klv" secondAttribute="bottom" constant="2" id="frl-ZI-tJR"/>
+                                        <constraint firstItem="3SA-RG-jl2" firstAttribute="centerX" secondItem="wcj-gi-5FJ" secondAttribute="centerX" id="jip-Tu-Hpc"/>
+                                        <constraint firstItem="kEm-dA-bOu" firstAttribute="centerY" secondItem="Jpc-tx-E00" secondAttribute="centerY" id="lMH-9j-9Hd"/>
+                                        <constraint firstAttribute="trailing" secondItem="oh6-EK-klv" secondAttribute="trailing" id="wqF-ya-xwm"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="businessHoursLabel" destination="kEm-dA-bOu" id="aqL-SM-aYB"/>
+                                    <outlet property="cityLabel" destination="3SA-RG-jl2" id="OSi-db-7vz"/>
+                                    <outlet property="dateLabel" destination="Jpc-tx-E00" id="kDT-pv-SoH"/>
+                                    <outlet property="mapView" destination="oh6-EK-klv" id="2yN-wb-pKB"/>
+                                    <outlet property="priceLabel" destination="XFe-zl-2pz" id="4Sl-sw-KgR"/>
+                                    <outlet property="standNameLabel" destination="upq-9c-6qR" id="cky-R6-oXa"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="6Ow-ak-7dY" id="U79-jg-blR"/>
+                            <outlet property="delegate" destination="6Ow-ak-7dY" id="m21-6b-kht"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="All Stands" id="d1d-cZ-bIa"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rht-03-3G6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2586" y="1732"/>
+        </scene>
+        <!--Stands with type-->
+        <scene sceneID="JPQ-Vs-8G4">
+            <objects>
+                <tableViewController storyboardIdentifier="UserStands" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ysd-2A-Ozw" userLabel="Stands with type" customClass="ClickableUserStandsTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="MU5-ck-B22">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="492"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="StandCell" rowHeight="83" id="C2X-96-mlS" customClass="StandCell" customModule="Lemondrop" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="83"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C2X-96-mlS" id="VJg-K4-Ddf">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stand Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qe9-Ht-7gN" customClass="MarqueeLabel" customModule="MarqueeLabel">
+                                            <rect key="frame" x="16" y="23" width="288" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="scrollDuration">
+                                                    <real key="value" value="6"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PWg-wn-rJs">
+                                            <rect key="frame" x="16" y="52" width="288" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="PWg-wn-rJs" secondAttribute="bottom" constant="10" id="3tC-Rd-s64"/>
+                                        <constraint firstItem="PWg-wn-rJs" firstAttribute="leading" secondItem="VJg-K4-Ddf" secondAttribute="leading" constant="16" id="Eec-jq-mei"/>
+                                        <constraint firstItem="PWg-wn-rJs" firstAttribute="top" secondItem="qe9-Ht-7gN" secondAttribute="bottom" constant="8" id="Mmv-nx-toB"/>
+                                        <constraint firstAttribute="trailing" secondItem="PWg-wn-rJs" secondAttribute="trailing" constant="16" id="Tr5-0X-Uep"/>
+                                        <constraint firstAttribute="trailing" secondItem="qe9-Ht-7gN" secondAttribute="trailing" constant="16" id="hmc-X8-NQu"/>
+                                        <constraint firstItem="qe9-Ht-7gN" firstAttribute="leading" secondItem="VJg-K4-Ddf" secondAttribute="leading" constant="16" id="k2c-sB-UAU"/>
+                                        <constraint firstItem="qe9-Ht-7gN" firstAttribute="top" secondItem="VJg-K4-Ddf" secondAttribute="topMargin" constant="12" id="x6X-gs-GXc"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="standNameLabel" destination="qe9-Ht-7gN" id="0Ik-4w-3Ce"/>
+                                    <outlet property="typeLabel" destination="PWg-wn-rJs" id="4WT-xb-fLq"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Ysd-2A-Ozw" id="2v9-NV-LTN"/>
+                            <outlet property="delegate" destination="Ysd-2A-Ozw" id="dNM-5B-6AA"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Your Stands" id="Vud-hG-aOi"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u50-sS-qaF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2769" y="961"/>
         </scene>
     </scenes>
     <resources>
