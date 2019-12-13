@@ -41,7 +41,7 @@ class FirebaseNodes {
     static let unlockedPants = "unlockedPants"
     static let unlockedShirts = "unlockedShirts"
     static let hasBusinessProfile = "hasBusinessProfile"
-    static let businessId = "businessId"
+
     // user-ratings children
     
     static let raterId = "raterId"
@@ -67,9 +67,10 @@ class FirebaseNodes {
     static let startTime = "startTime"
     static let userID = "userID"
     
-    //business children
+    //businesses children
     static let name = "name"
-    
+    static let businessId = "businessId"
+
     // standMenus children
     static let photoMenu = "photoMenu"
     static let listMenu = "listMenu"

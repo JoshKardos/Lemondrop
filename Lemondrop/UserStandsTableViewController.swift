@@ -14,6 +14,7 @@ import ProgressHUD
 class UserStandsTableViewController: UITableViewController{
     var delegate: MapViewController?
     var userStands = [Stand]()
+    var selectedStand: Stand?
     static var standCreated = false
     override func viewDidLoad() {
         UserStandsTableViewController.standCreated = false
@@ -23,18 +24,15 @@ class UserStandsTableViewController: UITableViewController{
             addNoStandsLabel()
         } else {
             super.viewDidLoad()
-            self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
             self.tableView.reloadData()
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         if UserStandsTableViewController.standCreated{
             view.removeFromSuperview()
             self.delegate?.reload()
         }
-        
     }
     
     func filterUserStands(){
@@ -56,9 +54,11 @@ class UserStandsTableViewController: UITableViewController{
         cell.configureCell(stand: userStands[indexPath.row])
         return cell
     }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userStands.count
     }
@@ -73,17 +73,24 @@ class UserStandsTableViewController: UITableViewController{
 }
 class ClickableUserStandsTableViewController: UserStandsTableViewController{
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowLocationSelector"{
+            guard let stand = self.selectedStand else {
+                return
+            }
+            let destination = segue.destination as! LocationSelectorViewController
+            destination.stand = stand
+        }
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.selectedStand = userStands[indexPath.row]
+        
         let alert = UIAlertController(title: "Are you sure?", message: "Confirm you want to reopen '\(userStands[indexPath.row].standName!)'?", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
             alert.removeFromParent()
-            let popoverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "setEndTime") as! SetEndTimePopupViewController
-            popoverVC.stand = self.userStands[indexPath.row]
-            self.addChild(popoverVC)
-            popoverVC.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            self.view.addSubview(popoverVC.view)
-            popoverVC.didMove(toParent: self)
+            self.performSegue(withIdentifier: "ShowLocationSelector", sender: nil)
         }))
         alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
             alert.removeFromParent()

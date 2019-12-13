@@ -161,6 +161,26 @@ class MapViewController: UIViewController{
             }
         }
     }
+    
+    static func reloadCurrentUsersBusiness(onSuccess: @escaping() -> Void) {
+        print("RELOADING")
+        guard let _ = currentUsersBusiness else {
+            print("RELOADING BUSINESS - no current users business")
+            return
+        }
+        let ref = Database.database().reference()
+        ref.child(FirebaseNodes.businesses).child(MapViewController.currentUsersBusiness!.businessId!).observeSingleEvent(of: .value) { (snap) in
+            print("IN REF")
+            print(snap)
+            if let business = snap.value as? [String: AnyObject]{
+                print("PASSED REF")
+                let newBusiness = Business(dictionary: business)
+                MapViewController.currentUsersBusiness = newBusiness
+                onSuccess()
+            }
+        }
+    }
+    
     func configureFloatingReloadButton(){
         //create view background
         
@@ -383,17 +403,20 @@ extension MapViewController: UISearchBarDelegate{
         let listVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "lemonadeStandListView")
         navigationController?.pushViewController(listVC, animated: true)
     }
+    
     func presentProfileView(user: User){
         let profileVC = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "profile") as! ProfileViewController
         profileVC.setUser(user: user)
         navigationController?.pushViewController(profileVC, animated: true)
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == profileSegue{
             let destination = segue.destination as! ProfileViewController
             destination.user = MapViewController.currentUser
         }
     }
+    
     func presentEstablishStandView(){
         performSegue(withIdentifier: "ShowYourStands", sender: nil)
     }

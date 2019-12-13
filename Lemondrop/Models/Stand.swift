@@ -60,6 +60,11 @@ class Stand{
         self.creatorName = name
     }
     
+    func setLocation (location: CLLocationCoordinate2D) {
+        self.latitude = Double(location.latitude)
+        self.longitude = Double(location.longitude)
+    }
+    
     init(otherStand: Stand, id: String){
         self.userId = otherStand.userId
         self.latitude = otherStand.latitude

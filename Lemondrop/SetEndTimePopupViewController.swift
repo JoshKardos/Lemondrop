@@ -38,12 +38,16 @@ class SetEndTimePopupViewController: UIViewController {
     
     func openStand(stand: Stand, endAt withDate: Date){
         
+        guard let _ = stand.latitude, let _ = stand.longitude else {
+            ProgressHUD.showError("Go back and set the location again")
+            return
+        }
         let newRef = Database.database().reference().child(FirebaseNodes.stands).child(stand.standId!)
         if Connectivity.isConnectedToInternet {
             ProgressHUD.show("Saving...")
             UIApplication.shared.beginIgnoringInteractionEvents()
             
-            newRef.updateChildValues(["latitude": MapViewController.currentLocation!.coordinate.latitude, "longitude": MapViewController.currentLocation!.coordinate.longitude, "startTime": Date().timeIntervalSince1970 , "endTime": withDate.timeIntervalSince1970]){ (error, ref) in
+            newRef.updateChildValues(["latitude": stand.latitude!, "longitude": stand.longitude!, "startTime": Date().timeIntervalSince1970 , "endTime": withDate.timeIntervalSince1970]){ (error, ref) in
                 if error != nil{
                     ProgressHUD.showError("Failure opening stand...")
                     UIApplication.shared.endIgnoringInteractionEvents()

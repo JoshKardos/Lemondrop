@@ -237,7 +237,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="gaY-PQ-Twx">
-                                <rect key="frame" x="16" y="114" width="382" height="83"/>
+                                <rect key="frame" x="16" y="74" width="382" height="83"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="45" translatesAutoresizingMaskIntoConstraints="NO" id="lef-U3-z4h">
                                         <rect key="frame" x="0.0" y="0.0" width="382" height="34"/>
@@ -281,7 +281,7 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNq-43-Sv9">
-                                <rect key="frame" x="137" y="221" width="140" height="30"/>
+                                <rect key="frame" x="137" y="181" width="140" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.56284224989999998" blue="0.31881666180000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Save">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -291,14 +291,14 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LRW-OK-ha7">
-                                <rect key="frame" x="374" y="121" width="20" height="20"/>
+                                <rect key="frame" x="374" y="81" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="9nO-2H-r9S"/>
                                     <constraint firstAttribute="width" constant="20" id="KKP-Kj-HWU"/>
                                 </constraints>
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTK-tJ-yfz">
-                                <rect key="frame" x="137" y="267" width="140" height="30"/>
+                                <rect key="frame" x="137" y="227" width="140" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="m72-qg-Gg3"/>
@@ -312,7 +312,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3MP-pt-cUk">
-                                <rect key="frame" x="137" y="313" width="140" height="30"/>
+                                <rect key="frame" x="137" y="273" width="140" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="hJO-1g-Zvs"/>
@@ -325,17 +325,17 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="CVY-wp-FTe">
-                                <rect key="frame" x="374" y="170" width="20" height="20"/>
+                                <rect key="frame" x="374" y="130" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Mv6-Jl-Lee"/>
                                     <constraint firstAttribute="width" constant="20" id="tUH-ID-pDq"/>
                                 </constraints>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jg4-h4-JWk">
-                                <rect key="frame" x="0.0" y="347" width="414" height="549"/>
+                                <rect key="frame" x="0.0" y="307" width="414" height="589"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Nsw-HK-kEK" userLabel="Stands Table View">
-                                        <rect key="frame" x="0.0" y="52.5" width="414" height="496.5"/>
+                                        <rect key="frame" x="0.0" y="52.5" width="414" height="536.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="sectionIndexBackgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
@@ -400,7 +400,7 @@
                             <constraint firstItem="jg4-h4-JWk" firstAttribute="top" secondItem="3MP-pt-cUk" secondAttribute="bottom" constant="4" id="Lip-LX-NAs"/>
                             <constraint firstItem="3MP-pt-cUk" firstAttribute="width" secondItem="hTK-tJ-yfz" secondAttribute="width" id="QWd-wP-IL7"/>
                             <constraint firstItem="3MP-pt-cUk" firstAttribute="top" secondItem="hTK-tJ-yfz" secondAttribute="bottom" constant="16" id="X1b-Uc-rJC"/>
-                            <constraint firstItem="gaY-PQ-Twx" firstAttribute="top" secondItem="HxG-qM-x6J" secondAttribute="top" constant="70" id="Xrs-LX-rkh"/>
+                            <constraint firstItem="gaY-PQ-Twx" firstAttribute="top" secondItem="HxG-qM-x6J" secondAttribute="top" constant="30" id="Xrs-LX-rkh"/>
                             <constraint firstItem="CVY-wp-FTe" firstAttribute="trailing" secondItem="xRP-IE-inW" secondAttribute="trailing" constant="-4" id="Ypd-2z-G4o"/>
                             <constraint firstItem="gaY-PQ-Twx" firstAttribute="trailing" secondItem="LRW-OK-ha7" secondAttribute="trailing" constant="4" id="Z3M-2k-QJS"/>
                             <constraint firstAttribute="trailing" secondItem="jg4-h4-JWk" secondAttribute="trailing" id="bCr-C0-res"/>

@@ -484,7 +484,7 @@
         <!--Map View Controller-->
         <scene sceneID="vuW-ZN-mCr">
             <objects>
-                <viewController id="JaF-KT-MPa" customClass="MapViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="JaF-KT-MPa" customClass="MapViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dZk-o0-s2y">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -774,7 +774,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="76k-Bf-LSt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4673" y="962"/>
+            <point key="canvasLocation" x="5166" y="960"/>
         </scene>
         <!--All Stands-->
         <scene sceneID="nRV-KD-0sJ">
@@ -1067,7 +1067,7 @@
         <!--Stands with type-->
         <scene sceneID="JPQ-Vs-8G4">
             <objects>
-                <tableViewController storyboardIdentifier="UserStands" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ysd-2A-Ozw" userLabel="Stands with type" customClass="ClickableUserStandsTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UserStands" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ysd-2A-Ozw" userLabel="Stands with type" customClass="ClickableUserStandsTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="MU5-ck-B22">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1123,10 +1123,35 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Stands" id="Vud-hG-aOi"/>
+                    <connections>
+                        <segue destination="14w-aW-Xeq" kind="show" identifier="ShowLocationSelector" id="jsa-ft-gNI"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u50-sS-qaF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2769" y="961"/>
+        </scene>
+        <!--Location Selector View Controller-->
+        <scene sceneID="17P-cA-Ppb">
+            <objects>
+                <viewController modalPresentationStyle="fullScreen" id="14w-aW-Xeq" customClass="LocationSelectorViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wAU-yI-9vg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="492"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="nJR-2F-BGU"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="AT7-Mb-qiR">
+                        <barButtonItem key="rightBarButtonItem" title="Confirm" id="3Pa-py-N4X">
+                            <connections>
+                                <action selector="confirmPressed:" destination="14w-aW-Xeq" id="zng-Md-2tR"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LMA-O3-PUf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3591" y="962"/>
         </scene>
     </scenes>
     <resources>

@@ -11,6 +11,7 @@
 		B3033E6723A158A200F7050B /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6623A158A200F7050B /* ListCell.swift */; };
 		B3033E6923A15C2300F7050B /* UploadByListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6823A15C2300F7050B /* UploadByListViewController.swift */; };
 		B3033E6B23A15E7100F7050B /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6A23A15E7100F7050B /* Item.swift */; };
+		B307C33323A2DBFD00005EB9 /* LocationSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B307C33223A2DBFD00005EB9 /* LocationSelectorViewController.swift */; };
 		B3152BFA235BCADF0098DEF8 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3152BF9235BCADF0098DEF8 /* FirebaseService.swift */; };
 		B3152BFC235D14410098DEF8 /* EditProfileStandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */; };
 		B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */; };
@@ -87,6 +88,7 @@
 		B3033E6623A158A200F7050B /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		B3033E6823A15C2300F7050B /* UploadByListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadByListViewController.swift; sourceTree = "<group>"; };
 		B3033E6A23A15E7100F7050B /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		B307C33223A2DBFD00005EB9 /* LocationSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectorViewController.swift; sourceTree = "<group>"; };
 		B3152BF9235BCADF0098DEF8 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileStandCell.swift; sourceTree = "<group>"; };
 		B34074DD228E35EE00FF6ED6 /* Lemondrop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lemondrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -216,6 +218,7 @@
 				B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */,
 				B386AE4823A0422A00AF5EE5 /* AddStandViewController.swift */,
 				B3033E6823A15C2300F7050B /* UploadByListViewController.swift */,
+				B307C33223A2DBFD00005EB9 /* LocationSelectorViewController.swift */,
 				B36C5EEE22A832DA00E548B5 /* Views */,
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */,
@@ -523,6 +526,7 @@
 				B386AE4923A0422A00AF5EE5 /* AddStandViewController.swift in Sources */,
 				B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */,
 				B3152BFA235BCADF0098DEF8 /* FirebaseService.swift in Sources */,
+				B307C33323A2DBFD00005EB9 /* LocationSelectorViewController.swift in Sources */,
 				B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */,
 				B3A2877922946477000CB1F4 /* User.swift in Sources */,
 				B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */,

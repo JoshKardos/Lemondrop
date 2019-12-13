@@ -25,7 +25,7 @@ class EditProfileViewController: UIViewController {
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl.tintColor = UIColor.red
+        refreshControl.tintColor = #colorLiteral(red: 1, green: 0.5843137255, blue: 0, alpha: 1)
         return refreshControl
     }()
     
@@ -136,8 +136,12 @@ class EditProfileViewController: UIViewController {
                 
                 Database.database().reference().child(FirebaseNodes.businesses).child(ProfileViewController.businessId).updateChildValues(businessNameValues) { (error, ref) in
                     if error == nil {
-                        MapViewController.reloadCurrentUser()
-                        ProgressHUD.showSuccess("Successfully changed your information")
+                        MapViewController.reloadCurrentUser(onSuccess: {
+                            MapViewController.reloadCurrentUsersBusiness(onSuccess: {
+                                ProgressHUD.showSuccess("Successfully changed your information")
+                                self.configureTableView()
+                            })
+                        })
                     } else {
                         ProgressHUD.showError("Could not update your records")
                     }
