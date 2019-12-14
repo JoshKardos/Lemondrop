@@ -44,26 +44,35 @@ class UsersTableViewController: UITableViewController {
         
         if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
             // search bar is empty, show all users
+            var standLabel: String = ""
             for stand in MapViewController.openStands{
-                if stand.creatorName == filteredUsers[indexPath.row].fullname {
-                    
-                    cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
-                    return cell
+                if stand.userId == filteredUsers[indexPath.row].uid {
+                    standLabel = "\(standLabel)\(stand.standName!), "
                 }
+            }
+            if standLabel != "" {
+                standLabel.removeLast(2)
+                cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand(s): \(standLabel)" )
+                return cell
             }
             cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand is currently closed")
             return cell
         }
         
-        for stand in MapViewController.openStands{ // filter users based off search bar text
-            if stand.creatorName == MapViewController.users[indexPath.row].fullname{
-                
-                cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
-                return cell
+        var standLabel: String = ""
+        for stand in MapViewController.openStands{
+            if stand.userId == MapViewController.users[indexPath.row].uid {
+                standLabel = "\(standLabel)\(stand.standName!), "
             }
+        }
+        if standLabel != "" {
+            standLabel.removeLast(2)
+            cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand(s): \(standLabel)" )
+            return cell
         }
         cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand is currently closed")
         return cell
+        
     }
     
     func presentProfileView(user: User){
