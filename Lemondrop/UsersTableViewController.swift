@@ -42,9 +42,10 @@ class UsersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserAndStandCell
         
-        if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != ""{ // search bar is empty, show all users
+        if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+            // search bar is empty, show all users
             for stand in MapViewController.activeStands{
-                if stand.creatorName == filteredUsers[indexPath.row].fullname{
+                if stand.creatorName == filteredUsers[indexPath.row].fullname {
                     
                     cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
                     return cell

@@ -11,7 +11,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import ProgressHUD
-class StandViewController: UITableViewController{
+class StandTableViewController: UITableViewController{
     
     var delegate: MapViewController?
     var userStands = [Stand]()
@@ -19,7 +19,8 @@ class StandViewController: UITableViewController{
     static var standCreated = false
     
     override func viewDidLoad() {
-        StandViewController.standCreated = false
+        print("LOADED")
+        StandTableViewController.standCreated = false
         self.navigationController?.isNavigationBarHidden = false
         self.fillUserStands()
         if userStands.count == 0{
@@ -31,7 +32,7 @@ class StandViewController: UITableViewController{
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if StandViewController.standCreated {
+        if StandTableViewController.standCreated {
             view.removeFromSuperview()
         }
     }
@@ -44,13 +45,13 @@ class StandViewController: UITableViewController{
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! StandCell
+        let cell = tableView.cellForRow(at: indexPath) as! StandStatusCell
         cell.standNameLabel.triggerScrollStart()
         return
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "StandCell", for: indexPath) as! StandCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "StandCell", for: indexPath) as! StandStatusCell
         cell.configureCell(stand: userStands[indexPath.row])
         return cell
     }
@@ -72,7 +73,44 @@ class StandViewController: UITableViewController{
     }
 }
 
-class ClickableUserStandsTableViewController: StandViewController{
+class StandClosedTableViewController: StandTableViewController {
+    
+    override func fillUserStands () {
+        for stand in MapViewController.currentUserStands {
+            if stand.isOpen() {
+                print("1 OPEN")
+                userStands.append(stand)
+            }
+        }
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let alert = UIAlertController(title: "Are you sure you want to close?", message: "Confirm close '\(userStands[indexPath.row].standName!)'?", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
+            alert.removeFromParent()
+            self.closeStand(userStands[indexPath.row])
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
+            alert.removeFromParent()
+        }))
+        self.present(alert, animated:  true, completion: nil)
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "StandCell", for: indexPath) as! StandClosedCell
+        cell.configureCell(stand: userStands[indexPath.row])
+        return cell
+    }
+    
+    func closeStand (stand: Stand){
+        // close stand
+        
+        // in callback reload and reload table view
+    }
+}
+
+class StandStatusTableViewController: StandTableViewController{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowLocationSelector"{

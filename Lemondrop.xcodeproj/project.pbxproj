@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		62533647C94C5708B24CCAAC /* Pods_Lemondrop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C53EAA09EB2166FFDFA0325A /* Pods_Lemondrop.framework */; };
+		836F184EBBFD595F2631EA19 /* Pods_Lemondrop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938FF24342442CAE1C96AA14 /* Pods_Lemondrop.framework */; };
+		A8444393D78110D8BFE90012 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23F5AE34A7376BA28A6F755 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		B3033E6723A158A200F7050B /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6623A158A200F7050B /* ListCell.swift */; };
 		B3033E6923A15C2300F7050B /* UploadByListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6823A15C2300F7050B /* UploadByListViewController.swift */; };
 		B3033E6B23A15E7100F7050B /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3033E6A23A15E7100F7050B /* Item.swift */; };
+		B307C33323A2DBFD00005EB9 /* LocationSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B307C33223A2DBFD00005EB9 /* LocationSelectorViewController.swift */; };
 		B3152BFA235BCADF0098DEF8 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3152BF9235BCADF0098DEF8 /* FirebaseService.swift */; };
 		B3152BFC235D14410098DEF8 /* EditProfileStandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */; };
+		B335E28C23A4508E00F603DE /* StandTableViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335E28B23A4508E00F603DE /* StandTableViewContoller.swift */; };
+		B335E28E23A4578C00F603DE /* StandStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335E28D23A4578C00F603DE /* StandStatusCell.swift */; };
 		B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */; };
 		B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074E2228E35EE00FF6ED6 /* SignUpViewController.swift */; };
 		B34074E6228E35EE00FF6ED6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B34074E4228E35EE00FF6ED6 /* Main.storyboard */; };
@@ -45,8 +49,6 @@
 		B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */; };
 		B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */; };
 		B3CB357422AC4F4100BB0A95 /* Lemondrop.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */; };
-		B3CB357B22B435F700BB0A95 /* UserStandsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */; };
-		B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CB357C22B4365400BB0A95 /* StandCell.swift */; };
 		B3E4DE80237784FA00CC92CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */; };
 		B3E4DE82238087BE00CC92CF /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E4DE81238087BE00CC92CF /* Business.swift */; };
 		B3E4DE842380B94F00CC92CF /* AddStand.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3E4DE832380B94F00CC92CF /* AddStand.storyboard */; };
@@ -54,7 +56,6 @@
 		B3F7F46522C520D3001B25E8 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7F46422C520D3001B25E8 /* NotificationService.swift */; };
 		B3F7F46922C520D4001B25E8 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B3F7F46222C520D3001B25E8 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B3F7F46E22C722C8001B25E8 /* SetEndTimePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7F46D22C722C8001B25E8 /* SetEndTimePopupViewController.swift */; };
-		C1A529DD8D67FBA2FE7AEA6A /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7794A921C9D139D40FDAA27C /* Pods_OneSignalNotificationServiceExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,13 +83,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		74F5C8BCBE3C764EAB1EF77B /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		7794A921C9D139D40FDAA27C /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1184EA64D3F2DE9F99827732 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		938FF24342442CAE1C96AA14 /* Pods_Lemondrop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Lemondrop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A21E65693C63CC502626F682 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		B3033E6623A158A200F7050B /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		B3033E6823A15C2300F7050B /* UploadByListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadByListViewController.swift; sourceTree = "<group>"; };
 		B3033E6A23A15E7100F7050B /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		B307C33223A2DBFD00005EB9 /* LocationSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectorViewController.swift; sourceTree = "<group>"; };
 		B3152BF9235BCADF0098DEF8 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileStandCell.swift; sourceTree = "<group>"; };
+		B335E28B23A4508E00F603DE /* StandTableViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandTableViewContoller.swift; sourceTree = "<group>"; };
+		B335E28D23A4578C00F603DE /* StandStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandStatusCell.swift; sourceTree = "<group>"; };
 		B34074DD228E35EE00FF6ED6 /* Lemondrop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lemondrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B34074E2228E35EE00FF6ED6 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -123,8 +128,6 @@
 		B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
 		B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lemondrop.entitlements; sourceTree = "<group>"; };
-		B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStandsTableViewController.swift; sourceTree = "<group>"; };
-		B3CB357C22B4365400BB0A95 /* StandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandCell.swift; sourceTree = "<group>"; };
 		B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B3E4DE81238087BE00CC92CF /* Business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
 		B3E4DE832380B94F00CC92CF /* AddStand.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddStand.storyboard; sourceTree = "<group>"; };
@@ -133,10 +136,9 @@
 		B3F7F46422C520D3001B25E8 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		B3F7F46622C520D4001B25E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3F7F46D22C722C8001B25E8 /* SetEndTimePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEndTimePopupViewController.swift; sourceTree = "<group>"; };
-		B6D63A60885453045CD7032C /* Pods-Lemondrop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.debug.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.debug.xcconfig"; sourceTree = "<group>"; };
-		C53EAA09EB2166FFDFA0325A /* Pods_Lemondrop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Lemondrop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7A7ECE62B2BEE5A2ACF819D /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
-		FA4F11EBB2CD2535C399E916 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		D23F5AE34A7376BA28A6F755 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F67F19BB266BAE8B88B6B1E0 /* Pods-Lemondrop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.debug.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.debug.xcconfig"; sourceTree = "<group>"; };
+		FC5040A79844A7C5A4AE2B98 /* Pods-Lemondrop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Lemondrop.release.xcconfig"; path = "Target Support Files/Pods-Lemondrop/Pods-Lemondrop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,7 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B36C5EDC229ED5CE00E548B5 /* StoreKit.framework in Frameworks */,
-				62533647C94C5708B24CCAAC /* Pods_Lemondrop.framework in Frameworks */,
+				836F184EBBFD595F2631EA19 /* Pods_Lemondrop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1A529DD8D67FBA2FE7AEA6A /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
+				A8444393D78110D8BFE90012 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,10 +165,10 @@
 		1B830EF95352B76630B45AB5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B6D63A60885453045CD7032C /* Pods-Lemondrop.debug.xcconfig */,
-				C7A7ECE62B2BEE5A2ACF819D /* Pods-Lemondrop.release.xcconfig */,
-				74F5C8BCBE3C764EAB1EF77B /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				FA4F11EBB2CD2535C399E916 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				F67F19BB266BAE8B88B6B1E0 /* Pods-Lemondrop.debug.xcconfig */,
+				FC5040A79844A7C5A4AE2B98 /* Pods-Lemondrop.release.xcconfig */,
+				A21E65693C63CC502626F682 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				1184EA64D3F2DE9F99827732 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -209,13 +211,14 @@
 				B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */,
 				B36C5EDF22A09F9C00E548B5 /* UsersTableViewController.swift */,
 				B3F7F46D22C722C8001B25E8 /* SetEndTimePopupViewController.swift */,
-				B3CB357A22B435F600BB0A95 /* UserStandsTableViewController.swift */,
 				B36C5EE822A7BD9400E548B5 /* ChatLogViewController.swift */,
 				B36C5EEF22A833EA00E548B5 /* MessagesViewController.swift */,
 				B36C5EF122A97BEA00E548B5 /* AddMessageThreadViewController.swift */,
 				B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */,
-				B386AE4823A0422A00AF5EE5 /* AddStandViewController.swift */,
 				B3033E6823A15C2300F7050B /* UploadByListViewController.swift */,
+				B307C33223A2DBFD00005EB9 /* LocationSelectorViewController.swift */,
+				B386AE4823A0422A00AF5EE5 /* AddStandViewController.swift */,
+				B335E28B23A4508E00F603DE /* StandTableViewContoller.swift */,
 				B36C5EEE22A832DA00E548B5 /* Views */,
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
 				B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */,
@@ -230,10 +233,10 @@
 				B36C5EE222A6D8B400E548B5 /* UserAndStandCell.swift */,
 				B36C5EEC22A8311400E548B5 /* DirectMessageBubble.swift */,
 				B36C5EF322A9859300E548B5 /* UserCell.swift */,
-				B3CB357C22B4365400BB0A95 /* StandCell.swift */,
 				B36745E022B9F07C00ED5A06 /* StickyNote.swift */,
 				B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */,
 				B3033E6623A158A200F7050B /* ListCell.swift */,
+				B335E28D23A4578C00F603DE /* StandStatusCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -287,8 +290,8 @@
 			isa = PBXGroup;
 			children = (
 				B36C5EDB229ED5CE00E548B5 /* StoreKit.framework */,
-				C53EAA09EB2166FFDFA0325A /* Pods_Lemondrop.framework */,
-				7794A921C9D139D40FDAA27C /* Pods_OneSignalNotificationServiceExtension.framework */,
+				938FF24342442CAE1C96AA14 /* Pods_Lemondrop.framework */,
+				D23F5AE34A7376BA28A6F755 /* Pods_OneSignalNotificationServiceExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -300,13 +303,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B34074EF228E35F000FF6ED6 /* Build configuration list for PBXNativeTarget "Lemondrop" */;
 			buildPhases = (
-				C8F4F90BC8187F6D50BBD5F8 /* [CP] Check Pods Manifest.lock */,
+				B30F69E9C1EF3D3E819C5DFF /* [CP] Check Pods Manifest.lock */,
 				B34074D9228E35EE00FF6ED6 /* Sources */,
 				B34074DA228E35EE00FF6ED6 /* Frameworks */,
 				B34074DB228E35EE00FF6ED6 /* Resources */,
 				B3CB357222AC3C6C00BB0A95 /* Embed App Extensions */,
-				BF81901B00127135638BEEFA /* [CP] Embed Pods Frameworks */,
-				54D36CB1AD4BBC9FDF596E56 /* [CP] Copy Pods Resources */,
+				CF806A7DFC43D11BB009D218 /* [CP] Embed Pods Frameworks */,
+				7A4EC1FC4CE6B77DDB4D1A65 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -322,7 +325,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3F7F46C22C520D4001B25E8 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
-				A15F23FEE91F16B1B0506382 /* [CP] Check Pods Manifest.lock */,
+				65A0ADFF4E919BF779827607 /* [CP] Check Pods Manifest.lock */,
 				B3F7F45E22C520D3001B25E8 /* Sources */,
 				B3F7F45F22C520D3001B25E8 /* Frameworks */,
 				B3F7F46022C520D3001B25E8 /* Resources */,
@@ -414,24 +417,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		54D36CB1AD4BBC9FDF596E56 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A15F23FEE91F16B1B0506382 /* [CP] Check Pods Manifest.lock */ = {
+		65A0ADFF4E919BF779827607 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -453,24 +439,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BF81901B00127135638BEEFA /* [CP] Embed Pods Frameworks */ = {
+		7A4EC1FC4CE6B77DDB4D1A65 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C8F4F90BC8187F6D50BBD5F8 /* [CP] Check Pods Manifest.lock */ = {
+		B30F69E9C1EF3D3E819C5DFF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -492,6 +478,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CF806A7DFC43D11BB009D218 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Lemondrop/Pods-Lemondrop-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -501,13 +504,13 @@
 			files = (
 				B36745E322BC039000ED5A06 /* EditProfileViewController.swift in Sources */,
 				B36C5EED22A8311400E548B5 /* DirectMessageBubble.swift in Sources */,
+				B335E28E23A4578C00F603DE /* StandStatusCell.swift in Sources */,
 				B3033E6B23A15E7100F7050B /* Item.swift in Sources */,
 				B3F7F46E22C722C8001B25E8 /* SetEndTimePopupViewController.swift in Sources */,
 				B3E4DE82238087BE00CC92CF /* Business.swift in Sources */,
 				B3A287732293B826000CB1F4 /* SignInViewController.swift in Sources */,
 				B3033E6723A158A200F7050B /* ListCell.swift in Sources */,
 				B34074E3228E35EE00FF6ED6 /* SignUpViewController.swift in Sources */,
-				B3CB357D22B4365400BB0A95 /* StandCell.swift in Sources */,
 				B36C5EF022A833EA00E548B5 /* MessagesViewController.swift in Sources */,
 				B36C5EF222A97BEB00E548B5 /* AddMessageThreadViewController.swift in Sources */,
 				B36745DD22B84ACB00ED5A06 /* CorkboardViewController.swift in Sources */,
@@ -519,16 +522,17 @@
 				B36745E922BC4F8300ED5A06 /* ChangePasswordViewController.swift in Sources */,
 				B36C5EE922A7BD9400E548B5 /* ChatLogViewController.swift in Sources */,
 				B36C5EE322A6D8B400E548B5 /* UserAndStandCell.swift in Sources */,
+				B335E28C23A4508E00F603DE /* StandTableViewContoller.swift in Sources */,
 				B3F7F45D22BC5F28001B25E8 /* ChangeEmailViewController.swift in Sources */,
 				B386AE4923A0422A00AF5EE5 /* AddStandViewController.swift in Sources */,
 				B34074E1228E35EE00FF6ED6 /* AppDelegate.swift in Sources */,
 				B3152BFA235BCADF0098DEF8 /* FirebaseService.swift in Sources */,
+				B307C33323A2DBFD00005EB9 /* LocationSelectorViewController.swift in Sources */,
 				B36C5EE022A09F9C00E548B5 /* UsersTableViewController.swift in Sources */,
 				B3A2877922946477000CB1F4 /* User.swift in Sources */,
 				B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */,
 				B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */,
 				B3152BFC235D14410098DEF8 /* EditProfileStandCell.swift in Sources */,
-				B3CB357B22B435F700BB0A95 /* UserStandsTableViewController.swift in Sources */,
 				B36C5EEB22A8300F00E548B5 /* Message.swift in Sources */,
 				B3A287772293C750000CB1F4 /* ApiKeys.swift in Sources */,
 				B36745E122B9F07C00ED5A06 /* StickyNote.swift in Sources */,
@@ -692,7 +696,7 @@
 		};
 		B34074F0228E35F000FF6ED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6D63A60885453045CD7032C /* Pods-Lemondrop.debug.xcconfig */;
+			baseConfigurationReference = F67F19BB266BAE8B88B6B1E0 /* Pods-Lemondrop.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -714,7 +718,7 @@
 		};
 		B34074F1228E35F000FF6ED6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7A7ECE62B2BEE5A2ACF819D /* Pods-Lemondrop.release.xcconfig */;
+			baseConfigurationReference = FC5040A79844A7C5A4AE2B98 /* Pods-Lemondrop.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -736,7 +740,7 @@
 		};
 		B3F7F46A22C520D4001B25E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74F5C8BCBE3C764EAB1EF77B /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			baseConfigurationReference = A21E65693C63CC502626F682 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S879Z9A2RC;
@@ -756,7 +760,7 @@
 		};
 		B3F7F46B22C520D4001B25E8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA4F11EBB2CD2535C399E916 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = 1184EA64D3F2DE9F99827732 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S879Z9A2RC;

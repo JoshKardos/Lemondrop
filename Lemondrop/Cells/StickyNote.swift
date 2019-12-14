@@ -17,11 +17,11 @@ class StickyNote: UICollectionViewCell {
     func configureCell(stand: Stand){
         
         standNameLabel.text = stand.standName
-        byUsernameLabel.text = "By: \(stand.creatorName!)"
+//        byUsernameLabel.text = "By: \(stand.creatorName!)"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
-        let timestampDate = NSDate(timeIntervalSince1970: stand.endTime)
+        let timestampDate = NSDate(timeIntervalSince1970: stand.endTime ?? 0.0)
         
         closingTimeLabel.text = "closes at: \(dateFormatter.string(from: timestampDate as Date))"
         

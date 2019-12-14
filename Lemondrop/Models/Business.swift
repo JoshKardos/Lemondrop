@@ -14,8 +14,8 @@ class Business {
     var userId: String?
 
     init(dictionary: [String: AnyObject]){
-        businessId = dictionary[FirebaseNodes.userID] as! String
-        name = dictionary[FirebaseNodes.name] as! String
-        userId = dictionary[FirebaseNodes.userID] as! String
+        businessId = dictionary[FirebaseNodes.businessId] as? String
+        name = dictionary[FirebaseNodes.name] as? String
+        userId = dictionary[FirebaseNodes.userID] as? String
     }
 }

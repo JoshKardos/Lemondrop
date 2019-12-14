@@ -15,7 +15,7 @@ class ListCell: UITableViewCell {
     
     func configureCell(item: Item) {
         nameLabel.text = item.name
-        priceLabel.text = String(item.price)
+        priceLabel.text = "Price: $\(String(format: "%.2f", item.price))"
     }
     
 }

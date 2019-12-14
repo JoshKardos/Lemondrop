@@ -25,7 +25,7 @@ class EditProfileViewController: UIViewController {
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl.tintColor = UIColor.red
+        refreshControl.tintColor = #colorLiteral(red: 1, green: 0.5843137255, blue: 0, alpha: 1)
         return refreshControl
     }()
     
@@ -48,14 +48,16 @@ class EditProfileViewController: UIViewController {
         if !MapViewController.currentUser.hasBusinessProfile! {
             businessViewContainer.isHidden = true
         } else {
+            guard let businessName = MapViewController.currentUsersBusiness?.name else {
+                fatalError()
+            }
+            businessStandsLabel.text = "\(businessName) stands"
             standsTableView.addSubview(self.refreshControl)
         }
     }
     
     @objc
     func refresh(_ refreshControl: UIRefreshControl) {
-        
-        print("REFREHSED")
         MapViewController.loadCurrentUserStandsFromBusiness(onSuccess: {
             self.standsTableView.reloadData()
         })
@@ -134,8 +136,12 @@ class EditProfileViewController: UIViewController {
                 
                 Database.database().reference().child(FirebaseNodes.businesses).child(ProfileViewController.businessId).updateChildValues(businessNameValues) { (error, ref) in
                     if error == nil {
-                        MapViewController.reloadCurrentUser()
-                        ProgressHUD.showSuccess("Successfully changed your information")
+                        MapViewController.reloadCurrentUser(onSuccess: {
+                            MapViewController.reloadCurrentUsersBusiness(onSuccess: {
+                                ProgressHUD.showSuccess("Successfully changed your information")
+                                self.configureTableView()
+                            })
+                        })
                     } else {
                         ProgressHUD.showError("Could not update your records")
                     }
@@ -209,19 +215,16 @@ class EditProfileViewController: UIViewController {
         view.endEditing(true)
     }
 }
-extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource{
-    
-    
-    
+extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return MapViewController.currentUserStands.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileStandCell", for: indexPath)
-        cell.textLabel?.text = MapViewController.currentUserStands[indexPath.row].standName
-        
+        if indexPath.row < MapViewController.currentUserStands.count {
+            cell.textLabel?.text = MapViewController.currentUserStands[indexPath.row].standName
+        }
         return cell
     }
 }
