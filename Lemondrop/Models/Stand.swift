@@ -1,5 +1,4 @@
 //
-//  LemonadeStand.swift
 //  Lemondrop
 //
 //  Created by Josh Kardos on 5/17/19.

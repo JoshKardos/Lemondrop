@@ -44,7 +44,7 @@ class UsersTableViewController: UITableViewController {
         
         if searchBar.text != nil && searchBar.text!.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
             // search bar is empty, show all users
-            for stand in MapViewController.activeStands{
+            for stand in MapViewController.openStands{
                 if stand.creatorName == filteredUsers[indexPath.row].fullname {
                     
                     cell.configureCell(username: filteredUsers[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )
@@ -55,7 +55,7 @@ class UsersTableViewController: UITableViewController {
             return cell
         }
         
-        for stand in MapViewController.activeStands{ // filter users based off search bar text
+        for stand in MapViewController.openStands{ // filter users based off search bar text
             if stand.creatorName == MapViewController.users[indexPath.row].fullname{
                 
                 cell.configureCell(username: MapViewController.users[indexPath.row].fullname!, standsLabel: "Stand: \(stand.standName!)" )

@@ -104,7 +104,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
             self.getCityName {
-                self.saveLemonadeStand()
+                self.saveStand()
             }
         }))
         alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
@@ -114,7 +114,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func saveLemonadeStand(){
+    func saveStand(){
         
         let newStandRef = Database.database().reference().child(FirebaseNodes.stands).childByAutoId()
         let newStandRefId = newStandRef.key

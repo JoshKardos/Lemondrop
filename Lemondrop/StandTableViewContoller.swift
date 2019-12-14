@@ -19,11 +19,10 @@ class StandTableViewController: UITableViewController{
     static var standCreated = false
     
     override func viewDidLoad() {
-        print("LOADED")
         StandTableViewController.standCreated = false
         self.navigationController?.isNavigationBarHidden = false
         self.fillUserStands()
-        if userStands.count == 0{
+        if userStands.count == 0 {
             addNoStandsLabel()
         } else {
             super.viewDidLoad()
@@ -39,6 +38,7 @@ class StandTableViewController: UITableViewController{
     
     // fill stand with current user stands
     func fillUserStands(){
+        userStands = []
         for stand in MapViewController.currentUserStands {
             userStands.append(stand)
         }
@@ -66,7 +66,7 @@ class StandTableViewController: UITableViewController{
     
     func addNoStandsLabel(){
         let label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 32))
-        label.text = "You haven't established any stands.."
+        label.text = "There are no stands open..."
         label.textColor = UIColor.black
         label.textAlignment = .center
         self.view.addSubview(label)
@@ -76,9 +76,10 @@ class StandTableViewController: UITableViewController{
 class StandClosedTableViewController: StandTableViewController {
     
     override func fillUserStands () {
+        print("FILL USER STANDS")
+        userStands = []
         for stand in MapViewController.currentUserStands {
             if stand.isOpen() {
-                print("1 OPEN")
                 userStands.append(stand)
             }
         }
@@ -88,7 +89,7 @@ class StandClosedTableViewController: StandTableViewController {
         let alert = UIAlertController(title: "Are you sure you want to close?", message: "Confirm close '\(userStands[indexPath.row].standName!)'?", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Default action"), style: .default, handler: { _ in
             alert.removeFromParent()
-            self.closeStand(userStands[indexPath.row])
+            self.closeStand(stand: self.userStands[indexPath.row])
         }))
         alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: { _ in
             alert.removeFromParent()
@@ -104,9 +105,24 @@ class StandClosedTableViewController: StandTableViewController {
     }
     
     func closeStand (stand: Stand){
-        // close stand
         
-        // in callback reload and reload table view
+        if stand.endTime == nil || stand.endTime! <= Date().timeIntervalSince1970 {
+            ProgressHUD.showError("Stand is already closed..")
+            return
+        }
+        // close stand
+        Database.database().reference().child(FirebaseNodes.stands).child(stand.standId).child(FirebaseNodes.endTime).setValue(Date().timeIntervalSince1970) { (error, ref) in
+
+            // reload and reload table view
+            MapViewController.reloadCurrentUserStand(standId: stand.standId, onSuccess: {
+                self.fillUserStands()
+                self.tableView.reloadData()
+                if self.userStands.count == 0 {
+                    self.addNoStandsLabel()
+                }
+
+            })
+        }
     }
 }
 
