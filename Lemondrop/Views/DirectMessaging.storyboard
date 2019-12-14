@@ -25,16 +25,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIT-Ry-MjH">
-                                            <rect key="frame" x="20" y="14" width="212" height="24"/>
+                                            <rect key="frame" x="20" y="14" width="206" height="24"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:33 PM 56/78/3243" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PaL-qj-xKU">
-                                            <rect key="frame" x="240" y="15.5" width="129" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:33 PM Dec 25 0000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PaL-qj-xKU">
+                                            <rect key="frame" x="234" y="15.5" width="135" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="0Ld-f3-zUv"/>
-                                                <constraint firstAttribute="width" constant="129" id="EU5-Gb-mov"/>
+                                                <constraint firstAttribute="width" constant="135" id="EU5-Gb-mov"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

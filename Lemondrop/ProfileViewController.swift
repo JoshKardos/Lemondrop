@@ -19,7 +19,6 @@ class ProfileViewController: UIViewController{
     static var shirtNames = ["white-shirt", "blue-shirt", "goldshirt"]
     static var pantNames = ["white-pants", "blue-pants", "goldpants"]
     
-   
     @IBOutlet weak var bottomScrollView: UIScrollView!
     
     let avatarBackgroundColor: CGColor =  #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
