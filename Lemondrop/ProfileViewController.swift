@@ -9,11 +9,10 @@
 import UIKit
 import FirebaseAuth
 import Cosmos
-import SideMenu
 import FirebaseDatabase
 import ProgressHUD
 import StoreKit
-import HYParentalGate
+
 class ProfileViewController: UIViewController{
     
     static var hatNames = ["white-hat", "blue-hat", "goldhat"]

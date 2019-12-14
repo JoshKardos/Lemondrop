@@ -1,7 +1,4 @@
 //
-//  EditProfileStandCell.swift
-//  Lemondrop
-//
 //  Created by Josh Kardos on 10/20/19.
 //  Copyright © 2019 Josh Kardos. All rights reserved.
 //

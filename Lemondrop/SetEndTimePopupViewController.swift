@@ -55,7 +55,7 @@ class SetEndTimePopupViewController: UIViewController {
                 } else {
                     ProgressHUD.showSuccess("Success, \(stand.standName!) is now opened!")
                     print("setting to true")
-                    UserStandsTableViewController.standCreated = true
+                    StandTableViewController.standCreated = true
                     self.view.removeFromSuperview()
                     UIApplication.shared.endIgnoringInteractionEvents()
                     self.navigationController?.popToRootViewController(animated: true)

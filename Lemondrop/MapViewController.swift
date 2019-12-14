@@ -53,7 +53,6 @@ class MapViewController: UIViewController{
             configureMapbackground()
             reload()
         } else {
-            
             Auth.auth().currentUser?.sendEmailVerification(completion: { (error) in
                 //self.reload()
                 MapViewController.firstTimeLoggingIn = true
@@ -64,9 +63,11 @@ class MapViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
-        if UserStandsTableViewController.standCreated {
+        if StandTableViewController.standCreated {
+
+            // did open a stand, so the view gets shown and reloaded
             self.reload()
-            UserStandsTableViewController.standCreated = false
+            StandTableViewController.standCreated = false
         }
     }
     
@@ -163,17 +164,14 @@ class MapViewController: UIViewController{
     }
     
     static func reloadCurrentUsersBusiness(onSuccess: @escaping() -> Void) {
-        print("RELOADING")
         guard let _ = currentUsersBusiness else {
             print("RELOADING BUSINESS - no current users business")
             return
         }
         let ref = Database.database().reference()
         ref.child(FirebaseNodes.businesses).child(MapViewController.currentUsersBusiness!.businessId!).observeSingleEvent(of: .value) { (snap) in
-            print("IN REF")
             print(snap)
             if let business = snap.value as? [String: AnyObject]{
-                print("PASSED REF")
                 let newBusiness = Business(dictionary: business)
                 MapViewController.currentUsersBusiness = newBusiness
                 onSuccess()
@@ -322,7 +320,7 @@ class MapViewController: UIViewController{
             
             if workingAStand {
                 floaty.addItem("Close stands", icon: UIImage(named: "close-button")!) { (item) in
-//                    self.closeStandEarly(stand: self.currentUsersStand)
+                    self.presentCloseStandView()
                 }
             }
 //            floaty.addItem("Locate your Stand", icon: UIImage(named: "Lemon")!) { (item) in
@@ -415,6 +413,10 @@ extension MapViewController: UISearchBarDelegate{
             let destination = segue.destination as! ProfileViewController
             destination.user = MapViewController.currentUser
         }
+    }
+    
+    func presentCloseStandView () {
+        performSegue(withIdentifier: "ShowStandToClose", sender: nil)
     }
     
     func presentEstablishStandView(){

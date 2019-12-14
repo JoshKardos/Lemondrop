@@ -551,13 +551,13 @@
         <!--All Stands-->
         <scene sceneID="CQK-3p-2Lg">
             <objects>
-                <tableViewController storyboardIdentifier="UserStands" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ABb-pJ-gfI" customClass="UserStandsTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UserStands" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ABb-pJ-gfI" customClass="StandTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cR4-jR-QoN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="StandCell" rowHeight="241" id="8fO-2G-ndn" customClass="StandCell" customModule="Lemondrop" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="StandCell" rowHeight="241" id="8fO-2G-ndn" customClass="StandStatusCell" customModule="Lemondrop" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="241"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8fO-2G-ndn" id="TqN-b7-bLE">

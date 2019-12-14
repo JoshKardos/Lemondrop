@@ -182,7 +182,7 @@ class PopupViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func reopenStandPressed(_ sender: Any) {
         
-        let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserStands") as! ClickableUserStandsTableViewController
+        let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserStands") as! StandStatusTableViewController
         view.navigationController?.isNavigationBarHidden = false
         navigationController?.pushViewController(view, animated: true)
         
