@@ -79,7 +79,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
             alert.addAction(UIAlertAction(title: NSLocalizedString("Photo & List", comment: "Default action"), style: .default, handler: { _ in
                 self.savePhoto(standRefId: newStandRefId, onSuccess: {
                     self.saveList(standRefId: newStandRefId, onSuccess: {
-                        self.saveLemonadeStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
+                        self.saveStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
                             self.successSaving()
                         }, onError: {
                             self.failureSaving()
@@ -97,7 +97,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
         if UploadByListViewController.list.count > 0 {
             alert.addAction(UIAlertAction(title: NSLocalizedString("List", comment: "Default action"), style: .default, handler: { _ in
                 self.saveList(standRefId: newStandRefId, onSuccess: {
-                    self.saveLemonadeStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
+                    self.saveStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
                         self.successSaving()
                     }, onError: {
                         self.failureSaving()
@@ -113,7 +113,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
             alert.addAction(UIAlertAction(title: NSLocalizedString("Photo", comment: "Default action"), style: .default, handler: { _ in
     //            values["menuPhotoUrl": self.menuPhotoUrl]
                 self.savePhoto(standRefId: newStandRefId, onSuccess: {
-                    self.saveLemonadeStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
+                    self.saveStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
                         self.successSaving()
                     }, onError: {
                         self.failureSaving()
@@ -125,7 +125,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
             }))
         }
         alert.addAction(UIAlertAction(title: NSLocalizedString("None", comment: "Default action"), style: .default, handler: { _ in
-            self.saveLemonadeStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
+            self.saveStand(newStandRef: newStandRef, newStandRefId: newStandRefId, values: values, onSuccess: {
                 self.successSaving()
             }, onError: {
                 self.failureSaving()
@@ -244,7 +244,7 @@ class AddStandViewController: UIViewController, UINavigationControllerDelegate, 
         performSegue(withIdentifier: "ToUploadMenuByList", sender: nil)
     }
     
-    func saveLemonadeStand(newStandRef: DatabaseReference, newStandRefId: String, values: [String: Any], onSuccess: @escaping() -> Void, onError: @escaping() -> Void){
+    func saveStand(newStandRef: DatabaseReference, newStandRefId: String, values: [String: Any], onSuccess: @escaping() -> Void, onError: @escaping() -> Void){
         if Connectivity.isConnectedToInternet {
             ProgressHUD.show("Saving...")
             UIApplication.shared.beginIgnoringInteractionEvents()

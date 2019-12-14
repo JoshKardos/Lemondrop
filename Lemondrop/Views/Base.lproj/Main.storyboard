@@ -316,7 +316,7 @@
             </objects>
             <point key="canvasLocation" x="1254.375" y="92.957746478873247"/>
         </scene>
-        <!--Lemonade Stands-->
+        <!--Stands-->
         <scene sceneID="tbj-gV-AWR">
             <objects>
                 <viewController id="lBb-Tn-aLa" customClass="CorkboardViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
@@ -325,7 +325,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="corkboard" translatesAutoresizingMaskIntoConstraints="NO" id="FeO-So-dSG">
-                                <rect key="frame" x="0.0" y="0.0" width="320.00000000000006" height="492"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="492"/>
                             </imageView>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HyS-gC-OW3">
                                 <rect key="frame" x="0.0" y="53" width="320" height="439"/>
@@ -471,7 +471,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="c9J-Ca-3jL"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Lemonade Stands" id="4R5-Nm-BJe"/>
+                    <navigationItem key="navigationItem" title="Stands" id="4R5-Nm-BJe"/>
                     <connections>
                         <outlet property="collectionView" destination="HyS-gC-OW3" id="Mci-p3-goY"/>
                         <outlet property="filter" destination="dIf-ja-ZDa" id="0pp-Vi-PBL"/>
@@ -717,7 +717,7 @@
         <!--Users Table View Controller-->
         <scene sceneID="fHd-uk-V0K">
             <objects>
-                <tableViewController storyboardIdentifier="lemonadeStandListView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ygh-Xo-Bod" customClass="UsersTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="standListView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ygh-Xo-Bod" customClass="UsersTableViewController" customModule="Lemondrop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="O96-eY-pzP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

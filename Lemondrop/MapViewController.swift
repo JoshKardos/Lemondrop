@@ -22,8 +22,8 @@ class MapViewController: UIViewController{
     
     let floaty = Floaty()
     var workingAStand = false
-    static var lemonadeStands = [Stand]()
-    static var activeStands = [Stand]()
+    static var stands = [Stand]()
+    static var openStands = [Stand]()
     static var users = [User]()
     static var uidUserMap = [String: User]()
     static var markerUserMap = [GMSMarker: User]()
@@ -170,7 +170,6 @@ class MapViewController: UIViewController{
         }
         let ref = Database.database().reference()
         ref.child(FirebaseNodes.businesses).child(MapViewController.currentUsersBusiness!.businessId!).observeSingleEvent(of: .value) { (snap) in
-            print(snap)
             if let business = snap.value as? [String: AnyObject]{
                 let newBusiness = Business(dictionary: business)
                 MapViewController.currentUsersBusiness = newBusiness
@@ -210,7 +209,6 @@ class MapViewController: UIViewController{
     }
     @objc
     func reload(){
-        print("IN RELOAD")
         if let _ = reloadView{
             reloadView?.removeFromSuperview()
         }
@@ -228,12 +226,10 @@ class MapViewController: UIViewController{
             //            self.configureFloatingButton()
             
         } else {
-            print("IN ELSE")
-
             ProgressHUD.show("Reloading...")
             
             MapViewController.loadUsers(onSuccess: {
-                MapViewController.loadLemonadeStands(view: self) {
+                MapViewController.loadStands(view: self) {
                     
                     self.setMarkers()
                     self.configureFloatingButton()
@@ -280,8 +276,8 @@ class MapViewController: UIViewController{
     }
     
     func transitionMapToStand(stand: Stand?){
-        if let lemonadeStand = stand{
-            self.mapView.camera = GMSCameraPosition(latitude: lemonadeStand.latitude!, longitude: lemonadeStand.longitude!, zoom: self.zoomLevel)
+        if let stand = stand{
+            self.mapView.camera = GMSCameraPosition(latitude: stand.latitude!, longitude: stand.longitude!, zoom: self.zoomLevel)
         }
     }
     
@@ -398,7 +394,7 @@ extension MapViewController: UISearchBarDelegate{
     }
     
     func presentListView(){
-        let listVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "lemonadeStandListView")
+        let listVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "standListView")
         navigationController?.pushViewController(listVC, animated: true)
     }
     
@@ -460,7 +456,7 @@ extension MapViewController: UISearchBarDelegate{
     
     
     func filterContent(searchText: String){
-        MapViewController.filteredStands = MapViewController.activeStands.filter{ stand in
+        MapViewController.filteredStands = MapViewController.openStands.filter{ stand in
             let string = "\(stand.standName)"
             return(string.lowercased().contains(searchText.lowercased()))
         }
@@ -481,6 +477,29 @@ extension MapViewController: UISearchBarDelegate{
 
 extension MapViewController: GMSMapViewDelegate{
     
+    static func reloadCurrentUserStand(standId: String, onSuccess: @escaping() -> Void) {
+        print("RELOADING stand")
+        Database.database().reference().child(FirebaseNodes.stands).child(standId).observeSingleEvent(of: .value) { (snapshot) in
+            if let snap = snapshot.value as? NSDictionary {
+//                for stand in currentUserStands {
+//                    if stand.standId! == standId {
+//                        stand.endTime = snap[FirebaseNodes.endTime] as? Double
+//                        onSuccess()
+//                        return
+//                    }
+//                }
+                for i in 0..<currentUserStands.count {
+                    if currentUserStands[i].standId == standId {
+                    MapViewController.currentUserStands.remove(at: i)
+                        MapViewController.currentUserStands.append(Stand(dictionary: snap))
+                        onSuccess()
+                        return
+                    }
+                }
+            }
+        }
+    }
+    
     static func loadCurrentUserStandsFromBusiness(onSuccess: @escaping() -> Void){
         MapViewController.currentUserStands = []
         Database.database().reference().child(FirebaseNodes.stands).observeSingleEvent(of: .value) { (snapshot) in
@@ -499,14 +518,14 @@ extension MapViewController: GMSMapViewDelegate{
     }
     
     static func resetAllStands() {
-        lemonadeStands = []
-        activeStands = []
+        stands = []
+        openStands = []
         filteredStands = []
         currentUserStands = []
     }
     
-    //loads all lemonade stands, checks if the currrent user is working a stand or not
-    static func loadLemonadeStands(view: MapViewController, onSuccess: @escaping() -> Void){
+    //loads all stands, checks if the currrent user is working a stand or not
+    static func loadStands(view: MapViewController, onSuccess: @escaping() -> Void){
         
         resetAllStands()
         //remove all markers from mapview
@@ -517,7 +536,7 @@ extension MapViewController: GMSMapViewDelegate{
                     if let dict = stand as? NSDictionary {
                         let newStand = Stand(dictionary: dict)
                         newStand.setCreatorName(name: MapViewController.uidUserMap[newStand.userId]!.fullname)
-                        MapViewController.lemonadeStands.append(newStand)
+                        MapViewController.stands.append(newStand)
                         //check if this stand was created by the current user
                         if newStand.userId == (Auth.auth().currentUser?.uid)! {
                             MapViewController.currentUserStands.append(newStand)
@@ -533,9 +552,9 @@ extension MapViewController: GMSMapViewDelegate{
     
     func setMarkers(){
         workingAStand = false
-        for stand in MapViewController.lemonadeStands{
+        for stand in MapViewController.stands{
             if stand.isOpen() {
-                MapViewController.activeStands.append(stand)
+                MapViewController.openStands.append(stand)
                 setMarker(stand: stand)
                 if stand.userId == MapViewController.currentUser.uid {
                     workingAStand = true
@@ -757,8 +776,6 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
                         let timeString = elements[0]["duration"]["text"].stringValue
                         
                         self.configureDistanceView(distance: distanceString, time: timeString)
-                        
-                        print(distanceString)
                     } catch {
                         print(error)
                     }
@@ -833,7 +850,7 @@ extension MapViewController{//bulletin board functions
 //
         
         var stands:[Stand] = []
-//        for stand in MapViewController.lemonadeStands{
+//        for stand in MapViewController.stands{
 //            
 //            if let otherUserSchool = MapViewController.uidUserMap[stand.userId]?.school{
 //                
@@ -849,7 +866,7 @@ extension MapViewController{//bulletin board functions
     static func getStandsFrom(city: String) -> [Stand] {
         var stands:[Stand] = []
         
-//        for stand in MapViewController.lemonadeStands{
+//        for stand in MapViewController.stands{
 //            if stand.city.lowercased() == city.lowercased() && Date() < Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime!)){
 //                stands.append(stand)
 //            }
@@ -862,7 +879,7 @@ extension MapViewController{//bulletin board functions
         let date = Date()
         let hoursToAdd = 1
         let newDate = Calendar.current.date(byAdding: .hour, value: hoursToAdd, to: Date())
-        for stand in MapViewController.lemonadeStands{
+        for stand in MapViewController.stands{
             if Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime!)) <= newDate! && Date(timeIntervalSince1970: TimeInterval(integerLiteral: stand.endTime!)) > date {
                 stands.append(stand)
             }
