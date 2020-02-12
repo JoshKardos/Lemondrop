@@ -54,7 +54,7 @@ class AuthService {
         }
     }
     
-    static func signUp(fullname: String, email: String, password: String, school: String?, age: String?, onSuccess: @escaping() -> Void, onError: @escaping(_ errorMessage: String?) -> Void){
+    static func signUp(fullname: String, email: String, password: String, onSuccess: @escaping() -> Void, onError: @escaping(_ errorMessage: String?) -> Void){
         
         /////////////////////
         ////Create User/////
@@ -70,7 +70,7 @@ class AuthService {
             
             if let uid = Auth.auth().currentUser?.uid{
                 
-                self.signUpUser(fullname: fullname, email: email, uid: uid, school: school, age: age, onSuccess: onSuccess)
+                self.signUpUser(fullname: fullname, email: email, uid: uid, onSuccess: onSuccess)
             }
         }
         
@@ -78,7 +78,7 @@ class AuthService {
     
     
     
-    static func signUpUser(fullname: String, email: String, uid: String,  school: String?, age: String?, onSuccess: @escaping () -> Void){
+    static func signUpUser(fullname: String, email: String, uid: String, onSuccess: @escaping () -> Void){
         
         //get referenece to users in the database
         let usersRef = Database.database().reference().child(FirebaseNodes.users)
@@ -98,16 +98,9 @@ class AuthService {
         initialUnlockedPants["1"] = "1"
         
         
-        var values = ["fullname": fullname, "email" : email, "uid": uid,
+        let values = ["fullname": fullname, "email" : email, "uid": uid,
                      "avatar": initialAvatarValues, "unlockedHats": initialUnlockedHats,
                      "unlockedShirts": initialUnlockedShirts, "unlockedPants": initialUnlockedPants, "hasBusinessProfile": "0"] as [String : Any]
-        
-        if school?.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
-            values["school"] = school
-        }
-        if age?.trimmingCharacters(in: .whitespacesAndNewlines) != ""{
-            values["age"] = age
-        }
         
         usersRef.child(uid).setValue(values)
         Database.database().reference().child(FirebaseNodes.fullnames).updateChildValues([fullname : 1])

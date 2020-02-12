@@ -366,21 +366,21 @@ class ProfileViewController: UIViewController{
     @IBAction func hatLockButtonClicked(_ sender: Any) {
         iapAvatarNodeToAdjust = "unlockedHats"
         indexToBuy = hatIndex
-        iapProductId = "com.JoshKardos.Lemondrop.PremiumOutfit.\(ProfileViewController.hatNames[indexToBuy!])"
+        iapProductId = "com.JoshKardos.OpenUp.PremiumOutfit.\(ProfileViewController.hatNames[indexToBuy!])"
         self.handleLockClick()
     }
     @IBAction func shirtButtonClicked(_ sender: Any) {
         
         iapAvatarNodeToAdjust = "unlockedShirts"
         indexToBuy = shirtIndex
-        iapProductId = "com.JoshKardos.Lemondrop.PremiumOutfit.\(ProfileViewController.shirtNames[indexToBuy!])"
+        iapProductId = "com.JoshKardos.OpenUp.PremiumOutfit.\(ProfileViewController.shirtNames[indexToBuy!])"
         self.handleLockClick()
     }
     @IBAction func pantsButtonClicked(_ sender: Any) {
         
         iapAvatarNodeToAdjust = "unlockedPants"
         indexToBuy = pantsIndex
-        iapProductId = "com.JoshKardos.Lemondrop.PremiumOutfit.\(ProfileViewController.pantNames[indexToBuy!])"
+        iapProductId = "com.JoshKardos.OpenUp.PremiumOutfit.\(ProfileViewController.pantNames[indexToBuy!])"
         self.handleLockClick()
     }
     

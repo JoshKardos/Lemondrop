@@ -26,6 +26,7 @@
 		B34074F9228F2F6700FF6ED6 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */; };
 		B34074FD228F541200FF6ED6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FC228F541200FF6ED6 /* AuthService.swift */; };
 		B34074FF228F826300FF6ED6 /* Stand.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34074FE228F826300FF6ED6 /* Stand.swift */; };
+		B3481EB423E6274E00CF3671 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3481EB323E6274E00CF3671 /* GoogleService-Info.plist */; };
 		B36745DD22B84ACB00ED5A06 /* CorkboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */; };
 		B36745E122B9F07C00ED5A06 /* StickyNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36745E022B9F07C00ED5A06 /* StickyNote.swift */; };
 		B36745E322BC039000ED5A06 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36745E222BC039000ED5A06 /* EditProfileViewController.swift */; };
@@ -49,7 +50,6 @@
 		B3A2877B229A6620000CB1F4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */; };
 		B3A2877D229C6FAC000CB1F4 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */; };
 		B3CB357422AC4F4100BB0A95 /* Lemondrop.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */; };
-		B3E4DE80237784FA00CC92CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */; };
 		B3E4DE82238087BE00CC92CF /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E4DE81238087BE00CC92CF /* Business.swift */; };
 		B3E4DE842380B94F00CC92CF /* AddStand.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3E4DE832380B94F00CC92CF /* AddStand.storyboard */; };
 		B3F7F45D22BC5F28001B25E8 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7F45C22BC5F28001B25E8 /* ChangeEmailViewController.swift */; };
@@ -94,7 +94,7 @@
 		B3152BFB235D14410098DEF8 /* EditProfileStandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileStandCell.swift; sourceTree = "<group>"; };
 		B335E28B23A4508E00F603DE /* StandTableViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandTableViewContoller.swift; sourceTree = "<group>"; };
 		B335E28D23A4578C00F603DE /* StandStatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandStatusCell.swift; sourceTree = "<group>"; };
-		B34074DD228E35EE00FF6ED6 /* Lemondrop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lemondrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B34074DD228E35EE00FF6ED6 /* Open Up.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Open Up.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B34074E0228E35EE00FF6ED6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B34074E2228E35EE00FF6ED6 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		B34074E5228E35EE00FF6ED6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -105,6 +105,7 @@
 		B34074F8228F2F6700FF6ED6 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		B34074FC228F541200FF6ED6 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		B34074FE228F826300FF6ED6 /* Stand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stand.swift; sourceTree = "<group>"; };
+		B3481EB323E6274E00CF3671 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B36745DC22B84ACA00ED5A06 /* CorkboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorkboardViewController.swift; sourceTree = "<group>"; };
 		B36745E022B9F07C00ED5A06 /* StickyNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyNote.swift; sourceTree = "<group>"; };
 		B36745E222BC039000ED5A06 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -128,7 +129,6 @@
 		B3A2877A229A6620000CB1F4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B3A2877C229C6FAC000CB1F4 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
 		B3CB356222AC306600BB0A95 /* Lemondrop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lemondrop.entitlements; sourceTree = "<group>"; };
-		B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B3E4DE81238087BE00CC92CF /* Business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
 		B3E4DE832380B94F00CC92CF /* AddStand.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddStand.storyboard; sourceTree = "<group>"; };
 		B3F7F45C22BC5F28001B25E8 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
@@ -187,7 +187,7 @@
 		B34074DE228E35EE00FF6ED6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B34074DD228E35EE00FF6ED6 /* Lemondrop.app */,
+				B34074DD228E35EE00FF6ED6 /* Open Up.app */,
 				B3F7F46222C520D3001B25E8 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
@@ -221,7 +221,7 @@
 				B335E28B23A4508E00F603DE /* StandTableViewContoller.swift */,
 				B36C5EEE22A832DA00E548B5 /* Views */,
 				B34074E7228E35F000FF6ED6 /* Assets.xcassets */,
-				B3E4DE7F237784FA00CC92CF /* GoogleService-Info.plist */,
+				B3481EB323E6274E00CF3671 /* GoogleService-Info.plist */,
 				B34074EC228E35F000FF6ED6 /* Info.plist */,
 			);
 			path = Lemondrop;
@@ -318,7 +318,7 @@
 			);
 			name = Lemondrop;
 			productName = Lemondrop;
-			productReference = B34074DD228E35EE00FF6ED6 /* Lemondrop.app */;
+			productReference = B34074DD228E35EE00FF6ED6 /* Open Up.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B3F7F46122C520D3001B25E8 /* OneSignalNotificationServiceExtension */ = {
@@ -396,8 +396,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3E4DE842380B94F00CC92CF /* AddStand.storyboard in Resources */,
+				B3481EB423E6274E00CF3671 /* GoogleService-Info.plist in Resources */,
 				B3CB357422AC4F4100BB0A95 /* Lemondrop.entitlements in Resources */,
-				B3E4DE80237784FA00CC92CF /* GoogleService-Info.plist in Resources */,
 				B36745E522BC243000ED5A06 /* DirectMessaging.storyboard in Resources */,
 				B34074EB228E35F000FF6ED6 /* LaunchScreen.storyboard in Resources */,
 				B36745E722BC4A3F00ED5A06 /* EditProfile.storyboard in Resources */,
@@ -702,15 +702,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Lemondrop/Lemondrop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = S879Z9A2RC;
 				INFOPLIST_FILE = Lemondrop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.OpenUp;
+				PRODUCT_NAME = "Open Up";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -725,15 +726,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Lemondrop/Lemondrop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = S879Z9A2RC;
 				INFOPLIST_FILE = Lemondrop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.OpenUp;
+				PRODUCT_NAME = "Open Up";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -745,7 +747,7 @@
 			baseConfigurationReference = A21E65693C63CC502626F682 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = S879Z9A2RC;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -753,7 +755,8 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop.OneSignalNotificationServiceExtension;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.OpenUp.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -766,7 +769,7 @@
 			baseConfigurationReference = 1184EA64D3F2DE9F99827732 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = S879Z9A2RC;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -774,7 +777,8 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.Lemondrop.OneSignalNotificationServiceExtension;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.JoshKardos.OpenUp.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

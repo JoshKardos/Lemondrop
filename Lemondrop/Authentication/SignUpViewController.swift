@@ -13,8 +13,6 @@ import FirebaseDatabase
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var fullNameTextField: UITextField!
-    @IBOutlet weak var ageTextField: UITextField!
-    @IBOutlet weak var schoolTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var validatePasswordTextField: UITextField!
@@ -85,7 +83,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 
                 
                 
-                AuthService.signUp(fullname: self.fullNameTextField.text!, email: self.emailTextField.text!, password: self.passwordTextField.text!, school: self.schoolTextField.text, age: self.ageTextField.text, onSuccess:{
+                AuthService.signUp(fullname: self.fullNameTextField.text!, email: self.emailTextField.text!, password: self.passwordTextField.text!,  onSuccess:{
                     
                     ProgressHUD.showSuccess("Success")
                     self.performSegue(withIdentifier: "showDetailMapView", sender: nil)
