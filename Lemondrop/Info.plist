@@ -28,7 +28,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This application needs to use the camera of the device</string>
+	<string>This application needs to use the camera of the device to upload a menu.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This allows us to get your current location on the map view.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -62,5 +62,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>
